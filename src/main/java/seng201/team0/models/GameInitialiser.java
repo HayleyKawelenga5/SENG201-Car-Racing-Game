@@ -23,4 +23,22 @@ public class GameInitialiser {
         }
         this.seasonLength = length;
     }
+
+    public void selectDifficulty(String difficulty) throws IllegalArgumentException {
+        this.difficulty = difficulty;
+        //use switch to assign starting money depending on difficulty??
+        //and to adjust other variables of game
+    }
+
+    public void selectCar(Car car) throws IllegalStateException {
+        if (selectedCars.size() >= 3){
+            throw new IllegalStateException("You can only select up to 3 cars.");
+        }
+        selectedCars.add(car);
+    }
+
+//    public GameEnvironment startGame(){
+//        return new GameEnvironment(playerName, seasonLength, difficulty, startingMoney, selectedCars);
+//    }
+    //NEED TO IMPLEMENT GAME ENVIRONMENT FIRST
 }
