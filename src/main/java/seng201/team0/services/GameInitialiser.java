@@ -28,7 +28,7 @@ public class GameInitialiser {
 
     public void selectDifficulty(String difficulty) throws IllegalArgumentException {
         this.difficulty = difficulty;
-        //can later change this to scale other factors of game
+        //can later change this to scale other factors of game. could also convert difficulty to an integer value
         switch (difficulty){
             case "Easy":
                 this.startingMoney = 100;
@@ -78,8 +78,9 @@ public class GameInitialiser {
         return this.selectedCars;
     }
 
-//    public GameEnvironment startGame(){
-//        return new GameEnvironment(playerName, seasonLength, difficulty, startingMoney, selectedCars);
-//    }
+    public GameEnvironment startGame(){
+        int numberOfRaces = seasonLength; //not too sure how many races in season
+        return new GameEnvironment(playerName, seasonLength, difficulty, startingMoney, selectedCars, numberOfRaces);
+    }
     //NEED TO IMPLEMENT GAME ENVIRONMENT FIRST
 }
