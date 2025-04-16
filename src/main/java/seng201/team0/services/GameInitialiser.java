@@ -1,4 +1,6 @@
-package seng201.team0.models;
+package seng201.team0.services;
+
+import seng201.team0.models.Car;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
@@ -26,8 +28,20 @@ public class GameInitialiser {
 
     public void selectDifficulty(String difficulty) throws IllegalArgumentException {
         this.difficulty = difficulty;
-        //use switch to assign starting money depending on difficulty??
-        //and to adjust other variables of game
+        //can later change this to scale other factors of game
+        switch (difficulty){
+            case "Easy":
+                this.startingMoney = 100;
+                break;
+            case "Normal":
+                this.startingMoney = 50;
+                break;
+            case "Hard":
+                this.startingMoney = 20;
+                break;
+            default:
+                throw new IllegalArgumentException("Difficulty must be easy, normal, or hard");
+        }
     }
 
     public void selectCar(Car car) throws IllegalStateException {
@@ -35,6 +49,33 @@ public class GameInitialiser {
             throw new IllegalStateException("You can only select up to 3 cars.");
         }
         selectedCars.add(car);
+    }
+
+    public void selectName(ArrayList<Car> selectedCars, ArrayList<String> selectedNames) {
+        int i = 0;
+        for (Car car : selectedCars){
+            if (selectedNames.get(i) == null){
+                selectedNames.add(i, "Car" + (i+1)); //sets default name for car if empty
+            }
+            car.setName(selectedNames.get(i));
+            i += 1;
+        }
+    }
+
+    public String getPlayerName(){
+        return this.playerName;
+    }
+
+    public int getSeasonLength(){
+        return this.seasonLength;
+    }
+
+    public int getStartingMoney(){
+        return this.startingMoney;
+    }
+
+    public ArrayList<Car> getSelectedCars(){
+        return this.selectedCars;
     }
 
 //    public GameEnvironment startGame(){

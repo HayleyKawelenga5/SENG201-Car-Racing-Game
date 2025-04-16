@@ -6,6 +6,7 @@ public class Car {
     private int reliability; //percentage between 0-100
     private int fuelEconomy;
     private int cost;
+    private String name;
     //private ArrayList<Upgrade> upgrades; NEED TO IMPLEMENT UPGRADE CLASS FIRST
 
     public Car(int speed, int handling, int reliability, int fuelEconomy, int cost) {
@@ -35,6 +36,10 @@ public class Car {
         return cost;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setSpeed(int speed) {
         this.speed = speed;
     }
@@ -53,5 +58,9 @@ public class Car {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
