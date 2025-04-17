@@ -1,66 +1,122 @@
 package seng201.team0.models;
 
+import java.util.Random;
+
+/**
+ * Represents a car in the game with the attributes speed, handling,
+ * reliability, fuel economy, and cost.
+ */
 public class Car {
     private int speed;
     private int handling;
-    private int reliability; //percentage between 0-100
+    private int reliability;
     private int fuelEconomy;
     private int cost;
-    private String name;
-    //private ArrayList<Upgrade> upgrades; NEED TO IMPLEMENT UPGRADE CLASS FIRST
 
+    /**
+     * Constructor to create a Car object with the specified attributes.
+     *
+     * @param speed       The speed of the car (1-10).
+     * @param handling    The handling ability of the car (1-10).
+     * @param reliability The reliability percentage of the car (1-10).
+     * @param fuelEconomy The fuel economy of the car (1-10).
+     * @param cost        The cost of the car.
+     */
     public Car(int speed, int handling, int reliability, int fuelEconomy, int cost) {
         this.speed = speed;
         this.handling = handling;
         this.reliability = reliability;
         this.fuelEconomy = fuelEconomy;
         this.cost = cost;
-}
-    public int getSpeed() {
-        return speed;
     }
 
-    public int getHandling() {
-        return handling;
+    /**
+     * Generates a random car with random stats within the given range.
+     * The cost is calculated based on the sum of the car's attributes.
+     *
+     * @return A new Car object with randomly generated stats.
+     */
+    public static Car generateRandomCar(int minStat, int maxStat) {
+        Random random = new Random();
+
+        int speed = random.nextInt(minStat, maxStat);
+        int handling = random.nextInt(minStat, maxStat);
+        int reliability = random.nextInt(minStat, maxStat);
+        int fuelEconomy = random.nextInt(minStat, maxStat);
+
+        int cost = (speed + handling + reliability + fuelEconomy) * 10;
+
+        return new Car(speed, handling, reliability, fuelEconomy, cost);
     }
 
-    public int getReliability() {
-        return reliability;
-    }
+    /**
+     * Gets the speed of the car.
+     *
+     * @return The speed of the car.
+     */
+    public int getSpeed() { return speed; }
 
-    public int getFuelEconomy() {
-        return fuelEconomy;
-    }
+    /**
+     * Gets the handling of the car.
+     *
+     * @return The handling of the car.
+     */
+    public int getHandling() { return handling; }
 
-    public int getCost() {
-        return cost;
-    }
+    /**
+     * Gets the reliability of the car.
+     *
+     * @return The reliability of the car.
+     */
+    public int getReliability() { return reliability; }
 
-    public String getName() {
-        return name;
-    }
+    /**
+     * Gets the fuel economy of the car.
+     *
+     * @return The fuel economy of the car.
+     */
+    public int getFuelEconomy() { return fuelEconomy; }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
+    /**
+     * Gets the cost of the car.
+     *
+     * @return The cost of the car.
+     */
+    public int getCost() { return cost; }
 
-    public void setHandling(int handling) {
-        this.handling = handling;
-    }
+    /**
+     * Sets the speed of the car.
+     *
+     * @param speed The speed to set.
+     */
+    public void setSpeed(int speed) { this.speed = speed; }
 
-    public void setReliability(int reliability) {
-        this.reliability = reliability;
-    }
+    /**
+     * Sets the handling of the car.
+     *
+     * @param handling The handling to set.
+     */
+    public void setHandling(int handling) { this.handling = handling; }
 
-    public void setFuelEconomy(int fuelEconomy) {
-        this.fuelEconomy = fuelEconomy;
-    }
+    /**
+     * Sets the reliability of the car.
+     *
+     * @param reliability The reliability to set.
+     */
+    public void setReliability(int reliability) { this.reliability = reliability; }
 
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
+    /**
+     * Sets the fuel economy of the car.
+     *
+     * @param fuelEconomy The fuel economy to set.
+     */
+    public void setFuelEconomy(int fuelEconomy) { this.fuelEconomy = fuelEconomy; }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * Sets the cost of the car.
+     *
+     * @param cost The cost to set.
+     */
+    public void setCost(int cost) { this.cost = cost;
     }
 }
