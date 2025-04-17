@@ -29,14 +29,39 @@ public class Upgrade {
         this.fuelEconomyUpgrade = fuelEconomyUpgrade;
     }
 
+    /**
+     * Gets the name of the upgrade.
+     *
+     * @return The name of the upgrade.
+     */
     public String getName() { return name; }
 
+    /**
+     * Gets the speed improvement value of the upgrade.
+     *
+     * @return The value added to speed by this upgrade.
+     */
     public int getSpeedUpgrade() { return speedUpgrade; }
 
+    /**
+     * Gets the handling improvement value of the upgrade.
+     *
+     * @return The value added to handling by this upgrade.
+     */
     public int getHandlingUpgrade() { return handlingUpgrade; }
 
+    /**
+     * Gets the reliability improvement value of the upgrade.
+     *
+     * @return The value added to reliability by this upgrade.
+     */
     public int getReliabilityUpgrade() { return reliabilityUpgrade; }
 
+    /**
+     * Gets the fuel economy improvement value of the upgrade.
+     *
+     * @return The value added to fuel economy by this upgrade.
+     */
     public int getFuelEconomyUpgrade() { return fuelEconomyUpgrade; }
 
     /**
@@ -50,7 +75,7 @@ public class Upgrade {
                 "Turbocharger",
                 "Offroad Tires",
                 "Lightweight Chassis",
-                "Reinforced Suspension",
+                "Air Suspension",
                 "Eco Tuner"
         };
 
@@ -64,21 +89,26 @@ public class Upgrade {
         switch (selectedName) {
             case "Turbocharger":
                 speed = random.nextInt(1, 4);
+                cost = speed * 4;
                 break;
             case "Offroad Tires":
                 handling = random.nextInt(1, 4);
-                reliability = random.nextInt(1, 3);
+                reliability = random.nextInt(1, 4);
+                cost = (handling + reliability) * 4;
                 break;
             case "Lightweight Chassis":
-                speed = random.nextInt(1, 3);
-                fuelEconomy = random.nextInt(1, 3);
+                speed = random.nextInt(1, 4);
+                fuelEconomy = random.nextInt(1, 4);
+                cost = (speed + fuelEconomy) * 4;
                 break;
-            case "Reinforced Suspension":
-                handling = random.nextInt(1, 3);
+            case "Air Suspension":
+                handling = random.nextInt(1, 4);
                 reliability = random.nextInt(1, 4);
+                cost = (handling + reliability) * 4;
                 break;
             case "Eco Tuner":
-                fuelEconomy = random.nextInt(2, 5);
+                fuelEconomy = random.nextInt(1, 4);
+                cost = fuelEconomy * 4;
                 break;
         }
         return new Upgrade(selectedName, speed, handling, reliability, fuelEconomy);

@@ -4,6 +4,9 @@ import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import seng201.team0.models.Car;
+import seng201.team0.services.GameEnvironment;
+
 /**
  * Handles initial game setup, including player name, difficulty, car selection, and season length.
  */
@@ -97,8 +100,8 @@ public class GameInitialiser {
         return cars;
     }
 
-//    public GameEnvironment startGame(){
-//        return new GameEnvironment(playerName, seasonLength, difficulty, startingMoney, selectedCars);
-//    }
-    //NEED TO IMPLEMENT GAME ENVIRONMENT FIRST
+    public GameEnvironment startGame(){
+        return new GameEnvironment(playerName, seasonLength, difficulty, startingMoney, selectedCars);
+    }
+
 }

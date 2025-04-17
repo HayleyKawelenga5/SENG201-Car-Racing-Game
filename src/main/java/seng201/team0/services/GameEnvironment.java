@@ -1,19 +1,35 @@
 package seng201.team0.services;
 
 import seng201.team0.models.Car;
+import seng201.team0.models.Shop;
+import seng201.team0.models.Garage;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the core game environment. Tracks the player state and allows interaction
+ * with the shop, garage, and races.
+ */
 public class GameEnvironment {
     private String playerName;
-    private int money;
+    private int playerMoney;
     private int seasonLength;
     private int racesRemaining;
     private String difficulty;
-    private ArrayList<Car> selectedCars;
-//    private Shop shop; CAN ADD THESE ONCE THESE CLASSES HAVE BEEN CREATED
+    private Car currentCar;
+    private Shop shop;
 //    private Garage garage;
 
+    /**
+     * Constructs a new game environment with the given parameters.
+     *
+     * @param playerName      The name of the player.
+     * @param seasonLength    The total number of races in the season.
+     * @param difficulty      The difficulty level.
+     * @param money           The current amount of money.
+     * @param selectedCars    The current car for the next race.
+     * @param racesRemaining  The number of races remaining.
+     */
     public GameEnvironment(String playerName, int seasonLength, String difficulty, int money, ArrayList<Car> selectedCars, int racesRemaining) {
         this.playerName = playerName;
         this.money = money;
@@ -21,16 +37,33 @@ public class GameEnvironment {
         this.racesRemaining = racesRemaining;
         this.selectedCars = selectedCars;
         this.difficulty = difficulty;
+
+        this.shop = new Shop(money);
     }
 
+    /**
+     * Returns the player's current amount of money.
+     *
+     * @return The player's money.
+     */
     public int viewMoney(){
-        return this.money;
+        return this.playerMoney;
     }
 
+    /**
+     * Returns the total number of races in the season.
+     *
+     * @return The season length.
+     */
     public int viewSeasonLength(){
         return this.seasonLength;
     }
 
+    /**
+     * Returns how many races are left to complete.
+     *
+     * @return Races remaining.
+     */
     public int viewRacesRemaining(){
         return this.racesRemaining;
     }
