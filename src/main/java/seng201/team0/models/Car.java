@@ -1,7 +1,5 @@
 package seng201.team0.models;
 
-import java.util.Random;
-
 /**
  * Represents a car in the game with the attributes speed, handling,
  * reliability, fuel economy, and cost.
@@ -28,25 +26,6 @@ public class Car {
         this.reliability = reliability;
         this.fuelEconomy = fuelEconomy;
         this.cost = cost;
-    }
-
-    /**
-     * Generates a random car with random stats within the given range.
-     * The cost is calculated based on the sum of the car's attributes.
-     *
-     * @return A new Car object with randomly generated stats.
-     */
-    public static Car generateRandomCar(int minStat, int maxStat) {
-        Random random = new Random();
-
-        int speed = random.nextInt(minStat, maxStat);
-        int handling = random.nextInt(minStat, maxStat);
-        int reliability = random.nextInt(minStat, maxStat);
-        int fuelEconomy = random.nextInt(minStat, maxStat);
-
-        int cost = (speed + handling + reliability + fuelEconomy) * 10;
-
-        return new Car(speed, handling, reliability, fuelEconomy, cost);
     }
 
     /**

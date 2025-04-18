@@ -11,6 +11,7 @@ public class Upgrade {
     private int handlingUpgrade;
     private int reliabilityUpgrade;
     private int fuelEconomyUpgrade;
+    private int cost;
 
     /**
      * Constructs a new Upgrade with a name and stat modifications.
@@ -113,5 +114,7 @@ public class Upgrade {
         }
         return new Upgrade(selectedName, speed, handling, reliability, fuelEconomy);
     }
+
+    public int getCost() { return cost; }
 
 }

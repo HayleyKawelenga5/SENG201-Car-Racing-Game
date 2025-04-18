@@ -30,15 +30,15 @@ public class GameEnvironment {
      * @param selectedCars    The current car for the next race.
      * @param racesRemaining  The number of races remaining.
      */
-    public GameEnvironment(String playerName, int seasonLength, String difficulty, int money, ArrayList<Car> selectedCars, int racesRemaining) {
+    public GameEnvironment(String playerName, int seasonLength, String difficulty, int playerMoney, ArrayList<Car> selectedCars, int racesRemaining) {
         this.playerName = playerName;
-        this.money = money;
+        this.playerMoney = playerMoney;
         this.seasonLength = seasonLength;
         this.racesRemaining = racesRemaining;
         this.selectedCars = selectedCars;
         this.difficulty = difficulty;
 
-        this.shop = new Shop(money);
+        this.shop = new Shop(playerMoney);
     }
 
     /**

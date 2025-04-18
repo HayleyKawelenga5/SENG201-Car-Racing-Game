@@ -56,14 +56,12 @@ public class GameInitialiser {
         switch (difficulty) {
             case "EASY":
                 startingMoney = 1000;
-                minStat = 5;
                 break;
             case "HARD":
                 startingMoney = 500;
-                minStat = 1;
                 break;
             default:
-                throw new IllegalArgumentException('Invalid difficulty. Please select either "EASY" or "HARD".');
+                throw new IllegalArgumentException("Invalid difficulty. Please select either EASY or HARD.");
         }
         this.difficulty = difficulty;
     }
