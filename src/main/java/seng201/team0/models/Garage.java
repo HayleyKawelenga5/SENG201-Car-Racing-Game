@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class Garage {
     private Car currentCar;
-    private List<Car> reserveCars;
-    private List<Upgrade> availableUpgrades;
+    private ArrayList<Car> reserveCars;
+    private ArrayList<Upgrade> availableUpgrades;
 
     /**
      * Constructs a Garage with a selected current car,
@@ -19,7 +19,7 @@ public class Garage {
      * @param reserveCars      The list of all backup cars.
      * @param availableUpgrades The list of upgrades available to be installed.
      */
-    public Garage(Car currentCar, List<Car> reserveCars, List<Upgrade> availableUpgrades) {
+    public Garage(Car currentCar, ArrayList<Car> reserveCars, ArrayList<Upgrade> availableUpgrades) {
         this.currentCar = currentCar;
         this.reserveCars = reserveCars;
         this.availableUpgrades = availableUpgrades;
@@ -39,7 +39,7 @@ public class Garage {
      *
      * @return List of reserve cars.
      */
-    public List<Car> getReserveCars() {
+    public ArrayList<Car> getReserveCars() {
         return reserveCars;
     }
 
@@ -48,7 +48,7 @@ public class Garage {
      *
      * @return List of available upgrades.
      */
-    public List<Upgrade> getAvailableUpgrades() {
+    public ArrayList<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
 

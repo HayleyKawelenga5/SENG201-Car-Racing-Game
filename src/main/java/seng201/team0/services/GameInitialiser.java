@@ -1,4 +1,4 @@
-package seng201.team0.models;
+package seng201.team0.services;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;

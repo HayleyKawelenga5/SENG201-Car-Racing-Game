@@ -15,6 +15,7 @@ public class GameEnvironment {
     private int playerMoney;
     private int seasonLength;
     private int racesRemaining;
+    private int money;
     private String difficulty;
     private Car currentCar;
     private Shop shop;

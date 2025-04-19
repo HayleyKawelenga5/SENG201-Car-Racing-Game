@@ -7,17 +7,12 @@ import java.util.Random;
 
 public class CarService {
 
-    private List<Car> availableCars = new ArrayList<>();
-    private List<Car> selectedCars = new ArrayList<>();
+    private ArrayList<Car> availableCars = new ArrayList<>();
+    private ArrayList<Car> selectedCars = new ArrayList<>();
     private int money;
 
-    public CarManager(String difficulty) {
-        if (difficulty.equals("EASY")) {
-            this.money = 1000;
-        } if (difficulty.equals("HARD")) {
-            this.money = 500;
-        }
-        generateCars(difficulty);
+    public CarService(String difficulty) {
+        generateRandomCar();
     }
 
     /**
@@ -26,7 +21,7 @@ public class CarService {
      *
      * @return A new Car object with randomly generated stats.
      */
-    public void Car generateRandomCar() {
+    public void generateRandomCar() {
         Random random = new Random();
 
         for (int i = 0; i < 5; i++) {
