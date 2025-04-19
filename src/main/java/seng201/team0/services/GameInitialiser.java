@@ -2,22 +2,21 @@ package seng201.team0.services;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 import seng201.team0.models.Car;
-import seng201.team0.services.GameEnvironment;
+import seng201.team0.services.CarService;
 
 /**
- * Handles initial game setup, including player name, difficulty, car selection, and season length.
+ * Handles game initialisation, including player name, difficulty, car selection, and season length.
  */
 public class GameInitialiser {
     private String playerName;
     private String difficulty;
     private int seasonLength;
-    private int startingMoney;
-    private int minStat;
-    private int maxStat = 11;
-    private ArrayList<Car> selectedCars = new ArrayList<>();
+    private int money;
+    private CarService carService = new CarService();
+    private List<Car> selectedCars = new ArrayList<>();
 
     /**
      * Validates and sets the player's name.
@@ -52,13 +51,12 @@ public class GameInitialiser {
      * @throws IllegalArgumentException if difficulty is invalid.
      */
     public void selectDifficulty(String difficulty) {
-        difficulty = difficulty.toUpperCase();
         switch (difficulty) {
             case "EASY":
-                startingMoney = 1000;
+                this.money = 1000;
                 break;
             case "HARD":
-                startingMoney = 500;
+                this.money = 500;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid difficulty. Please select either EASY or HARD.");
@@ -66,40 +64,36 @@ public class GameInitialiser {
         this.difficulty = difficulty;
     }
 
-    /**
-     * Adds a car to the selected cars list.
-     *
-     * @param car The car to add.
-     * @throws IllegalStateException if more than 3 cars are selected.
-     * @throws IllegalArgumentException if insufficient money to buy car.
-     */
-    public void selectCar(Car car) throws IllegalStateException, IllegalArgumentException {
-        if (selectedCars.size() >= 3) {
-            throw new IllegalStateException("You can only select up to 3 cars.");
+    public int getMoney() { return money; }
+
+    public void setMoney(int money) { this.money = money; }
+
+    public List<Car> getAvailableCars() {
+        if (carService.getAvailableCars().isEmpty()) {
+            carService.generateRandomCars();
         }
-        if (car.getCost() > startingMoney) {
-            throw new IllegalArgumentException("You do not have enough money to buy this car.");
-        }
-        selectedCars.add(car);
-        startingMoney -= car.getCost();
+        return carService.getAvailableCars();
     }
 
-    /**
-     * Generates a list of random car options based on difficulty.
-     *
-     * @param amount Number of cars to generate.
-     * @return A list of random Car objects.
-     */
-    public ArrayList<Car> generateCarOptions(int amount) {
-        ArrayList<Car> cars = new ArrayList();
-        for (int i = 0; i < amount; i++) {
-            cars.add(Car.generateRandomCar(minStat, maxStat));
+    public List<Car> getSelectedCars() { return selectedCars; }
+
+    public boolean addCar(Car car) {
+        if (!selectedCars.contains(car) && selectedCars.size() < 3) {
+            if (money >= car.getCost()) {
+                selectedCars.add(car);
+                money -= car.getCost();
+                return true;
+            } else {
+                return false;
+            }
         }
-        return cars;
+        return false;
     }
 
-    public GameEnvironment startGame(){
-        return new GameEnvironment(playerName, seasonLength, difficulty, startingMoney, selectedCars);
+    public void deleteCar(Car car) {
+        if (selectedCars.contains(car)) {
+            selectedCars.remove(car);
+            money += car.getCost();
+        }
     }
-
 }
