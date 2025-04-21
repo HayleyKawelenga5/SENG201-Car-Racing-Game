@@ -15,11 +15,13 @@ public class GameEnvironment {
     private int playerMoney;
     private int seasonLength;
     private int racesRemaining;
-    private int money;
+    private ArrayList<Car> selectedCars;
     private String difficulty;
     private Car currentCar;
     private Shop shop;
-//    private Garage garage;
+    private Garage garage;
+    private CarService carService;
+    private UpgradeService upgradeService;
 
     /**
      * Constructs a new game environment with the given parameters.
@@ -27,7 +29,7 @@ public class GameEnvironment {
      * @param playerName      The name of the player.
      * @param seasonLength    The total number of races in the season.
      * @param difficulty      The difficulty level.
-     * @param money           The current amount of money.
+     * @param playerMoney           The current amount of money.
      * @param selectedCars    The current car for the next race.
      * @param racesRemaining  The number of races remaining.
      */
@@ -39,7 +41,9 @@ public class GameEnvironment {
         this.selectedCars = selectedCars;
         this.difficulty = difficulty;
 
-        this.shop = new Shop(playerMoney);
+        this.shop = new Shop(playerMoney, carService, upgradeService);
+        //this.garage = new Garage(currentCar, reserveCars, availableUpgrades);
+        //IMPLEMENT LATER
     }
 
     /**

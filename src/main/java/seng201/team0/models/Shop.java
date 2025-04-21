@@ -5,6 +5,8 @@ import java.util.List;
 
 import seng201.team0.models.Car;
 import seng201.team0.models.Upgrade;
+import seng201.team0.services.CarService;
+import seng201.team0.services.UpgradeService;
 
 /**
  * Represents a shop where the player can buy and sell cars and upgrades.
@@ -15,6 +17,8 @@ public class Shop {
     private List<Upgrade> availableUpgrades = new ArrayList<>();
     private List<Car> playerCars = new ArrayList<>();
     private List<Upgrade> playerUpgrades = new ArrayList<>();
+    private CarService carService;
+    private UpgradeService upgradeService;
 
     private int playerMoney;
     private final int MAX_CARS = 5;
@@ -24,8 +28,10 @@ public class Shop {
      *
      * @param startingMoney The amount of money the player starts with.
      */
-    public Shop(int startingMoney) {
+    public Shop(int startingMoney, CarService carService, UpgradeService upgradeService) {
         this.playerMoney = startingMoney;
+        this.carService = carService;
+        this.upgradeService = upgradeService;
         generateInventory();
     }
 
@@ -38,8 +44,8 @@ public class Shop {
         availableUpgrades.clear();
 
         for (int i = 0; i < 5; i++) {
-            availableCars.add(Car.generateRandomCar(3, 10));
-            availableUpgrades.add(Upgrade.generateRandomUpgrade());
+            availableCars.add(carService.generateRandomCars());
+            availableUpgrades.add(upgradeService.generateRandomUpgrade());
         }
     }
 
