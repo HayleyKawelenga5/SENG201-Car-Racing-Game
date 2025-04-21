@@ -1,15 +1,11 @@
 package seng201.team0.gui;
 
+import javafx.scene.control.*;
 import seng201.team0.models.Car;
 import seng201.team0.services.CarService;
 import seng201.team0.services.GameInitialiser;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
@@ -19,7 +15,7 @@ public class GameInitialiserController {
 
     @FXML private TextField playerNameTextField;
     @FXML private Slider seasonLengthSlider;
-    @FXML private ComboBox<String> difficultyComboBox;
+    @FXML private ChoiceBox<String> difficultyChoiceBox;
 
     @FXML private Button car1Button;
     @FXML private Button car2Button;
@@ -51,7 +47,16 @@ public class GameInitialiserController {
     @FXML
     public void initialize() {
 
-        difficultyComboBox.getItems().addAll("EASY", "HARD");
+        difficultyChoiceBox.getItems().addAll("EASY", "HARD");
+
+        seasonLengthSlider.setMin(5);
+        seasonLengthSlider.setMax(15);
+        seasonLengthSlider.setMajorTickUnit(1);
+        seasonLengthSlider.setSnapToTicks(true);
+        seasonLengthSlider.setShowTickLabels(true);
+        seasonLengthSlider.setShowTickMarks(true);
+        seasonLengthSlider.setValue(5);
+        seasonLengthSlider.valueProperty().addListener((observable, oldValue, newValue) -> {seasonLengthSlider.setValue(newValue.intValue());});
 
         List<Button> carButtons = List.of(car1Button, car2Button, car3Button, car4Button, car5Button);
         List<Button> selectedCarButtons = List.of(selectedCar1Button, selectedCar2Button, selectedCar3Button);
@@ -70,6 +75,8 @@ public class GameInitialiserController {
 
         updateSelectedCarButtons();
         moneyLabel.setText("Money: $" + game.getMoney());
+
+
     }
 
     private void updateStats(Car car) {
@@ -137,6 +144,39 @@ public class GameInitialiserController {
         }
     }
 
+    @FXML
+    private void onStartGameButtonClicked(){
+        String playerName = playerNameTextField.getText();
+        int seasonLength = (int) seasonLengthSlider.getValue();
+        String difficulty = difficultyChoiceBox.getValue();
+
+        try {
+            game.selectName(playerName);
+            game.selectSeasonLength(seasonLength);
+            game.selectDifficulty(difficulty);
+
+            if (game.getSelectedCars().size() != 3){
+                showAlert("Car Selection Error", "Please select exactly 3 cars before starting the game.");
+                return;
+            }
+            //proceed to next screen
+        } catch (InvalidNameException e){
+            showAlert("Name Error", e.getMessage());
+        } catch (IllegalArgumentException e){
+            showAlert("Input Error", e.getMessage());
+        } catch (Exception e){
+            showAlert("Unexpected Error", "An unexpected error occurred: " + e.getMessage());
+        }
+
+        }
+
+    private void showAlert(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     public String getFxmlFile() {
         return "/fxml/game_initialiser_screen.fxml";
