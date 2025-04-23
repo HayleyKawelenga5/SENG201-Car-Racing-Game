@@ -77,6 +77,8 @@ public class GameInitialiser {
 
     public List<Car> getSelectedCars() { return selectedCars; }
 
+    public void setSelectedCars(List<Car> selectedCars) { this.selectedCars = selectedCars; }
+
     public boolean addCar(Car car) {
         if (!selectedCars.contains(car) && selectedCars.size() < 3) {
             if (money >= car.getCost()) {

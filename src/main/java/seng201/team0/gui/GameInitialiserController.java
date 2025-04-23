@@ -45,9 +45,22 @@ public class GameInitialiserController {
     private int selectedCarIndex = -1;
 
     @FXML
-    public void initialize() {
-
+    public void initialise() {
+        difficultyChoiceBox.getItems().clear();
         difficultyChoiceBox.getItems().addAll("EASY", "HARD");
+
+        difficultyChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    game.selectDifficulty(newValue);
+                    moneyLabel.setText("Money: $" + game.getMoney());
+                } catch (IllegalArgumentException e) {
+                    showAlert("Difficulty Error", e.getMessage());
+
+                }
+            }
+
+        });
 
         seasonLengthSlider.setMin(5);
         seasonLengthSlider.setMax(15);
@@ -63,6 +76,8 @@ public class GameInitialiserController {
 
         carOptions = game.getAvailableCars();
 
+        selectButton.setOnAction(event -> onSelectButtonClicked());
+
         for (int i = 0; i < carButtons.size(); i++) {
             int index = i;
             carButtons.get(i).setOnAction(event -> onCarButtonClicked(index));
@@ -72,6 +87,14 @@ public class GameInitialiserController {
             int index = i;
             selectedCarButtons.get(i).setOnAction(event -> onSelectedCarButtonClicked(index));
         }
+
+        startGameButton.setOnAction(event -> {
+            if (selectedCars.size() < 1){
+                showAlert("Not Enough Cars", "Please select at least one car to start.");
+                return;
+            }
+            game.setSelectedCars(selectedCars);
+        });
 
         updateSelectedCarButtons();
         moneyLabel.setText("Money: $" + game.getMoney());
@@ -100,7 +123,7 @@ public class GameInitialiserController {
         for (int i = 0; i < selectedCarButtons.size(); i++) {
             if (i < selectedCars.size()) {
                 Car car = selectedCars.get(i);
-                selectedCarButtons.get(i).setText("Car " + (selectedCarIndex + 1));
+                selectedCarButtons.get(i).setText(car.getName());
             } else {
                 selectedCarButtons.get(i).setText("");
             }
@@ -127,6 +150,34 @@ public class GameInitialiserController {
 
     @FXML
     private void onSelectButtonClicked() {
+        if (selectedCar == null) {
+            showAlert("No Car Selected", "Please select a car first.");
+            return;
+        }
+
+        if (selectedCars.contains(selectedCar)){
+            showAlert("Car Already Selected", "You've already selected this car.");
+            return;
+        }
+
+        if (selectedCars.size()>=3){
+            showAlert("Selection Limit", "You can only select up to 3 cars.");
+            return;
+        }
+
+        TextInputDialog nameDialog = new TextInputDialog();
+        nameDialog.setTitle("Name Your Car");
+        nameDialog.setHeaderText("Optional: Give your car a name! or Press OK");
+        nameDialog.setContentText("Car name:");
+
+        nameDialog.showAndWait().ifPresent(name -> {
+            if (!name.isBlank()){
+                selectedCar.setName(name);
+            }
+        });
+
+
+
         if (selectedCar != null && game.addCar(selectedCar)) {
             selectedCars = game.getSelectedCars();
             updateSelectedCarButtons();
@@ -136,10 +187,23 @@ public class GameInitialiserController {
 
     @FXML
     private void onDeleteButtonClicked() {
+        if (selectedCar == null){
+            showAlert("No Car Selected", "Please select a car to delete.");
+            return;
+        }
+
+        if (!selectedCars.contains(selectedCar)){
+            showAlert("Invalid Selection", "The selected car is not in your chosen list.");
+            return;
+        }
+
         if (selectedCar != null) {
             game.deleteCar(selectedCar);
+            selectedCar = null;
+            selectedCarIndex = -1;
             selectedCars = game.getSelectedCars();
             updateSelectedCarButtons();
+            updateStats(null);
             moneyLabel.setText("Money: $" + game.getMoney());
         }
     }

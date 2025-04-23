@@ -21,11 +21,11 @@ public class MainWindow extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/game_initialiser_screen.fxml"));
         Parent root = baseLoader.load();
 
-        MainController baseController = baseLoader.getController();
-        baseController.init(primaryStage);
+        GameInitialiserController baseController = baseLoader.getController();
+        baseController.initialise();
 
         primaryStage.setTitle("SENG201 Example App");
         Scene scene = new Scene(root, 600, 400);
