@@ -67,6 +67,11 @@ public class Upgrade {
      */
     public int getFuelEconomyUpgrade() { return fuelEconomyUpgrade; }
 
+    /**
+     * Gets the cost of the upgrade.
+     *
+     * @return The cost of this upgrade.
+     */
     public int getCost() { return cost; }
 
 }

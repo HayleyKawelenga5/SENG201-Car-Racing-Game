@@ -64,10 +64,27 @@ public class GameInitialiser {
         this.difficulty = difficulty;
     }
 
+    /**
+     * Returns the player's current amount of money.
+     *
+     * @return The amount of money the player has.
+     */
     public int getMoney() { return money; }
 
+    /**
+     * Sets the player's money to the specified amount.
+     *
+     * @param money The new amount of money to set.
+     */
     public void setMoney(int money) { this.money = money; }
 
+
+    /**
+     * Returns a list of available cars. If no cars have been generated yet,
+     * this method will generate them first.
+     *
+     * @return A list of available Car objects.
+     */
     public List<Car> getAvailableCars() {
         if (carService.getAvailableCars().isEmpty()) {
             carService.generateRandomCars();
@@ -75,10 +92,23 @@ public class GameInitialiser {
         return carService.getAvailableCars();
     }
 
+    /**
+     * Returns the list of cars currently selected by the player.
+     *
+     * @return A list of selected Car objects.
+     */
     public List<Car> getSelectedCars() { return selectedCars; }
 
     public void setSelectedCars(List<Car> selectedCars) { this.selectedCars = selectedCars; }
 
+    /**
+     * Attempts to add a car to the player's selection.
+     * A car can only be added if the player does not already have it,
+     * has fewer than 3 selected cars, and has enough money to purchase it.
+     *
+     * @param car The {@link Car} to add to the selection.
+     * @return true if the car was successfully added, false otherwise.
+     */
     public boolean addCar(Car car) {
         if (!selectedCars.contains(car) && selectedCars.size() < 3) {
             if (money >= car.getCost()) {
@@ -92,6 +122,12 @@ public class GameInitialiser {
         return false;
     }
 
+    /**
+     * Removes a car from the player's selection and refunds its cost.
+     * If the car is not in the selected list, this method does nothing.
+     *
+     * @param car The Car to remove from the selection.
+     */
     public void deleteCar(Car car) {
         if (selectedCars.contains(car)) {
             selectedCars.remove(car);

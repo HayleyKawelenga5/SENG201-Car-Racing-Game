@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Service class for managing and generating car objects.
+ * Provides functionality to generate a list of random cars with attributes,
+ * and to retrieve the current list of available cars.
+ */
 public class CarService {
 
     private List<Car> availableCars = new ArrayList<>();
@@ -30,6 +35,11 @@ public class CarService {
         return availableCars;
     }
 
+    /**
+     * Returns the list of available Car objects.
+     *
+     * @return A list of available cars.
+     */
     public List<Car> getAvailableCars() { return availableCars; }
 
 }
