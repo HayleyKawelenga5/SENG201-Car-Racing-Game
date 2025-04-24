@@ -170,10 +170,15 @@ public class GameInitialiserController {
         nameDialog.setHeaderText("Optional: Give your car a name! or Press OK");
         nameDialog.setContentText("Car name:");
 
-        nameDialog.showAndWait().ifPresent(name -> {
-            if (!name.isBlank()){
+        nameDialog.showAndWait().ifPresentOrElse(name -> {
+            if (!name.isBlank()) {
                 selectedCar.setName(name);
+            } else {
+                selectedCar.setName("Car " + (selectedCarIndex + 1));
             }
+        }, () -> {
+            selectedCar.setName("Car" + (selectedCarIndex+1));
+
         });
 
 
@@ -199,9 +204,7 @@ public class GameInitialiserController {
 
         if (selectedCar != null) {
             game.deleteCar(selectedCar);
-            selectedCar = null;
-            selectedCarIndex = -1;
-            selectedCars = game.getSelectedCars();
+            selectedCars.remove(selectedCar);
             updateSelectedCarButtons();
             updateStats(null);
             moneyLabel.setText("Money: $" + game.getMoney());
