@@ -58,7 +58,7 @@ public class GameInitialiserController {
                     updateSelectedCarButtons();
                     moneyLabel.setText("Money: $" + game.getMoney());
                 } catch (IllegalArgumentException e) {
-                    showAlert("Difficulty selection error", e.getMessage());
+                    showAlert("Difficulty Error", e.getMessage());
                 }
             }
         });
@@ -179,10 +179,7 @@ public class GameInitialiserController {
             }
         }, () -> {
             selectedCar.setName("Car" + (selectedCarIndex+1));
-
         });
-
-
 
         if (selectedCar != null && game.addCar(selectedCar)) {
             selectedCars = game.getSelectedCars();
