@@ -8,7 +8,7 @@ import seng201.team0.models.Car;
 import seng201.team0.services.CarService;
 
 /**
- * Handles game initialisation, including player name, difficulty, car selection, and season length.
+ * Handles game initialisation, including player name, difficulty, money, car selection, and season length.
  */
 public class GameInitialiser {
     private String playerName;
@@ -99,6 +99,11 @@ public class GameInitialiser {
      */
     public List<Car> getSelectedCars() { return selectedCars; }
 
+    /**
+     * Sets the list of cars selected by the player.
+     *
+     * @param selectedCars The new list of selected Car objects.
+     */
     public void setSelectedCars(List<Car> selectedCars) { this.selectedCars = selectedCars; }
 
     /**

@@ -53,13 +53,14 @@ public class GameInitialiserController {
             if (newValue != null) {
                 try {
                     game.selectDifficulty(newValue);
+                    selectedCars.clear();
+                    game.setSelectedCars(selectedCars);
+                    updateSelectedCarButtons();
                     moneyLabel.setText("Money: $" + game.getMoney());
                 } catch (IllegalArgumentException e) {
-                    showAlert("Difficulty Error", e.getMessage());
-
+                    showAlert("Difficulty selection error", e.getMessage());
                 }
             }
-
         });
 
         seasonLengthSlider.setMin(5);
@@ -99,7 +100,6 @@ public class GameInitialiserController {
 
         updateSelectedCarButtons();
         moneyLabel.setText("Money: $" + game.getMoney());
-
 
     }
 
@@ -245,14 +245,4 @@ public class GameInitialiserController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    public String getFxmlFile() {
-        return "/fxml/game_initialiser_screen.fxml";
-    }
-
-
-    public String getTitle() {
-        return "Game Initialiser";
-    }
-
 }
