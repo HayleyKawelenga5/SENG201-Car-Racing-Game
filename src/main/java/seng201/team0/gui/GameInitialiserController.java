@@ -77,6 +77,7 @@ public class GameInitialiserController {
         carOptions = game.getAvailableCars();
 
         selectButton.setOnAction(event -> onSelectButtonClicked());
+        deleteButton.setOnAction(event -> onDeleteButtonClicked());
 
         for (int i = 0; i < carButtons.size(); i++) {
             int index = i;

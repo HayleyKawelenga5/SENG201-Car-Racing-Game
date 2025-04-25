@@ -26,7 +26,7 @@ public class GameInitialiser {
      */
     public void selectName(String name) throws InvalidNameException {
         if (name.length() < 3 || name.length() > 15 || !name.matches("[a-zA-Z0-9 ]+")){
-            throw new InvalidNameException("Player name must be 3-15 characters and contain no special characters.");
+            throw new InvalidNameException("Player name must be between 3 and 15 characters and contain no special characters.");
         }
         this.playerName = name;
     }
@@ -106,7 +106,7 @@ public class GameInitialiser {
      * A car can only be added if the player does not already have it,
      * has fewer than 3 selected cars, and has enough money to purchase it.
      *
-     * @param car The {@link Car} to add to the selection.
+     * @param car The Car to add to the selection.
      * @return true if the car was successfully added, false otherwise.
      */
     public boolean addCar(Car car) {
