@@ -148,7 +148,11 @@ public class Car {
             return false;
         }
         Car car = (Car) obj;
-        return id.equals(car.id);
+        return speed == car.speed &&
+                handling == car.handling &&
+                reliability == car.reliability &&
+                fuelEconomy == car.fuelEconomy &&
+                cost == car.cost;
     }
 
     /**

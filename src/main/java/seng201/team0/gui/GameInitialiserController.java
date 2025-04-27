@@ -1,13 +1,19 @@
 package seng201.team0.gui;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import seng201.team0.models.Car;
 import seng201.team0.services.CarService;
 import seng201.team0.services.GameInitialiser;
+import javafx.stage.Stage;
 
 import javafx.fxml.FXML;
 
 import javax.naming.InvalidNameException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +121,7 @@ public class GameInitialiserController {
             handlingLabel.setText("Handling: " + car.getHandling());
             reliabilityLabel.setText("Reliability: " + car.getReliability());
             fuelEconomyLabel.setText("Fuel Economy: " + car.getFuelEconomy());
-            costLabel.setText("Cost: " + car.getCost());
+            costLabel.setText("Cost: $" + car.getCost());
         }
     }
 
@@ -151,6 +157,12 @@ public class GameInitialiserController {
 
     @FXML
     private void onSelectButtonClicked() {
+        boolean difficultySelected = false;
+
+        if (difficultyChoiceBox.getValue() == null){
+            showAlert("Select Difficulty", "Please select a difficulty.");
+        } else {difficultySelected = true;}
+
         if (selectedCar == null) {
             showAlert("No Car Selected", "Please select a car first.");
             return;
@@ -165,7 +177,7 @@ public class GameInitialiserController {
             showAlert("Selection Limit", "You can only select up to 3 cars.");
             return;
         }
-
+        if (difficultySelected){
         TextInputDialog nameDialog = new TextInputDialog();
         nameDialog.setTitle("Name Your Car");
         nameDialog.setHeaderText("Optional: Give your car a name! or Press OK");
@@ -186,7 +198,7 @@ public class GameInitialiserController {
             updateSelectedCarButtons();
             moneyLabel.setText("Money: $" + game.getMoney());
         }
-    }
+    }}
 
     @FXML
     private void onDeleteButtonClicked() {
@@ -224,7 +236,7 @@ public class GameInitialiserController {
                 showAlert("Car Selection Error", "Please select exactly 3 cars before starting the game.");
                 return;
             }
-            //proceed to next screen
+            nextScreen();
         } catch (InvalidNameException e){
             showAlert("Name Error", e.getMessage());
         } catch (IllegalArgumentException e){
@@ -241,5 +253,22 @@ public class GameInitialiserController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void nextScreen(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/seng201/team0/resources/main_screen.fxml"));
+            Parent root = loader.load();
+
+            MainScreenController controller = loader.getController();
+            controller.setGame(game);
+
+            Stage stage = (Stage) difficultyChoiceBox.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
