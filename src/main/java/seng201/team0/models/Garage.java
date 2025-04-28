@@ -25,32 +25,16 @@ public class Garage {
         this.availableUpgrades = availableUpgrades;
     }
 
-    /**
-     * Returns the car selected for the next race.
-     *
-     * @return The current car.
-     */
     public Car getCurrentCar() {
         return currentCar;
     }
 
-    /**
-     * Returns a list of the player's reserve cars.
-     *
-     * @return List of reserve cars.
-     */
     public ArrayList<Car> getReserveCars() {
         return reserveCars;
     }
 
-    /**
-     * Returns the list of uninstalled upgrades.
-     *
-     * @return List of available upgrades.
-     */
     public ArrayList<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
-
 
 }

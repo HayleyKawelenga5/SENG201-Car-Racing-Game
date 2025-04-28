@@ -64,20 +64,9 @@ public class GameInitialiser {
         this.difficulty = difficulty;
     }
 
-    /**
-     * Returns the player's current amount of money.
-     *
-     * @return The amount of money the player has.
-     */
     public int getMoney() { return money; }
 
-    /**
-     * Sets the player's money to the specified amount.
-     *
-     * @param money The new amount of money to set.
-     */
     public void setMoney(int money) { this.money = money; }
-
 
     /**
      * Returns a list of available cars. If no cars have been generated yet,
@@ -92,18 +81,8 @@ public class GameInitialiser {
         return carService.getAvailableCars();
     }
 
-    /**
-     * Returns the list of cars currently selected by the player.
-     *
-     * @return A list of selected Car objects.
-     */
     public List<Car> getSelectedCars() { return selectedCars; }
 
-    /**
-     * Sets the list of cars selected by the player.
-     *
-     * @param selectedCars The new list of selected Car objects.
-     */
     public void setSelectedCars(List<Car> selectedCars) { this.selectedCars = selectedCars; }
 
     /**
@@ -139,4 +118,5 @@ public class GameInitialiser {
             money += car.getCost();
         }
     }
+
 }

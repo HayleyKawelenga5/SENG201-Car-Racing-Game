@@ -20,16 +20,16 @@ public class Shop {
     private CarService carService;
     private UpgradeService upgradeService;
 
-    private int playerMoney;
+    private int money;
     private final int MAX_CARS = 5;
 
     /**
-     * Creates a new Shop instance with a starting amount of money and generates an initial inventory.
+     * Creates a new Shop instance and generates an initial inventory.
      *
-     * @param startingMoney The amount of money the player starts with.
+     * @param money The amount of money the player has.
      */
-    public Shop(int startingMoney, CarService carService, UpgradeService upgradeService) {
-        this.playerMoney = startingMoney;
+    public Shop(int money, CarService carService, UpgradeService upgradeService) {
+        this.money = money;
         this.carService = carService;
         this.upgradeService = upgradeService;
         generateInventory();
@@ -42,58 +42,30 @@ public class Shop {
     private void generateInventory() {
         availableCars.clear();
         availableUpgrades.clear();
-
-        for (int i = 0; i < 5; i++) {
-            //availableCars.add(carService.generateRandomCars());
+        for (int i = 0; i < 3; i++) {
+            availableCars.add(carService.generateRandomCars());
             availableUpgrades.add(upgradeService.generateRandomUpgrade());
         }
     }
 
-    /**
-     * Returns the player's current amount of money.
-     *
-     * @return The player's money.
-     */
-    public int getPlayerMoney() {
-        return playerMoney;
+    public int getMoney() {
+        return money;
     }
 
-    /**
-     * Gets the list of cars currently available in the shop.
-     *
-     * @return A list of available cars.
-     */
     public List<Car> getAvailableCars() {
         return availableCars;
     }
 
-    /**
-     * Gets the list of upgrades currently available in the shop.
-     *
-     * @return A list of available upgrades.
-     */
     public List<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
- //NEED TO CHANGE THIS TO ALSO INCLUDE STATS
-    /**
-     * Gets the list of cars currently owned by the player.
-     *
-     * @return A list of the player's cars.
-     */
+
     public List<Car> getPlayerCars() {
         return playerCars;
     }
 
-    /**
-     * Gets the list of upgrades currently owned by the player.
-     *
-     * @return A list of the player's upgrades.
-     */
     public List<Upgrade> getPlayerUpgrades() {
         return playerUpgrades;
     }
-
-
 
 }

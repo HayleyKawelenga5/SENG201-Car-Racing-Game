@@ -5,8 +5,8 @@ import seng201.team0.models.Upgrade;
 import java.util.ArrayList;
 
 public class GarageService {
-    private ArrayList<Car> reserveCars;
     private Car currentCar;
+    private ArrayList<Car> reserveCars;
     private ArrayList<Upgrade> availableUpgrades;
 
     /**

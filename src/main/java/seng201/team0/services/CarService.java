@@ -35,11 +35,6 @@ public class CarService {
         return availableCars;
     }
 
-    /**
-     * Returns the list of available Car objects.
-     *
-     * @return A list of available cars.
-     */
     public List<Car> getAvailableCars() { return availableCars; }
 
 }

@@ -21,7 +21,7 @@ public class UpgradeService {
                 "Eco Tuner"
         };
 
-        String selectedName = upgradeNames[random.nextInt(upgradeNames.length)];
+        String selectedUpgrade = upgradeNames[random.nextInt(upgradeNames.length)];
 
         int speed = 0;
         int handling = 0;
@@ -29,7 +29,7 @@ public class UpgradeService {
         int fuelEconomy = 0;
         int cost = 0;
 
-        switch (selectedName) {
+        switch (selectedUpgrade) {
             case "Turbocharger":
                 speed = random.nextInt(1, 4);
                 cost = speed * 4;
@@ -54,8 +54,7 @@ public class UpgradeService {
                 cost = fuelEconomy * 4;
                 break;
         }
-        return new Upgrade(selectedName, speed, handling, reliability, fuelEconomy, cost);
+        return new Upgrade(selectedUpgrade, speed, handling, reliability, fuelEconomy, cost);
     }
-
 
 }

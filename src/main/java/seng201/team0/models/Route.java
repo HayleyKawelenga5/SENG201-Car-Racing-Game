@@ -1,7 +1,15 @@
-package seng201.team0.models
+package seng201.team0.models;
 
+/**
+ * Represents the type of a race route.
+ * A route can be flat, hilly, off-road, or windy, which influences car performance during a race.
+ */
 public enum RouteType { FLAT, HILLY, OFFROAD, WINDY }
 
+/**
+ * Represents a route that can be taken during a race.
+ * Each route has specific characteristics that affect the race such as distance, number of fuel stops, difficulty, and type.
+ */
 public class Route {
 
     private String description;
@@ -10,6 +18,14 @@ public class Route {
     private int difficultyMultiplier;
     private RouteType type;
 
+    /**
+     * Constructs a new Route object with the given parameters.
+     *
+     * @param description           a textual description of the route
+     * @param distance              the distance of the route in kilometers
+     * @param fuelStops             the number of fuel stops available along the route
+     * @param difficultyMultiplier  a multiplier that adjusts the race difficulty
+     */
     public Route(String description, int distance, int fuelStops, int difficultyMultiplier) {
         this.description = description;
         this.distance = distance;

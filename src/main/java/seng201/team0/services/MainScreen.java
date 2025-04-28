@@ -10,7 +10,8 @@ import java.util.ArrayList;
  * Represents the core game environment. Tracks the player state and allows interaction
  * with the shop, garage, and races.
  */
-public class GameEnvironment {
+public class MainScreen {
+
     private String playerName;
     private int playerMoney;
     private int seasonLength;
@@ -41,35 +42,20 @@ public class GameEnvironment {
         this.selectedCars = selectedCars;
         this.difficulty = difficulty;
 
-        this.shop = new Shop(playerMoney, carService, upgradeService);
+        //this.shop = new Shop(playerMoney, carService, upgradeService);
         //this.garage = new Garage(currentCar, reserveCars, availableUpgrades);
         //IMPLEMENT LATER
     }
 
-    /**
-     * Returns the player's current amount of money.
-     *
-     * @return The player's money.
-     */
-    public int viewMoney(){
+    public int getMoney(){
         return this.playerMoney;
     }
 
-    /**
-     * Returns the total number of races in the season.
-     *
-     * @return The season length.
-     */
-    public int viewSeasonLength(){
+    public int getSeasonLength(){
         return this.seasonLength;
     }
 
-    /**
-     * Returns how many races are left to complete.
-     *
-     * @return Races remaining.
-     */
-    public int viewRacesRemaining(){
+    public int getRacesRemaining(){
         return this.racesRemaining;
     }
 

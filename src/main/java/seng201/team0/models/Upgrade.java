@@ -32,46 +32,16 @@ public class Upgrade {
         this.cost = cost;
     }
 
-    /**
-     * Gets the name of the upgrade.
-     *
-     * @return The name of the upgrade.
-     */
     public String getName() { return name; }
 
-    /**
-     * Gets the speed improvement value of the upgrade.
-     *
-     * @return The value added to speed by this upgrade.
-     */
     public int getSpeedUpgrade() { return speedUpgrade; }
 
-    /**
-     * Gets the handling improvement value of the upgrade.
-     *
-     * @return The value added to handling by this upgrade.
-     */
     public int getHandlingUpgrade() { return handlingUpgrade; }
 
-    /**
-     * Gets the reliability improvement value of the upgrade.
-     *
-     * @return The value added to reliability by this upgrade.
-     */
     public int getReliabilityUpgrade() { return reliabilityUpgrade; }
 
-    /**
-     * Gets the fuel economy improvement value of the upgrade.
-     *
-     * @return The value added to fuel economy by this upgrade.
-     */
     public int getFuelEconomyUpgrade() { return fuelEconomyUpgrade; }
 
-    /**
-     * Gets the cost of the upgrade.
-     *
-     * @return The cost of this upgrade.
-     */
     public int getCost() { return cost; }
 
 }

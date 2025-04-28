@@ -9,9 +9,8 @@ import java.util.List;
 public class ShopService {
     private List<Car> playerCars = new ArrayList<>();
     private List<Upgrade> playerUpgrades = new ArrayList<>();
-    private int playerMoney;
+    private int money;
     private final int MAX_CARS = 5;
-
 
     /**
      * Attempts to buy a car for the player. Fails if player has max cars or not enough money.
@@ -20,10 +19,10 @@ public class ShopService {
      * @return True if the purchase was successful, false otherwise.
      */
     public boolean buyCar(Car car) {
-        if (playerCars.size() >= MAX_CARS || playerMoney < car.getCost()) {
+        if (playerCars.size() >= MAX_CARS || money < car.getCost()) {
             return false;
         }
-        playerMoney -= car.getCost();
+        money -= car.getCost();
         playerCars.add(car);
         return true;
     }
@@ -36,7 +35,7 @@ public class ShopService {
      */
     public boolean sellCar(Car car) {
         if (playerCars.remove(car)) {
-            playerMoney += car.getCost() / 2;
+            money += car.getCost() / 2;
             return true;
         }
         return false;
@@ -49,10 +48,10 @@ public class ShopService {
      * @return True if the purchase was successful, false otherwise.
      */
     public boolean buyUpgrade(Upgrade upgrade) {
-        if (playerMoney < upgrade.getCost()) {
+        if (money < upgrade.getCost()) {
             return false;
         }
-        playerMoney -= upgrade.getCost();
+        money -= upgrade.getCost();
         playerUpgrades.add(upgrade);
         return true;
     }
@@ -65,7 +64,7 @@ public class ShopService {
      */
     public boolean sellUpgrade(Upgrade upgrade) {
         if (playerUpgrades.remove(upgrade)) {
-            playerMoney += upgrade.getCost() / 2;
+            money += upgrade.getCost() / 2;
             return true;
         }
         return false;

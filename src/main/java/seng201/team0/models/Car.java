@@ -8,6 +8,7 @@ import java.util.concurrent.CancellationException;
  * reliability, fuel economy, cost, ID and name.
  */
 public class Car {
+
     private int speed;
     private int handling;
     private int reliability;
@@ -27,55 +28,26 @@ public class Car {
      * @param id          The ID of the car.
      * @param name        The name of the car.
      */
-    public Car(int speed, int handling, int reliability, int fuelEconomy, int cost) {
-        this.id = UUID.randomUUID().toString().toString();
+    public Car(int speed, int handling, int reliability, int fuelEconomy, int cost, String id, String name) {
         this.speed = speed;
         this.handling = handling;
         this.reliability = reliability;
         this.fuelEconomy = fuelEconomy;
         this.cost = cost;
+        this.id = UUID.randomUUID().toString().toString();
+        this.name = name;
     }
 
-    /**
-     * Gets the speed of the car.
-     *
-     * @return The speed of the car.
-     */
     public int getSpeed() { return speed; }
 
-    /**
-     * Gets the handling of the car.
-     *
-     * @return The handling of the car.
-     */
     public int getHandling() { return handling; }
 
-    /**
-     * Gets the reliability of the car.
-     *
-     * @return The reliability of the car.
-     */
     public int getReliability() { return reliability; }
 
-    /**
-     * Gets the fuel economy of the car.
-     *
-     * @return The fuel economy of the car.
-     */
     public int getFuelEconomy() { return fuelEconomy; }
 
-    /**
-     * Gets the cost of the car.
-     *
-     * @return The cost of the car.
-     */
     public int getCost() { return cost; }
 
-    /**
-     * Gets the ID of the car.
-     *
-     * @return The ID of the car.
-     */
     public String getID(){
         return id;
     }
@@ -88,46 +60,16 @@ public class Car {
      */
     public String getName(){ return name == null || name.isBlank() ? "Unnamed Car" : name; }
 
-    /**
-     * Sets the speed of the car.
-     *
-     * @param speed The speed to set.
-     */
     public void setSpeed(int speed) { this.speed = speed; }
 
-    /**
-     * Sets the handling of the car.
-     *
-     * @param handling The handling to set.
-     */
     public void setHandling(int handling) { this.handling = handling; }
 
-    /**
-     * Sets the reliability of the car.
-     *
-     * @param reliability The reliability to set.
-     */
     public void setReliability(int reliability) { this.reliability = reliability; }
 
-    /**
-     * Sets the fuel economy of the car.
-     *
-     * @param fuelEconomy The fuel economy to set.
-     */
     public void setFuelEconomy(int fuelEconomy) { this.fuelEconomy = fuelEconomy; }
 
-    /**
-     * Sets the cost of the car.
-     *
-     * @param cost The cost to set.
-     */
     public void setCost(int cost) { this.cost = cost; }
 
-    /**
-     * Sets the name of the car.
-     *
-     * @param name The name to set.
-     */
     public void setName(String name){
         this.name = name;
     }
@@ -165,4 +107,5 @@ public class Car {
     public int hashCode(){
         return id.hashCode();
     }
+
 }
