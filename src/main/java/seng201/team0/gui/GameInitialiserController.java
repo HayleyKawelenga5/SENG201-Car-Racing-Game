@@ -1,20 +1,13 @@
 package seng201.team0.gui;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import seng201.team0.GameManager;
 import seng201.team0.models.Car;
-import seng201.team0.services.CarService;
 import seng201.team0.services.GameInitialiser;
-import javafx.stage.Stage;
 
 import javafx.fxml.FXML;
 
 import javax.naming.InvalidNameException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +54,12 @@ public class GameInitialiserController extends ScreenController{
     @Override
     protected String getTitle() {return "Game Initialiser";}
 
+
+
     public void setGameManager(GameManager gameManager) {this.gameManager = gameManager;}
 
     @FXML
-    public void initialise() {
+    public void initialize() {
         difficultyChoiceBox.getItems().clear();
         difficultyChoiceBox.getItems().addAll("EASY", "HARD");
 
@@ -249,7 +244,7 @@ public class GameInitialiserController extends ScreenController{
                 showAlert("Car Selection Error", "Please select exactly 3 cars before starting the game.");
                 return;
             }
-            GameManager().onSetupComplete();
+            getGameManager().onSetupComplete();
         } catch (InvalidNameException e){
             showAlert("Name Error", e.getMessage());
         } catch (IllegalArgumentException e){

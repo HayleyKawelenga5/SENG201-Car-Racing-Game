@@ -15,6 +15,6 @@ public class App {
      * @param args program arguments from command line
      */
     public static void main(String[] args) {
-        MainWindow.launchWrapper(args);
+        MainWindow.launch(MainWindow.class, args);
     }
 }

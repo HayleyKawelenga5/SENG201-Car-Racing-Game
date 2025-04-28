@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import seng201.team0.GameManager;
 
 import java.io.IOException;
 
@@ -20,26 +21,17 @@ public class MainWindow extends Application {
      * @throws IOException if there is an issue loading fxml file
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/game_initialiser_screen.fxml"));
-        Parent root = baseLoader.load();
-
-        GameInitialiserController baseController = baseLoader.getController();
-        baseController.initialise();
-
-        primaryStage.setTitle("SENG201 Example App");
-        Scene scene = new Scene(root, 600, 400);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage primaryStage){
+        new GameManager(new ScreenNavigator(primaryStage));
     }
 
-    /**
-     * Launches the FXML application, this must be called from another class (in this cass App.java) otherwise JavaFX
-     * errors out and does not run
-     * @param args command line arguments
-     */
-    public static void launchWrapper(String [] args) {
-        launch(args);
-    }
+//    /**
+//     * Launches the FXML application, this must be called from another class (in this cass App.java) otherwise JavaFX
+//     * errors out and does not run
+//     * @param args command line arguments
+//     */
+//    public static void launchWrapper(String [] args) {
+//        launch(args);
+//    }
 
 }

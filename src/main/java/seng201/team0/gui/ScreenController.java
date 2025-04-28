@@ -17,8 +17,7 @@ public abstract class ScreenController {
 
     protected abstract String getTitle();
 
-
-    protected GameManager getRocketManager() {
+    protected GameManager getGameManager(){
         return gameManager;
     }
 }
