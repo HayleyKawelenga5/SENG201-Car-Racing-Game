@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import seng201.team0.GameManager;
 import seng201.team0.models.Car;
 import seng201.team0.services.CarService;
 import seng201.team0.services.GameInitialiser;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameInitialiserController {
+public class GameInitialiserController extends ScreenController{
 
     @FXML private TextField playerNameTextField;
     @FXML private Slider seasonLengthSlider;
@@ -49,6 +50,18 @@ public class GameInitialiserController {
     private Car selectedCar;
     private List<Car> selectedCars = new ArrayList<>();
     private int selectedCarIndex = -1;
+
+    private GameManager gameManager;
+
+    public GameInitialiserController(GameManager manager) {super(manager);}
+
+    @Override
+    protected String getFxmlFile() {return "/fxml/game_initialiser_screen.fxml";}
+
+    @Override
+    protected String getTitle() {return "Game Initialiser";}
+
+    public void setGameManager(GameManager gameManager) {this.gameManager = gameManager;}
 
     @FXML
     public void initialise() {
@@ -236,7 +249,7 @@ public class GameInitialiserController {
                 showAlert("Car Selection Error", "Please select exactly 3 cars before starting the game.");
                 return;
             }
-            nextScreen();
+            GameManager().onSetupComplete();
         } catch (InvalidNameException e){
             showAlert("Name Error", e.getMessage());
         } catch (IllegalArgumentException e){
@@ -255,20 +268,5 @@ public class GameInitialiserController {
         alert.showAndWait();
     }
 
-    private void nextScreen(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/seng201/team0/resources/main_screen.fxml"));
-            Parent root = loader.load();
 
-            MainScreenController controller = loader.getController();
-            controller.setGame(game);
-
-            Stage stage = (Stage) difficultyChoiceBox.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
 }
