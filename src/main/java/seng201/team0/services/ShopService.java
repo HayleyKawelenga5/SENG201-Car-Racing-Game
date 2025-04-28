@@ -20,7 +20,9 @@ public class ShopService {
      * @return True if the purchase was successful, false otherwise.
      */
     public boolean buyCar(Car car) {
-        if (playerCars.size() >= MAX_CARS || playerMoney < car.getCost()) return false;
+        if (playerCars.size() >= MAX_CARS || playerMoney < car.getCost()) {
+            return false;
+        }
         playerMoney -= car.getCost();
         playerCars.add(car);
         return true;
@@ -47,7 +49,9 @@ public class ShopService {
      * @return True if the purchase was successful, false otherwise.
      */
     public boolean buyUpgrade(Upgrade upgrade) {
-        if (playerMoney < upgrade.getCost()) return false;
+        if (playerMoney < upgrade.getCost()) {
+            return false;
+        }
         playerMoney -= upgrade.getCost();
         playerUpgrades.add(upgrade);
         return true;
