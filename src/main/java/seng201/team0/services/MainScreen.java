@@ -34,7 +34,7 @@ public class MainScreen {
      * @param selectedCars    The current car for the next race.
      * @param racesRemaining  The number of races remaining.
      */
-    public GameEnvironment(String playerName, int seasonLength, String difficulty, int playerMoney, ArrayList<Car> selectedCars, int racesRemaining) {
+    public MainScreen(String playerName, int seasonLength, String difficulty, int playerMoney, ArrayList<Car> selectedCars, int racesRemaining) {
         this.playerName = playerName;
         this.playerMoney = playerMoney;
         this.seasonLength = seasonLength;

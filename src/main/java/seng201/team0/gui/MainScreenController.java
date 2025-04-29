@@ -1,8 +1,15 @@
 package seng201.team0.gui;
 
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
 import seng201.team0.GameManager;
+import seng201.team0.models.Car;
 import seng201.team0.services.GameInitialiser;
+
+import javafx.fxml.FXML;
+
+import javax.naming.InvalidNameException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainScreenController extends ScreenController {
     @FXML private Button race1Button;

@@ -43,8 +43,8 @@ public class Shop {
         availableCars.clear();
         availableUpgrades.clear();
         for (int i = 0; i < 3; i++) {
-            availableCars.add(carService.generateRandomCars());
-            availableUpgrades.add(upgradeService.generateRandomUpgrade());
+            //availableCars.add(carService.generateRandomCars());
+            //availableUpgrades.add(upgradeService.generateRandomUpgrade());
         }
     }
 

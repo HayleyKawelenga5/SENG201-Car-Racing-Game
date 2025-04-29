@@ -28,7 +28,7 @@ public class Car {
      * @param id          The ID of the car.
      * @param name        The name of the car.
      */
-    public Car(int speed, int handling, int reliability, int fuelEconomy, int cost, String id, String name) {
+    public Car(int speed, int handling, int reliability, int fuelEconomy, int cost) {
         this.speed = speed;
         this.handling = handling;
         this.reliability = reliability;

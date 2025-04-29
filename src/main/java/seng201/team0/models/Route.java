@@ -1,22 +1,21 @@
 package seng201.team0.models;
 
 /**
- * Represents the type of a race route.
- * A route can be flat, hilly, off-road, or windy, which influences car performance during a race.
- */
-public enum RouteType { FLAT, HILLY, OFFROAD, WINDY }
-
-/**
  * Represents a route that can be taken during a race.
  * Each route has specific characteristics that affect the race such as distance, number of fuel stops, difficulty, and type.
  */
 public class Route {
 
-    private String description;
+    /**
+     * Represents the type of a race route.
+     * A route can be flat, hilly, off-road, or windy, which influences car performance during a race.
+     */
+    public enum RouteType { FLAT, HILLY, OFFROAD, WINDY }
+
+    private RouteType description;
     private int distance;
     private int fuelStops;
-    private int difficultyMultiplier;
-    private RouteType type;
+    private double difficultyMultiplier;
 
     /**
      * Constructs a new Route object with the given parameters.
@@ -26,14 +25,14 @@ public class Route {
      * @param fuelStops             the number of fuel stops available along the route
      * @param difficultyMultiplier  a multiplier that adjusts the race difficulty
      */
-    public Route(String description, int distance, int fuelStops, int difficultyMultiplier) {
+    public Route(RouteType description, int distance, int fuelStops, double difficultyMultiplier) {
         this.description = description;
         this.distance = distance;
         this.fuelStops = fuelStops;
         this.difficultyMultiplier = difficultyMultiplier;
     }
 
-    public String getDescription() {
+    public RouteType getDescription() {
         return description;
     }
 
@@ -45,15 +44,11 @@ public class Route {
         return fuelStops;
     }
 
-    public int getDifficultyMultiplier() {
+    public double getDifficultyMultiplier() {
         return difficultyMultiplier;
     }
 
-    public RouteType getType() {
-        return type;
-    }
-
-    public void setDescription(String description) {
+    public void setDescription(RouteType description) {
         this.description = description;
     }
 
@@ -65,11 +60,8 @@ public class Route {
         this.fuelStops = fuelStops;
     }
 
-    public void setDifficultyMultiplier(int difficultyMultiplier) {
+    public void setDifficultyMultiplier(double difficultyMultiplier) {
         this.difficultyMultiplier = difficultyMultiplier;
     }
 
-    public void setType(RouteType type) {
-        this.type = type;
-    }
 }
