@@ -10,15 +10,14 @@ import seng201.team0.GameManager;
 import java.io.IOException;
 
 /**
- * Class starts the javaFX application window
+ * Class starts the javaFX application thread
  * @author seng201 teaching team
  */
 public class MainWindow extends Application {
 
     /**
-     * Opens the gui with the fxml content specified in resources/fxml/main.fxml
-     * @param primaryStage The current fxml stage, handled by javaFX Application class
-     * @throws IOException if there is an issue loading fxml file
+     * Creates the {@link GameManager} with a {@link ScreenNavigator} for the given {@link Stage}
+     * @param primaryStage The current fxml stage, handled by this JavaFX Application class
      */
     @Override
     public void start(Stage primaryStage){
