@@ -14,7 +14,7 @@ public class GameManager {
         navigator.launchGameInitialiserScreen(this);
     }
 
-    public void onSetupComplete(){
+    public void onSetupComplete(String playerName, int seasonLength, String difficulty, List<Car> selectedCars, int playerMoney) {
         navigator.launchMainScreen(this);
     }
 

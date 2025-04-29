@@ -102,13 +102,7 @@ public class GameInitialiserController extends ScreenController{
             selectedCarButtons.get(i).setOnAction(event -> onSelectedCarButtonClicked(index));
         }
 
-//        startGameButton.setOnAction(event -> {
-//            if (selectedCars.size() < 1){
-//                showAlert("Not Enough Cars", "Please select at least one car to start.");
-//                return;
-//            }
-//            game.setSelectedCars(selectedCars);
-//        });
+
 
         updateSelectedCarButtons();
         moneyLabel.setText("Money: $" + game.getMoney());
@@ -232,6 +226,7 @@ public class GameInitialiserController extends ScreenController{
         String playerName = playerNameTextField.getText();
         int seasonLength = (int) seasonLengthSlider.getValue();
         String difficulty = difficultyChoiceBox.getValue();
+        int money = game.getMoney();
 
         try {
             game.selectName(playerName);
@@ -243,7 +238,7 @@ public class GameInitialiserController extends ScreenController{
                 return;
             }
             game.setSelectedCars(selectedCars);
-            getGameManager().onSetupComplete();
+            getGameManager().onSetupComplete(playerName, seasonLength, difficulty, selectedCars, money);
         } catch (InvalidNameException e){
             showAlert("Name Error", e.getMessage());
         } catch (IllegalArgumentException e){
