@@ -58,7 +58,7 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="startGameButton" mnemonicParsing="false" text="Start Game!" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+      <Button fx:id="startGameButton" onAction="#onStartGameButtonClicked" mnemonicParsing="false" text="Start Game!" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin>
