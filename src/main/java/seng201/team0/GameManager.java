@@ -50,6 +50,11 @@ public class GameManager {
         return playerMoney;
     }
 
+    public void goToShop(int playerMoney){
+        this.playerMoney = playerMoney;
+        navigator.launchShopScreen(this);
+    }
+
     public void onQuitRequested(){
         System.exit(0);
     }

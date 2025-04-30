@@ -56,11 +56,17 @@ public class ScreenNavigator {
         launchScreen(controller);
     }
 
+
+
+    public void launchShopScreen(GameManager gameManager) {
+        ScreenController controller = new ShopController(gameManager);
+        launchScreen(controller);
+    }
+
     /**
      * Replaces the root border pane's center component with the screen defined by the given {@link ScreenController}
      * @param controller The JavaFX screen controller for the screen to be launched
      */
-
     private void launchScreen(ScreenController controller) {
         try {
             FXMLLoader setupLoader = new FXMLLoader(getClass().getResource(controller.getFxmlFile()));

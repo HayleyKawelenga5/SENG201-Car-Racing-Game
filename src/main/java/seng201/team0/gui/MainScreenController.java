@@ -39,13 +39,16 @@ public class MainScreenController extends ScreenController {
     @FXML private Label selectedRaceLabel;
 
 
-    public MainScreenController(GameManager manager) {super(manager);}
+    public MainScreenController(GameManager manager) {
+        super(manager);
+    }
 
     @Override
     protected String getFxmlFile() {return "/fxml/main_screen.fxml";}
 
     @Override
     protected String getTitle() {return "Main Screen";}
+
 
     @FXML
     public void initialize() {
@@ -55,10 +58,19 @@ public class MainScreenController extends ScreenController {
         int seasonLength = gameManager.getSeasonLength();
         String difficulty = gameManager.getDifficulty();
         List<Car> selectedCars = gameManager.getSelectedCars();
-        int playerMoney = gameManager.getPlayerMoney(); /
+        int playerMoney = gameManager.getPlayerMoney();
 
         moneyLabel.setText("$ " + String.valueOf(playerMoney));
         racesRemainingLabel.setText(String.valueOf(seasonLength));
         seasonLengthLabel.setText(String.valueOf(seasonLength));
+
+        toShopButton.setOnAction(event -> onToShopButtonClicked());
+    }
+
+    @FXML
+    public void onToShopButtonClicked(){
+        int playerMoney = getGameManager().getPlayerMoney();
+        getGameManager().goToShop(playerMoney);
+
     }
 }

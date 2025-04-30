@@ -54,7 +54,6 @@ public class GameInitialiserController extends ScreenController{
     @Override
     protected String getTitle() {return "Game Initialiser";}
 
-    public void setGameManager(GameManager gameManager) {this.gameManager = gameManager;}
 
     @FXML
     public void initialize() {
