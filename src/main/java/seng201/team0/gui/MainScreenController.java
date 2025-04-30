@@ -55,7 +55,7 @@ public class MainScreenController extends ScreenController {
         int seasonLength = gameManager.getSeasonLength();
         String difficulty = gameManager.getDifficulty();
         List<Car> selectedCars = gameManager.getSelectedCars();
-        int playerMoney = gameManager.getPlayerMoney();
+        int playerMoney = gameManager.getPlayerMoney(); /
 
         moneyLabel.setText("$ " + String.valueOf(playerMoney));
         racesRemainingLabel.setText(String.valueOf(seasonLength));
