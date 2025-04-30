@@ -28,7 +28,7 @@ public class MainScreenController extends ScreenController {
     @FXML private Label currentCarFuelEconomyLabel;
 
     @FXML private Label seasonLengthLabel;
-    @FXML private Label racesRemianingLabel;
+    @FXML private Label racesRemainingLabel;
     @FXML private Label moneyLabel;
 
     @FXML private Label raceHoursLabel;
@@ -49,6 +49,16 @@ public class MainScreenController extends ScreenController {
 
     @FXML
     public void initialize() {
-        //moneyLabel.setText() set the text to display the money
+        GameManager gameManager = getGameManager();
+
+        String playerName = gameManager.getPlayerName();
+        int seasonLength = gameManager.getSeasonLength();
+        String difficulty = gameManager.getDifficulty();
+        List<Car> selectedCars = gameManager.getSelectedCars();
+        int playerMoney = gameManager.getPlayerMoney();
+
+        moneyLabel.setText("$ " + String.valueOf(playerMoney));
+        racesRemainingLabel.setText(String.valueOf(seasonLength));
+        seasonLengthLabel.setText(String.valueOf(seasonLength));
     }
 }
