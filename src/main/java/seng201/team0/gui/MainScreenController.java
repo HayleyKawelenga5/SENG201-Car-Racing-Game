@@ -38,6 +38,7 @@ public class MainScreenController extends ScreenController {
 
     @FXML private Label selectedRaceLabel;
 
+
     public MainScreenController(GameManager manager) {super(manager);}
 
     @Override
@@ -45,4 +46,9 @@ public class MainScreenController extends ScreenController {
 
     @Override
     protected String getTitle() {return "Main Screen";}
+
+    @FXML
+    public void initialize() {
+        //moneyLabel.setText() set the text to display the money
+    }
 }
