@@ -55,6 +55,12 @@ public class GameManager {
         navigator.launchShopScreen(this);
     }
 
+    public void goToGarage() {
+
+        this.selectedCars = selectedCars;
+        navigator.launchGarageScreen(this);
+    }
+
     public void onQuitRequested(){
         System.exit(0);
     }

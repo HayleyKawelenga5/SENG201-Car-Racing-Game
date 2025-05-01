@@ -56,8 +56,19 @@ public class ScreenNavigator {
         launchScreen(controller);
     }
 
+    /**
+     * Launches the garage screen
+     * @param gameManager The game manager used by the garage screen controller
+     */
+    public void launchGarageScreen(GameManager gameManager) {
+        ScreenController controller = new GarageScreenController(gameManager);
+        launchScreen(controller);
+    }
 
-
+    /**
+     * Launches the shop screen
+     * @param gameManager The game manager used by the shop screen controller
+     */
     public void launchShopScreen(GameManager gameManager) {
         ScreenController controller = new ShopController(gameManager);
         launchScreen(controller);
