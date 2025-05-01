@@ -87,6 +87,7 @@ public class ShopController extends ScreenController{
     public ShopController(GameManager manager) {
         super(manager);
         this.shopService = new ShopService();
+        this.carService = new CarService();
         }
 
     @Override
@@ -102,7 +103,7 @@ public class ShopController extends ScreenController{
 
 
 
-        moneyLabel.setText("Money: $" + playerMoney);
+        moneyLabel.setText("Money: $" + playerMoney); //change this to use helper method
 
         List<Button> myCarButtons = List.of(myCarButton1, myCarButton2, myCarButton3, myCarButton4, myCarButton5);
         List<Button> shopCarButtons = List.of(shopCarButton1, shopCarButton2, shopCarButton3);
@@ -117,20 +118,38 @@ public class ShopController extends ScreenController{
         for (int i = 0; i < selectedCars.size(); i++) {
             myCarButtons.get(i).setText(selectedCars.get(i).getName());
         }
-        shopCars = shopService.getCarsForPurchase();
+        shopCars = carService.generateRandomCars(3);
     }
 
     @FXML
-    private void onShopCarButtonClicked(List<Button> shopCarButtons, int index) {
+    public void onShopCarButtonClicked(List<Button> shopCarButtons, int index) {
         shopSelectedCarIndex = index;
         selectedCar = shopCars.get(index);
         updateCarStats(selectedCar);
     }
 
-    private void onMyCarButtonClicked(List<Button> myCarButtons, int index) {
+    @FXML
+    public void onMyCarButtonClicked(List<Button> myCarButtons, int index) {
         mySelectedCarIndex = index;
         selectedCar = selectedCars.get(index);
         updateCarStats(selectedCar);
+    }
+
+    @FXML
+    private void onSellCarButtonClicked(){
+        if (selectedCar != null && selectedCars.contains(selectedCar)){
+            boolean sold = shopService.sellCar(selectedCar);
+            if (sold){
+                selectedCars.remove(selectedCar);
+                updateMoneyLabel();
+                updateMyCarButtons();
+                updateCarStats(null);
+            } else {
+                //car could not be sold error
+            }
+        } else {
+            //no valid car selected er}
+        }
     }
 
     public void updateCarStats(Car car){
@@ -145,8 +164,25 @@ public class ShopController extends ScreenController{
             carHandlingLabel.setText("Handling: " + car.getHandling());
             carReliabilityLabel.setText("Reliability: " + car.getReliability());
             carFuelEconomyLabel.setText("Fuel Economy: " + car.getFuelEconomy());
-            carCostLabel.setText("Cost: $" + car.getCost());
+            if (selectedCars.contains(car)){
+            carCostLabel.setText("Cost: $" + car.getCost()/2);}
+            else {carCostLabel.setText("Cost: " + car.getCost());}
         }
     }
 
+    private void updateMyCarButtons(){
+        List<Button> myCarButtons = List.of(myCarButton1, myCarButton2, myCarButton3, myCarButton4, myCarButton5);
+        for (int i = 0; i < myCarButtons.size(); i++) {
+            if (i < selectedCars.size()) {
+                myCarButtons.get(i).setText(selectedCars.get(i).getName());
+            } else {
+                myCarButtons.get(i).setText("");
+            }
+        }
+    }
+
+
+    public void updateMoneyLabel(){
+        moneyLabel.setText("Money: $" + getGameManager().getPlayerMoney());
+    }
 }
