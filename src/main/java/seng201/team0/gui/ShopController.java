@@ -7,6 +7,8 @@ import seng201.team0.GameManager;
 import seng201.team0.models.Car;
 import seng201.team0.services.CarService;
 import seng201.team0.services.ShopService;
+import seng201.team0.services.UpgradeService;
+import seng201.team0.models.Upgrade;
 
 import java.util.List;
 
@@ -60,6 +62,14 @@ public class ShopController extends ScreenController{
     @FXML
     private Button shopCarButton3;
 
+    @FXML private Button myUpgrade1Button;
+    @FXML private Button myUpgrade2Button;
+    @FXML private Button myUpgrade3Button;
+
+    @FXML private Button shopUpgrade1Button;
+    @FXML private Button shopUpgrade2Button;
+    @FXML private Button shopUpgrade3Button;
+
     @FXML
     private Label carSpeedLabel;
     @FXML
@@ -72,7 +82,7 @@ public class ShopController extends ScreenController{
     private Label carCostLabel;
 
     @FXML
-    private Button toMainScreenButton;
+    private Button backButton;
 
     private int mySelectedCarIndex = -1;
     private int shopSelectedCarIndex = -1;
@@ -80,8 +90,11 @@ public class ShopController extends ScreenController{
     private List<Car> shopCars;
     private CarService carService;
     private ShopService shopService;
+    private UpgradeService upgradeService = new UpgradeService();
     private Car selectedCar;
+    private Upgrade selectedUpgrade;
     private List<Car> selectedCars;
+    private List<Upgrade> availableUpgrades;
 
 
     public ShopController(GameManager manager) {
@@ -101,12 +114,15 @@ public class ShopController extends ScreenController{
         int playerMoney = gameManager.getPlayerMoney();
         selectedCars = gameManager.getSelectedCars();
 
-
+        backButton.setOnAction(event -> onBackButtonClicked());
 
         moneyLabel.setText("Money: $" + playerMoney); //change this to use helper method
 
         List<Button> myCarButtons = List.of(myCarButton1, myCarButton2, myCarButton3, myCarButton4, myCarButton5);
         List<Button> shopCarButtons = List.of(shopCarButton1, shopCarButton2, shopCarButton3);
+        List<Button> myUpgradeButtons = List.of(myUpgrade1Button, myUpgrade2Button, myUpgrade3Button);
+        List<Button> shopUpgradeButtons = List.of(shopUpgrade1Button, shopUpgrade2Button, shopUpgrade3Button);
+
         for (int i = 0; i < myCarButtons.size(); i++){
             int index = i;
             myCarButtons.get(i).setOnAction(event -> onMyCarButtonClicked(myCarButtons, index));
@@ -119,6 +135,22 @@ public class ShopController extends ScreenController{
             myCarButtons.get(i).setText(selectedCars.get(i).getName());
         }
         shopCars = carService.generateRandomCars(3);
+        /**
+        for (int i = 0; i < myUpgradeButtons.size(); i++) {
+            int index = i;
+            myUpgradeButtons.get(i).setOnAction(event -> onMyUpgradeButtonClicked(myCarButtons, index));
+        }
+        */
+        for (int i = 0; i < shopUpgradeButtons.size(); i++) {
+            int index = i;
+            shopUpgradeButtons.get(i).setOnAction(event -> onShopUpgradeButtonClicked(myCarButtons, index));
+        }
+
+        availableUpgrades = upgradeService.generateRandomUpgrades();
+
+        for (int i = 0; i < availableUpgrades.size(); i++) {
+            shopUpgradeButtons.get(i).setText(availableUpgrades.get(i).getName());
+        }
     }
 
     @FXML
@@ -133,6 +165,12 @@ public class ShopController extends ScreenController{
         mySelectedCarIndex = index;
         selectedCar = selectedCars.get(index);
         updateCarStats(selectedCar);
+    }
+
+    @FXML
+    public void onShopUpgradeButtonClicked(List<Button> myUpgradeButtons, int index) {
+        selectedUpgrade = availableUpgrades.get(index);
+        updateUpgradeStats(selectedUpgrade);
     }
 
     @FXML
@@ -166,7 +204,23 @@ public class ShopController extends ScreenController{
             carFuelEconomyLabel.setText("Fuel Economy: " + car.getFuelEconomy());
             if (selectedCars.contains(car)){
             carCostLabel.setText("Cost: $" + car.getCost()/2);}
-            else {carCostLabel.setText("Cost: " + car.getCost());}
+            else {carCostLabel.setText("Cost: $" + car.getCost());}
+        }
+    }
+
+    private void updateUpgradeStats(Upgrade upgrade) {
+        if (upgrade == null) {
+            upgradeSpeedLabel.setText("Speed: ");
+            upgradeHandlingLabel.setText("Handling: ");
+            upgradeReliabilityLabel.setText("Reliability: ");
+            upgradeFuelEconomyLabel.setText("Fuel Economy: ");
+            upgradeCostLabel.setText("Cost: ");
+        } else {
+            upgradeSpeedLabel.setText("Speed: " + upgrade.getSpeedUpgrade());
+            upgradeHandlingLabel.setText("Handling: " + upgrade.getHandlingUpgrade());
+            upgradeReliabilityLabel.setText("Reliability: " + upgrade.getReliabilityUpgrade());
+            upgradeFuelEconomyLabel.setText("Fuel Economy: " + upgrade.getFuelEconomyUpgrade());
+            upgradeCostLabel.setText("Cost: $" + upgrade.getCost());
         }
     }
 
@@ -179,6 +233,12 @@ public class ShopController extends ScreenController{
                 myCarButtons.get(i).setText("");
             }
         }
+    }
+
+
+    @FXML
+    public void onBackButtonClicked() {
+        getGameManager().goBack();
     }
 
 

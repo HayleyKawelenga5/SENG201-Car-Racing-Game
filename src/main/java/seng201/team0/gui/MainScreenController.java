@@ -59,10 +59,17 @@ public class MainScreenController extends ScreenController {
         String difficulty = gameManager.getDifficulty();
         List<Car> selectedCars = gameManager.getSelectedCars();
         int playerMoney = gameManager.getPlayerMoney();
+        Car currentCar = gameManager.getCurrentCar();
 
         moneyLabel.setText("Money: $" + String.valueOf(playerMoney));
         racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength));
         seasonLengthLabel.setText("Season Length: " + String.valueOf(seasonLength));
+
+        currentCarNameLabel.setText("Current car: " + currentCar.getName());
+        currentCarSpeedLabel.setText("Speed: " + currentCar.getSpeed());
+        currentCarHandlingLabel.setText("Handling: " + currentCar.getHandling());
+        currentCarReliabilityLabel.setText("Reliability: " + currentCar.getReliability());
+        currentCarFuelEconomyLabel.setText("Fuel Economy: " + currentCar.getFuelEconomy());
 
         toGarageButton.setOnAction(event -> onToGarageButtonClicked());
 
@@ -77,5 +84,10 @@ public class MainScreenController extends ScreenController {
     @FXML
     public void onToShopButtonClicked(){
         getGameManager().goToShop(getGameManager().getPlayerMoney(), getGameManager().getSelectedCars());
+    }
+
+    @FXML
+    public void onBackButtonClicked() {
+        getGameManager().goToGarage();
     }
 }

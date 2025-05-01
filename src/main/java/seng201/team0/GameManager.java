@@ -14,18 +14,20 @@ public class GameManager {
     private String difficulty;
     private List<Car> selectedCars;
     private int playerMoney;
+    private Car currentCar;
 
     public GameManager(ScreenNavigator navigator) {
         this.navigator = navigator;
         navigator.launchGameInitialiserScreen(this);
     }
 
-    public void onSetupComplete(String playerName, int seasonLength, String difficulty, List<Car> selectedCars, int playerMoney) {
+    public void onSetupComplete(String playerName, int seasonLength, String difficulty, List<Car> selectedCars, int playerMoney, Car currentCar) {
         this.playerName = playerName;
         this.seasonLength = seasonLength;
         this.difficulty = difficulty;
         this.selectedCars = selectedCars;
         this.playerMoney = playerMoney;
+        this.currentCar = currentCar;
 
         navigator.launchMainScreen(this);
     }
@@ -50,6 +52,8 @@ public class GameManager {
         return playerMoney;
     }
 
+    public Car getCurrentCar() { return currentCar;}
+
     public void goToShop(int playerMoney, List<Car> selectedCars){
         this.playerMoney = playerMoney;
         navigator.launchShopScreen(this);
@@ -59,6 +63,12 @@ public class GameManager {
 
         this.selectedCars = selectedCars;
         navigator.launchGarageScreen(this);
+    }
+
+    public void goBack() {
+        //this.currentCar = currentCar;
+        this.selectedCars = selectedCars;
+        navigator.launchMainScreen(this);
     }
 
     public void onQuitRequested(){

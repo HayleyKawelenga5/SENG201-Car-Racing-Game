@@ -46,6 +46,10 @@ public class GarageScreenController extends ScreenController {
     @FXML private Label carReliabilityLabel;
     @FXML private Label carFuelEconomyLabel;
 
+    @FXML private Label currentCarLabel;
+
+    @FXML private Button backButton;
+
     public GarageScreenController(GameManager manager) {super(manager);}
 
     @Override
@@ -70,13 +74,15 @@ public class GarageScreenController extends ScreenController {
         selectedCars = gameManager.getSelectedCars();
 
         List<Button> carButtons = List.of(car1Button, car2Button, car3Button, car4Button, car5Button);
-        List<Button> upgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button, upgrade4Button, upgrade5Button);
+        List<Button> upgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);
 
         selectUpgradeButton.setOnAction(event -> onSelectUpgradeButtonClicked());
         selectCarButton.setOnAction(event -> onSelectCarButtonClicked());
 
-        //makeCurrentCarButton.setOnAction(event -> onMakeCurrentCarButtonClicked());
+        makeCurrentCarButton.setOnAction(event -> onMakeCurrentCarButtonClicked());
         installUpgradeButton.setOnAction(event -> onInstallUpgradeButtonClciked());
+
+        backButton.setOnAction(event -> onBackButtonClicked());
 
         for (int i = 0; i < carButtons.size(); i++) {
             int index = i;
@@ -86,6 +92,10 @@ public class GarageScreenController extends ScreenController {
         for (int i = 0; i < upgradeButtons.size(); i++) {
             int index = i;
             upgradeButtons.get(i).setOnAction(event -> onUpgradeButtonClicked(index));
+        }
+
+        for (int i = 0; i < selectedCars.size(); i++) {
+            carButtons.get(i).setText(selectedCars.get(i).getName());
         }
 
     }
@@ -175,6 +185,19 @@ public class GarageScreenController extends ScreenController {
 
         //selectedUpgrades.removeUpgrade(chosenUpgrade);
         updateUpgradeStats(null);
+    }
+
+    @FXML
+    public void onMakeCurrentCarButtonClicked() {
+        if (selectedCar != null) {
+            chosenCar = selectedCar;
+            currentCarLabel.setText("Current car: " + chosenCar.getName());
+        }
+    }
+
+    @FXML
+    public void onBackButtonClicked() {
+        getGameManager().goBack();
     }
 
 

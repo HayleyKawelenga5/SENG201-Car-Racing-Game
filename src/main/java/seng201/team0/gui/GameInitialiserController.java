@@ -232,12 +232,14 @@ public class GameInitialiserController extends ScreenController{
             game.selectSeasonLength(seasonLength);
             game.selectDifficulty(difficulty);
 
+            Car currentCar = selectedCars.get(0);
+
             if (game.getSelectedCars().size() < 1){
                 showAlert("Not Enough Cars", "Please select at least one car to start.");
                 return;
             }
             game.setSelectedCars(selectedCars);
-            getGameManager().onSetupComplete(playerName, seasonLength, difficulty, selectedCars, money);
+            getGameManager().onSetupComplete(playerName, seasonLength, difficulty, selectedCars, money, currentCar);
         } catch (InvalidNameException e){
             showAlert("Name Error", e.getMessage());
         } catch (IllegalArgumentException e){
