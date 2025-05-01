@@ -76,7 +76,7 @@ public class GameInitialiser {
      */
     public List<Car> getAvailableCars() {
         if (carService.getAvailableCars().isEmpty()) {
-            carService.generateRandomCars();
+            carService.generateRandomCars(5);
         }
         return carService.getAvailableCars();
     }

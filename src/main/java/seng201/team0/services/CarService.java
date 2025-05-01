@@ -21,10 +21,11 @@ public class CarService {
      *
      * @return A list of Car objects with randomly generated stats.
      */
-    public List<Car> generateRandomCars() {
+    public List<Car> generateRandomCars(int maxValue) {
+        availableCars.clear();
         Random random = new Random();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < maxValue; i++) {
             int speed = random.nextInt(1, 11);
             int handling = random.nextInt(1, 11);
             int reliability = random.nextInt(1, 11);

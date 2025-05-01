@@ -18,7 +18,7 @@
       <RowConstraints maxHeight="325.0" minHeight="7.0" prefHeight="120.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Money:" GridPane.valignment="TOP">
+      <Label fx:id="moneyLabel" text="Money:" GridPane.valignment="TOP">
          <font>
             <Font size="18.0" />
          </font>

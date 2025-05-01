@@ -29,7 +29,7 @@ public class CarServiceTest {
      */
     @Test
     void testGenerateRandomCars() {
-        List<Car> availableCars = testCarService.generateRandomCars();
+        List<Car> availableCars = testCarService.generateRandomCars(5);
         assertEquals(5, availableCars.size());
 
         for (Car car : availableCars) {

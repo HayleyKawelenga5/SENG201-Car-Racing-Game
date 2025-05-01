@@ -4,6 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import seng201.team0.GameManager;
+import seng201.team0.models.Car;
+import seng201.team0.services.CarService;
+import seng201.team0.services.ShopService;
+
+import java.util.List;
 
 public class ShopController extends ScreenController{
 
@@ -69,11 +74,20 @@ public class ShopController extends ScreenController{
     @FXML
     private Button toMainScreenButton;
 
-    private GameManager gameManager;
+    private int mySelectedCarIndex = -1;
+    private int shopSelectedCarIndex = -1;
+
+    private List<Car> shopCars;
+    private CarService carService;
+    private ShopService shopService;
+    private Car selectedCar;
+    private List<Car> selectedCars;
+
 
     public ShopController(GameManager manager) {
         super(manager);
-    }
+        this.shopService = new ShopService();
+        }
 
     @Override
     protected String getFxmlFile() {return "/fxml/shop.fxml";}
@@ -81,12 +95,58 @@ public class ShopController extends ScreenController{
     @Override
     protected String getTitle() {return "Shop";}
 
-    public void Initialize(){
+    public void initialize(){
         GameManager gameManager = getGameManager();
         int playerMoney = gameManager.getPlayerMoney();
+        selectedCars = gameManager.getSelectedCars();
+
+
 
         moneyLabel.setText("Money: $" + playerMoney);
 
+        List<Button> myCarButtons = List.of(myCarButton1, myCarButton2, myCarButton3, myCarButton4, myCarButton5);
+        List<Button> shopCarButtons = List.of(shopCarButton1, shopCarButton2, shopCarButton3);
+        for (int i = 0; i < myCarButtons.size(); i++){
+            int index = i;
+            myCarButtons.get(i).setOnAction(event -> onMyCarButtonClicked(myCarButtons, index));
+        }
+        for (int i = 0; i < shopCarButtons.size(); i++) {
+            int index = i;
+            shopCarButtons.get(i).setOnAction(event -> onShopCarButtonClicked(shopCarButtons, index));
+        }
+        for (int i = 0; i < selectedCars.size(); i++) {
+            myCarButtons.get(i).setText(selectedCars.get(i).getName());
+        }
+        shopCars = shopService.getCarsForPurchase();
+    }
+
+    @FXML
+    private void onShopCarButtonClicked(List<Button> shopCarButtons, int index) {
+        shopSelectedCarIndex = index;
+        selectedCar = shopCars.get(index);
+        updateCarStats(selectedCar);
+    }
+
+    private void onMyCarButtonClicked(List<Button> myCarButtons, int index) {
+        mySelectedCarIndex = index;
+        selectedCar = selectedCars.get(index);
+        updateCarStats(selectedCar);
+    }
+
+    public void updateCarStats(Car car){
+        if (car == null) {
+            carSpeedLabel.setText("Speed: ");
+            carHandlingLabel.setText("Handling: ");
+            carReliabilityLabel.setText("Reliability: ");
+            carFuelEconomyLabel.setText("Fuel Economy: ");
+            carCostLabel.setText("Cost: ");
+        } else {
+            carSpeedLabel.setText("Speed: " + car.getSpeed());
+            carHandlingLabel.setText("Handling: " + car.getHandling());
+            carReliabilityLabel.setText("Reliability: " + car.getReliability());
+            carFuelEconomyLabel.setText("Fuel Economy: " + car.getFuelEconomy());
+            carCostLabel.setText("Cost: $" + car.getCost());
+        }
     }
 
 }

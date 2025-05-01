@@ -76,7 +76,6 @@ public class MainScreenController extends ScreenController {
 
     @FXML
     public void onToShopButtonClicked(){
-        int playerMoney = getGameManager().getPlayerMoney();
-        getGameManager().goToShop(playerMoney);
+        getGameManager().goToShop(getGameManager().getPlayerMoney(), getGameManager().getSelectedCars());
     }
 }

@@ -50,7 +50,7 @@ public class GameManager {
         return playerMoney;
     }
 
-    public void goToShop(int playerMoney){
+    public void goToShop(int playerMoney, List<Car> selectedCars){
         this.playerMoney = playerMoney;
         navigator.launchShopScreen(this);
     }

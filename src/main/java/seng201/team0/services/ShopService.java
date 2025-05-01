@@ -11,6 +11,7 @@ public class ShopService {
     private List<Upgrade> playerUpgrades = new ArrayList<>();
     private int money;
     private final int MAX_CARS = 5;
+    private CarService carService;
 
     /**
      * Attempts to buy a car for the player. Fails if player has max cars or not enough money.
@@ -69,4 +70,18 @@ public class ShopService {
         }
         return false;
     }
+
+    /**
+     * Returns a list of available cars. If no cars have been generated yet,
+     * this method will generate them first.
+     *
+     * @return A list of available Car objects.
+     */
+    public List<Car> getCarsForPurchase() {
+        if (carService.getAvailableCars().isEmpty()) {
+            carService.generateRandomCars(3);
+        }
+        return carService.getAvailableCars();
+    }
+
 }
