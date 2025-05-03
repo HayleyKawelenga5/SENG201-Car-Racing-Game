@@ -10,7 +10,7 @@ public class GarageService {
 
     private Car currentCar;
     private List<Car> playerCars;
-    private List<Upgrade> availableUpgrades;
+    private List<Upgrade> playerUpgrades;
 
     /**
      * Swaps the current car with one from the reserve.
@@ -33,7 +33,7 @@ public class GarageService {
      * @return True if installed, false if not in list.
      */
     public boolean installUpgrade(Upgrade upgrade) {
-        if (availableUpgrades.remove(upgrade)) {
+        if (playerUpgrades.remove(upgrade)) {
             currentCar.setCarSpeed(currentCar.getCarSpeed() + upgrade.getUpgradeSpeed());
             currentCar.setCarHandling(currentCar.getCarHandling() + upgrade.getUpgradeHandling());
             currentCar.setCarReliability(currentCar.getCarReliability() + upgrade.getUpgradeReliability());

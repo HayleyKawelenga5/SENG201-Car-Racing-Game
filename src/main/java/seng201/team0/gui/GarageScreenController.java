@@ -6,6 +6,8 @@ import seng201.team0.GameManager;
 
 import seng201.team0.services.MainScreen;
 
+import seng201.team0.services.GarageService;
+
 import seng201.team0.models.Car;
 import seng201.team0.models.Garage;
 import seng201.team0.models.Upgrade;
@@ -68,6 +70,8 @@ public class GarageScreenController extends ScreenController {
 
     private int money;
 
+    private GarageService garageService = new GarageService();
+
     @FXML
     public void initialize() {
         GameManager garageScreen = getGameManager();
@@ -96,6 +100,10 @@ public class GarageScreenController extends ScreenController {
 
         for (int i = 0; i < playerCars.size(); i++) {
             playerCarButtons.get(i).setText(playerCars.get(i).getCarName());
+        }
+
+        for (int i = 0; i < playerUpgrades.size(); i++) {
+            playerUpgradeButtons.get(i).setText(playerUpgrades.get(i).getUpgradeName());
         }
 
         currentCarLabel.setText("Current car: " + currentCar.getCarName());
@@ -133,6 +141,7 @@ public class GarageScreenController extends ScreenController {
     @FXML
     private void onPlayerCarButtonClicked(int index) {
         if (index >= 0 && index < playerCars.size()) {
+            selectCarButton.setStyle("");
             selectedCar = playerCars.get(index);
             updateCarStats(selectedCar);
         }
@@ -141,6 +150,7 @@ public class GarageScreenController extends ScreenController {
     @FXML
     private void onPlayerUpgradeButtonClicked(int index) {
         if (index >= 0 && index < playerUpgrades.size()) {
+            selectUpgradeButton.setStyle("");
             selectedUpgrade = playerUpgrades.get(index);
             updateUpgradeStats(selectedUpgrade);
         }
@@ -148,16 +158,22 @@ public class GarageScreenController extends ScreenController {
 
     @FXML
     private void onSelectUpgradeButtonClicked() {
-        if (selectedUpgrade != null) {
+        if (selectedUpgrade == null) {
+            showAlert("No upgrade selected", "Please select an upgrade to install.");
+        } else {
             chosenUpgrade = selectedUpgrade;
+            selectUpgradeButton.setStyle("-fx-background-color: LightGreen");
             updateUpgradeStats(chosenUpgrade);
         }
     }
 
     @FXML
     private void onSelectCarButtonClicked() {
-        if (selectedCar != null) {
+        if (selectedCar == null) {
+            showAlert("No car selected", "Please select a car to install an upgrade on.");
+        } else {
             chosenCar = selectedCar;
+            selectCarButton.setStyle("-fx-background-color: LightGreen");
             updateCarStats(chosenCar);
         }
     }
@@ -178,11 +194,27 @@ public class GarageScreenController extends ScreenController {
         chosenCar.setCarHandling(chosenCar.getCarHandling() + chosenUpgrade.getUpgradeHandling());
         chosenCar.setCarReliability(chosenCar.getCarReliability() + chosenUpgrade.getUpgradeReliability());
         chosenCar.setCarFuelEconomy(chosenCar.getCarFuelEconomy() + chosenUpgrade.getUpgradeFuelEconomy());
+        chosenCar.setCarCost(chosenCar.getCarCost() + chosenUpgrade.getUpgradeCost());
 
         updateCarStats(chosenCar);
 
-        //playerUpgrades.removeUpgrade(chosenUpgrade);
+        playerUpgrades.remove(chosenUpgrade);
+        updatePlayerUpgradeButtons();
+        selectUpgradeButton.setStyle("");
+        selectCarButton.setStyle("");
+        chosenUpgrade = null;
         updateUpgradeStats(null);
+    }
+
+    private void updatePlayerUpgradeButtons() {
+        List<Button> playerUpgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);
+        for (int i = 0; i < playerUpgradeButtons.size(); i++) {
+            if (i < playerUpgrades.size()) {
+                playerUpgradeButtons.get(i).setText(playerUpgrades.get(i).getUpgradeName());
+            } else {
+                playerUpgradeButtons.get(i).setText("");
+            }
+        }
     }
 
     @FXML
