@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import seng201.team0.GameManager;
 
 import java.io.IOException;
@@ -23,6 +24,5 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage){
         new GameManager(new ScreenNavigator(primaryStage));
     }
-
 
 }

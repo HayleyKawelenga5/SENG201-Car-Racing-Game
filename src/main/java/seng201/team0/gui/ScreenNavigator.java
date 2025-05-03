@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
 import seng201.team0.GameManager;
 
 import java.io.IOException;
@@ -37,12 +38,11 @@ public class ScreenNavigator {
     }
 
     /**
-     * Launches the game initialiser screen
-     * @param gameManager The game manager used by the game initialiser screen controller
+     * Launches the start screen
+     * @param gameManager The game manager used by the start screen controller
      */
-
-    public void launchGameInitialiserScreen(GameManager gameManager) {
-        ScreenController controller = new GameInitialiserController(gameManager);
+    public void launchStartScreen(GameManager gameManager) {
+        ScreenController controller = new StartScreenController(gameManager);
         launchScreen(controller);
     }
 
@@ -50,7 +50,6 @@ public class ScreenNavigator {
      * Launches the main screen
      * @param gameManager The game manager used by the main screen controller
      */
-
     public void launchMainScreen(GameManager gameManager) {
         ScreenController controller = new MainScreenController(gameManager);
         launchScreen(controller);
@@ -70,7 +69,7 @@ public class ScreenNavigator {
      * @param gameManager The game manager used by the shop screen controller
      */
     public void launchShopScreen(GameManager gameManager) {
-        ScreenController controller = new ShopController(gameManager);
+        ScreenController controller = new ShopScreenController(gameManager);
         launchScreen(controller);
     }
 

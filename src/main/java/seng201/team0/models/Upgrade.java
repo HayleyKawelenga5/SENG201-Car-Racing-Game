@@ -6,12 +6,13 @@ import java.util.Random;
  * Represents an upgrade that can be applied to a car to improve its stats.
  */
 public class Upgrade {
-    private String name;
-    private int speedUpgrade;
-    private int handlingUpgrade;
-    private int reliabilityUpgrade;
-    private int fuelEconomyUpgrade;
-    private int cost;
+
+    private String upgradeName;
+    private int upgradeSpeed;
+    private int upgradeHandling;
+    private int upgradeReliability;
+    private int upgradeFuelEconomy;
+    private int upgradeCost;
 
     /**
      * Constructs a new Upgrade with a name and stat modifications.
@@ -23,25 +24,25 @@ public class Upgrade {
      * @param fuelEconomyUpgrade  Value to increase car fuel economy.
      * @param cost                Cost of the upgrade.
      */
-    public Upgrade(String name, int speedUpgrade, int handlingUpgrade, int reliabilityUpgrade, int fuelEconomyUpgrade, int cost) {
-        this.name = name;
-        this.speedUpgrade = speedUpgrade;
-        this.handlingUpgrade = handlingUpgrade;
-        this.reliabilityUpgrade = reliabilityUpgrade;
-        this.fuelEconomyUpgrade = fuelEconomyUpgrade;
-        this.cost = cost;
+    public Upgrade(String upgradeName, int upgradeSpeed, int upgradeHandling, int upgradeReliability, int upgradeFuelEconomy, int upgradeCost) {
+        this.upgradeName = upgradeName;
+        this.upgradeSpeed = upgradeSpeed;
+        this.upgradeHandling = upgradeHandling;
+        this.upgradeReliability = upgradeReliability;
+        this.upgradeFuelEconomy = upgradeFuelEconomy;
+        this.upgradeCost = upgradeCost;
     }
 
-    public String getName() { return name; }
+    public String getUpgradeName() { return upgradeName; }
 
-    public int getSpeedUpgrade() { return speedUpgrade; }
+    public int getUpgradeSpeed() { return upgradeSpeed; }
 
-    public int getHandlingUpgrade() { return handlingUpgrade; }
+    public int getUpgradeHandling() { return upgradeHandling; }
 
-    public int getReliabilityUpgrade() { return reliabilityUpgrade; }
+    public int getUpgradeReliability() { return upgradeReliability; }
 
-    public int getFuelEconomyUpgrade() { return fuelEconomyUpgrade; }
+    public int getUpgradeFuelEconomy() { return upgradeFuelEconomy; }
 
-    public int getCost() { return cost; }
+    public int getUpgradeCost() { return upgradeCost; }
 
 }

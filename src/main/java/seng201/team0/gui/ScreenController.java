@@ -15,7 +15,6 @@ public abstract class ScreenController {
      * @param gameManager The game manager used by this ScreenController
      */
     protected ScreenController(final GameManager gameManager) {
-
         this.gameManager = gameManager;
     }
 

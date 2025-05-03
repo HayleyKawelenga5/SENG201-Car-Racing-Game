@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team0.gui.ShopController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team0.gui.ShopScreenController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -65,23 +65,23 @@
       </Label>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="myCarButton1" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
+            <Button fx:id="playerCar1Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
-            <Button fx:id="myCarButton2" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
+            <Button fx:id="playerCar2Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
-            <Button fx:id="myCarButton3" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
+            <Button fx:id="playerCar3Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
-            <Button fx:id="myCarButton4" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
+            <Button fx:id="playerCar4Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
-            <Button fx:id="myCarButton5" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
+            <Button fx:id="playerCar5Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
@@ -89,15 +89,15 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <Button fx:id="shopCarButton1" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0" text="Car 1">
+            <Button fx:id="shopCar1Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0" text="Car 1">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
-            <Button fx:id="shopCarButton2" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0" text="Car 2">
+            <Button fx:id="shopCar2Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0" text="Car 2">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
-            <Button fx:id="shopCarButton3" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0" text="Car 3">
+            <Button fx:id="shopCar3Button" mnemonicParsing="false" prefHeight="100.0" prefWidth="60.0" text="Car 3">
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </HBox.margin></Button>
@@ -171,15 +171,15 @@
       </Label>
       <VBox prefHeight="80.0" prefWidth="200.0" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="myUpgrade1Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0">
+            <Button fx:id="playerUpgrade1Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0">
                <VBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </VBox.margin></Button>
-            <Button fx:id="myUpgrade2Button" mnemonicParsing="false" prefWidth="300.0">
+            <Button fx:id="playerUpgrade2Button" mnemonicParsing="false" prefWidth="300.0">
                <VBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </VBox.margin></Button>
-            <Button fx:id="myUpgrade3Button" mnemonicParsing="false" prefWidth="300.0">
+            <Button fx:id="playerUpgrade3Button" mnemonicParsing="false" prefWidth="300.0">
                <VBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </VBox.margin></Button>

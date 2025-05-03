@@ -1,14 +1,13 @@
 package seng201.team0.gui;
 
 import javafx.scene.control.*;
+
 import seng201.team0.GameManager;
-import seng201.team0.models.Car;
-import seng201.team0.services.CarService;
-import seng201.team0.services.GameInitialiser;
+
 import seng201.team0.services.MainScreen;
+
+import seng201.team0.models.Car;
 import seng201.team0.models.Garage;
-import seng201.team0.services.GarageService;
-import seng201.team0.services.UpgradeService;
 import seng201.team0.models.Upgrade;
 
 import javafx.fxml.FXML;
@@ -21,8 +20,9 @@ public class GarageScreenController extends ScreenController {
 
     @FXML private Button selectUpgradeButton;
     @FXML private Button selectCarButton;
-    @FXML private Button makeCurrentCarButton;
     @FXML private Button installUpgradeButton;
+    @FXML private Button makeCurrentCarButton;
+    @FXML private Button backButton;
 
     @FXML private Button upgrade1Button;
     @FXML private Button upgrade2Button;
@@ -48,9 +48,7 @@ public class GarageScreenController extends ScreenController {
 
     @FXML private Label currentCarLabel;
 
-    @FXML private Button backButton;
-
-    public GarageScreenController(GameManager manager) {super(manager);}
+    public GarageScreenController(GameManager manager) {super(manager); }
 
     @Override
     protected String getFxmlFile() {return "/fxml/garage.fxml";}
@@ -58,45 +56,49 @@ public class GarageScreenController extends ScreenController {
     @Override
     protected String getTitle() {return "Garage Screen";}
 
-
-    private GarageService garage = new GarageService();
-    private List<Car> selectedCars;
-    private List<Upgrade> selectedUpgrades;
+    private List<Car> playerCars;
+    private List<Upgrade> playerUpgrades;
     private Car currentCar;
+
     private Car selectedCar;
     private Upgrade selectedUpgrade;
+
     private Car chosenCar;
     private Upgrade chosenUpgrade;
 
+    private int money;
+
     @FXML
     public void initialize() {
-        GameManager gameManager = getGameManager();
-        selectedCars = gameManager.getSelectedCars();
+        GameManager garageScreen = getGameManager();
+        playerCars = garageScreen.getPlayerCars();
+        playerUpgrades = garageScreen.getPlayerUpgrades();
+        currentCar = garageScreen.getCurrentCar();
 
-        List<Button> carButtons = List.of(car1Button, car2Button, car3Button, car4Button, car5Button);
-        List<Button> upgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);
+        List<Button> playerCarButtons = List.of(car1Button, car2Button, car3Button, car4Button, car5Button);
+        List<Button> playerUpgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);
 
         selectUpgradeButton.setOnAction(event -> onSelectUpgradeButtonClicked());
         selectCarButton.setOnAction(event -> onSelectCarButtonClicked());
-
         makeCurrentCarButton.setOnAction(event -> onMakeCurrentCarButtonClicked());
         installUpgradeButton.setOnAction(event -> onInstallUpgradeButtonClciked());
-
         backButton.setOnAction(event -> onBackButtonClicked());
 
-        for (int i = 0; i < carButtons.size(); i++) {
+        for (int i = 0; i < playerCarButtons.size(); i++) {
             int index = i;
-            carButtons.get(i).setOnAction(event -> onCarButtonClicked(index));
+            playerCarButtons.get(i).setOnAction(event -> onPlayerCarButtonClicked(index));
         }
 
-        for (int i = 0; i < upgradeButtons.size(); i++) {
+        for (int i = 0; i < playerUpgradeButtons.size(); i++) {
             int index = i;
-            upgradeButtons.get(i).setOnAction(event -> onUpgradeButtonClicked(index));
+            playerUpgradeButtons.get(i).setOnAction(event -> onPlayerUpgradeButtonClicked(index));
         }
 
-        for (int i = 0; i < selectedCars.size(); i++) {
-            carButtons.get(i).setText(selectedCars.get(i).getName());
+        for (int i = 0; i < playerCars.size(); i++) {
+            playerCarButtons.get(i).setText(playerCars.get(i).getCarName());
         }
+
+        currentCarLabel.setText("Current car: " + currentCar.getCarName());
 
     }
 
@@ -107,10 +109,10 @@ public class GarageScreenController extends ScreenController {
             carReliabilityLabel.setText("Reliability: ");
             carFuelEconomyLabel.setText("Fuel Economy: ");
         } else {
-            carSpeedLabel.setText("Speed: " + car.getSpeed());
-            carHandlingLabel.setText("Handling: " + car.getHandling());
-            carReliabilityLabel.setText("Reliability: " + car.getReliability());
-            carFuelEconomyLabel.setText("Fuel Economy: " + car.getFuelEconomy());
+            carSpeedLabel.setText("Speed: " + car.getCarSpeed());
+            carHandlingLabel.setText("Handling: " + car.getCarHandling());
+            carReliabilityLabel.setText("Reliability: " + car.getCarReliability());
+            carFuelEconomyLabel.setText("Fuel Economy: " + car.getCarFuelEconomy());
         }
     }
 
@@ -121,31 +123,28 @@ public class GarageScreenController extends ScreenController {
             upgradeReliabilityLabel.setText("Reliability: ");
             upgradeFuelEconomyLabel.setText("Fuel Economy: ");
         } else {
-            upgradeSpeedLabel.setText("Speed: " + upgrade.getSpeedUpgrade());
-            upgradeHandlingLabel.setText("Handling: " + upgrade.getHandlingUpgrade());
-            upgradeReliabilityLabel.setText("Reliability: " + upgrade.getReliabilityUpgrade());
-            upgradeFuelEconomyLabel.setText("Fuel Economy: " + upgrade.getFuelEconomyUpgrade());
+            upgradeSpeedLabel.setText("Speed: " + upgrade.getUpgradeSpeed());
+            upgradeHandlingLabel.setText("Handling: " + upgrade.getUpgradeHandling());
+            upgradeReliabilityLabel.setText("Reliability: " + upgrade.getUpgradeReliability());
+            upgradeFuelEconomyLabel.setText("Fuel Economy: " + upgrade.getUpgradeFuelEconomy());
         }
     }
 
-
     @FXML
-    private void onCarButtonClicked(int index) {
-        if (index >= 0 && index < selectedCars.size()) {
-            selectedCar = selectedCars.get(index);
+    private void onPlayerCarButtonClicked(int index) {
+        if (index >= 0 && index < playerCars.size()) {
+            selectedCar = playerCars.get(index);
             updateCarStats(selectedCar);
         }
     }
 
-
     @FXML
-    private void onUpgradeButtonClicked(int index) {
-        if (index >= 0 && index < selectedUpgrades.size()) {
-            selectedUpgrade = selectedUpgrades.get(index);
+    private void onPlayerUpgradeButtonClicked(int index) {
+        if (index >= 0 && index < playerUpgrades.size()) {
+            selectedUpgrade = playerUpgrades.get(index);
             updateUpgradeStats(selectedUpgrade);
         }
     }
-
 
     @FXML
     private void onSelectUpgradeButtonClicked() {
@@ -154,7 +153,6 @@ public class GarageScreenController extends ScreenController {
             updateUpgradeStats(chosenUpgrade);
         }
     }
-
 
     @FXML
     private void onSelectCarButtonClicked() {
@@ -172,31 +170,32 @@ public class GarageScreenController extends ScreenController {
         }
 
         if (chosenCar == null) {
-            showAlert("No car selected", "Please select a car to install a part on.");
+            showAlert("No car selected", "Please select a car to install an upgrade.");
             return;
         }
 
-        chosenCar.setSpeed(chosenCar.getSpeed() + chosenUpgrade.getSpeedUpgrade());
-        chosenCar.setHandling(chosenCar.getHandling() + chosenUpgrade.getHandlingUpgrade());
-        chosenCar.setReliability(chosenCar.getReliability() + chosenUpgrade.getReliabilityUpgrade());
-        chosenCar.setFuelEconomy(chosenCar.getFuelEconomy() + chosenUpgrade.getFuelEconomyUpgrade());
+        chosenCar.setCarSpeed(chosenCar.getCarSpeed() + chosenUpgrade.getUpgradeSpeed());
+        chosenCar.setCarHandling(chosenCar.getCarHandling() + chosenUpgrade.getUpgradeHandling());
+        chosenCar.setCarReliability(chosenCar.getCarReliability() + chosenUpgrade.getUpgradeReliability());
+        chosenCar.setCarFuelEconomy(chosenCar.getCarFuelEconomy() + chosenUpgrade.getUpgradeFuelEconomy());
 
         updateCarStats(chosenCar);
 
-        //selectedUpgrades.removeUpgrade(chosenUpgrade);
+        //playerUpgrades.removeUpgrade(chosenUpgrade);
         updateUpgradeStats(null);
     }
 
     @FXML
     public void onMakeCurrentCarButtonClicked() {
         if (selectedCar != null) {
-            chosenCar = selectedCar;
-            currentCarLabel.setText("Current car: " + chosenCar.getName());
+            currentCar = selectedCar;
+            currentCarLabel.setText("Current car: " + currentCar.getCarName());
         }
     }
 
     @FXML
     public void onBackButtonClicked() {
+        getGameManager().setCurrentCar(currentCar);
         getGameManager().goBack();
     }
 

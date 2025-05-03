@@ -1,15 +1,17 @@
 package seng201.team0.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the player's garage where cars are stored,
  * parts can be installed, and the current car can be managed.
  */
 public class Garage {
+
     private Car currentCar;
-    private ArrayList<Car> reserveCars;
-    private ArrayList<Upgrade> availableUpgrades;
+    private List<Car> playerCars;
+    private List<Upgrade> availableUpgrades;
 
     /**
      * Constructs a Garage with a selected current car,
@@ -19,9 +21,9 @@ public class Garage {
      * @param reserveCars      The list of all backup cars.
      * @param availableUpgrades The list of upgrades available to be installed.
      */
-    public Garage(Car currentCar, ArrayList<Car> reserveCars, ArrayList<Upgrade> availableUpgrades) {
+    public Garage(Car currentCar, List<Car> playerCars, ArrayList<Upgrade> availableUpgrades) {
+        this.playerCars = playerCars;
         this.currentCar = currentCar;
-        this.reserveCars = reserveCars;
         this.availableUpgrades = availableUpgrades;
     }
 
@@ -29,11 +31,11 @@ public class Garage {
         return currentCar;
     }
 
-    public ArrayList<Car> getReserveCars() {
-        return reserveCars;
+    public List<Car> getPlayerCars() {
+        return playerCars;
     }
 
-    public ArrayList<Upgrade> getAvailableUpgrades() {
+    public List<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
 

@@ -1,5 +1,7 @@
 package seng201.team0.services;
 
+import seng201.team0.GameManager;
+
 import seng201.team0.models.Car;
 import seng201.team0.models.Upgrade;
 
@@ -7,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopService {
+
     private List<Car> playerCars = new ArrayList<>();
     private List<Upgrade> playerUpgrades = new ArrayList<>();
     private int money;
-    private final int MAX_CARS = 5;
+
     private CarService carService;
 
     /**
@@ -19,13 +22,13 @@ public class ShopService {
      * @param car The car to buy.
      * @return True if the purchase was successful, false otherwise.
      */
-    public boolean buyCar(Car car) {
-        if (playerCars.size() >= MAX_CARS || money < car.getCost()) {
-            return false;
+    public boolean buyCar(Car car, GameManager shopScreen) {
+        if (shopScreen.getMoney() >= car.getCarCost() && shopScreen.getPlayerCars().size() < 5) {
+            shopScreen.setMoney(shopScreen.getMoney() - car.getCarCost());
+            shopScreen.getPlayerCars().add(car);
+            return true;
         }
-        money -= car.getCost();
-        playerCars.add(car);
-        return true;
+        return false;
     }
 
     /**
@@ -34,9 +37,10 @@ public class ShopService {
      * @param car The car to sell.
      * @return True if the car was sold, false if the car was not found.
      */
-    public boolean sellCar(Car car) {
-        if (playerCars.remove(car)) {
-            money += car.getCost() / 2;
+    public boolean sellCar(Car car, GameManager shopScreen) {
+        if (shopScreen.getPlayerCars().contains(car)) {
+            shopScreen.setMoney(shopScreen.getMoney() + (car.getCarCost() / 2));
+            shopScreen.getPlayerCars().remove(car);
             return true;
         }
         return false;
@@ -49,10 +53,10 @@ public class ShopService {
      * @return True if the purchase was successful, false otherwise.
      */
     public boolean buyUpgrade(Upgrade upgrade) {
-        if (money < upgrade.getCost()) {
+        if (money < upgrade.getUpgradeCost()) {
             return false;
         }
-        money -= upgrade.getCost();
+        money -= upgrade.getUpgradeCost();
         playerUpgrades.add(upgrade);
         return true;
     }
@@ -65,7 +69,7 @@ public class ShopService {
      */
     public boolean sellUpgrade(Upgrade upgrade) {
         if (playerUpgrades.remove(upgrade)) {
-            money += upgrade.getCost() / 2;
+            money += upgrade.getUpgradeCost() / 2;
             return true;
         }
         return false;
@@ -82,6 +86,10 @@ public class ShopService {
             carService.generateRandomCars(3);
         }
         return carService.getAvailableCars();
+    }
+
+    public int getMoney() {
+        return money;
     }
 
 }

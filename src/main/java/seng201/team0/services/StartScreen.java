@@ -10,13 +10,15 @@ import seng201.team0.services.CarService;
 /**
  * Handles game initialisation, including player name, difficulty, money, car selection, and season length.
  */
-public class GameInitialiser {
+public class StartScreen {
+
     private String playerName;
-    private String difficulty;
     private int seasonLength;
+    private String difficulty;
     private int money;
+    private List<Car> playerCars = new ArrayList<>();
+    private Car currentCar;
     private CarService carService = new CarService();
-    private List<Car> selectedCars = new ArrayList<>();
 
     /**
      * Validates and sets the player's name.
@@ -53,7 +55,7 @@ public class GameInitialiser {
     public void selectDifficulty(String difficulty) {
         switch (difficulty) {
             case "EASY":
-                this.money = 1000;
+                this.money = 750;
                 break;
             case "HARD":
                 this.money = 500;
@@ -81,9 +83,9 @@ public class GameInitialiser {
         return carService.getAvailableCars();
     }
 
-    public List<Car> getSelectedCars() { return selectedCars; }
+    public List<Car> getPlayerCars() { return playerCars; }
 
-    public void setSelectedCars(List<Car> selectedCars) { this.selectedCars = selectedCars; }
+    public void setPlayerCars(List<Car> playerCars) { this.playerCars = playerCars; }
 
     /**
      * Attempts to add a car to the player's selection.
@@ -94,10 +96,10 @@ public class GameInitialiser {
      * @return true if the car was successfully added, false otherwise.
      */
     public boolean addCar(Car car) {
-        if (!selectedCars.contains(car) && selectedCars.size() < 3) {
-            if (money >= car.getCost()) {
-                selectedCars.add(car);
-                money -= car.getCost();
+        if (!playerCars.contains(car) && playerCars.size() < 3) {
+            if (money >= car.getCarCost()) {
+                playerCars.add(car);
+                money -= car.getCarCost();
                 return true;
             } else {
                 return false;
@@ -113,9 +115,9 @@ public class GameInitialiser {
      * @param car The Car to remove from the selection.
      */
     public void deleteCar(Car car) {
-        if (selectedCars.contains(car)) {
-            selectedCars.remove(car);
-            money += car.getCost();
+        if (playerCars.contains(car)) {
+            playerCars.remove(car);
+            money += car.getCarCost();
         }
     }
 

@@ -38,17 +38,17 @@ public class Car {
         this.name = name;
     }
 
-    public int getSpeed() { return speed; }
+    public int getCarSpeed() { return speed; }
 
-    public int getHandling() { return handling; }
+    public int getCarHandling() { return handling; }
 
-    public int getReliability() { return reliability; }
+    public int getCarReliability() { return reliability; }
 
-    public int getFuelEconomy() { return fuelEconomy; }
+    public int getCarFuelEconomy() { return fuelEconomy; }
 
-    public int getCost() { return cost; }
+    public int getCarCost() { return cost; }
 
-    public String getID(){
+    public String getCarID(){
         return id;
     }
 
@@ -58,19 +58,19 @@ public class Car {
      *
      * @return The name of the car, or "Unnamed Car" if none is set.
      */
-    public String getName(){ return name == null || name.isBlank() ? "Unnamed Car" : name; }
+    public String getCarName(){ return name == null || name.isBlank() ? "Unnamed Car" : name; }
 
-    public void setSpeed(int speed) { this.speed = speed; }
+    public void setCarSpeed(int speed) { this.speed = speed; }
 
-    public void setHandling(int handling) { this.handling = handling; }
+    public void setCarHandling(int handling) { this.handling = handling; }
 
-    public void setReliability(int reliability) { this.reliability = reliability; }
+    public void setCarReliability(int reliability) { this.reliability = reliability; }
 
-    public void setFuelEconomy(int fuelEconomy) { this.fuelEconomy = fuelEconomy; }
+    public void setCarFuelEconomy(int fuelEconomy) { this.fuelEconomy = fuelEconomy; }
 
-    public void setCost(int cost) { this.cost = cost; }
+    public void setCarCost(int cost) { this.cost = cost; }
 
-    public void setName(String name){
+    public void setCarName(String name){
         this.name = name;
     }
 

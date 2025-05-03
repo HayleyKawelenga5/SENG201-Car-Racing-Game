@@ -2,12 +2,15 @@ package seng201.team0.services;
 
 import seng201.team0.models.Car;
 import seng201.team0.models.Upgrade;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class GarageService {
+
     private Car currentCar;
-    private ArrayList<Car> reserveCars;
-    private ArrayList<Upgrade> availableUpgrades;
+    private List<Car> playerCars;
+    private List<Upgrade> availableUpgrades;
 
     /**
      * Swaps the current car with one from the reserve.
@@ -16,9 +19,7 @@ public class GarageService {
      * @return True if successful, false otherwise.
      */
     public boolean swapCurrentCar(Car car) {
-        if (reserveCars.contains(car)) {
-            reserveCars.remove(car);
-            reserveCars.add(currentCar);
+        if (playerCars.contains(car)) {
             currentCar = car;
             return true;
         }
@@ -33,10 +34,10 @@ public class GarageService {
      */
     public boolean installUpgrade(Upgrade upgrade) {
         if (availableUpgrades.remove(upgrade)) {
-            currentCar.setSpeed(currentCar.getSpeed() + upgrade.getSpeedUpgrade());
-            currentCar.setHandling(currentCar.getHandling() + upgrade.getHandlingUpgrade());
-            currentCar.setReliability(currentCar.getReliability() + upgrade.getReliabilityUpgrade());
-            currentCar.setFuelEconomy(currentCar.getFuelEconomy() + upgrade.getFuelEconomyUpgrade());
+            currentCar.setCarSpeed(currentCar.getCarSpeed() + upgrade.getUpgradeSpeed());
+            currentCar.setCarHandling(currentCar.getCarHandling() + upgrade.getUpgradeHandling());
+            currentCar.setCarReliability(currentCar.getCarReliability() + upgrade.getUpgradeReliability());
+            currentCar.setCarFuelEconomy(currentCar.getCarFuelEconomy() + upgrade.getUpgradeFuelEconomy());
             return true;
         }
         return false;

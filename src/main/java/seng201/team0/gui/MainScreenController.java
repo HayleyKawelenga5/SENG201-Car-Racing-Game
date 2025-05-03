@@ -1,9 +1,13 @@
 package seng201.team0.gui;
 
 import javafx.scene.control.*;
+
 import seng201.team0.GameManager;
+
+import seng201.team0.services.StartScreen;
+
 import seng201.team0.models.Car;
-import seng201.team0.services.GameInitialiser;
+import seng201.team0.models.Upgrade;
 
 import javafx.fxml.FXML;
 
@@ -12,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainScreenController extends ScreenController {
+
     @FXML private Button race1Button;
     @FXML private Button race2Button;
     @FXML private Button race3Button;
@@ -39,6 +44,11 @@ public class MainScreenController extends ScreenController {
     @FXML private Label selectedRaceLabel;
 
 
+
+    //private MainScreen mainScreen = new MainScreen();
+
+
+
     public MainScreenController(GameManager manager) {
         super(manager);
     }
@@ -49,31 +59,37 @@ public class MainScreenController extends ScreenController {
     @Override
     protected String getTitle() {return "Main Screen";}
 
-
     @FXML
     public void initialize() {
-        GameManager gameManager = getGameManager();
+        GameManager mainScreen = getGameManager();
 
-        String playerName = gameManager.getPlayerName();
-        int seasonLength = gameManager.getSeasonLength();
-        String difficulty = gameManager.getDifficulty();
-        List<Car> selectedCars = gameManager.getSelectedCars();
-        int playerMoney = gameManager.getPlayerMoney();
-        Car currentCar = gameManager.getCurrentCar();
+        String playerName = mainScreen.getPlayerName();
+        int seasonLength = mainScreen.getSeasonLength();
+        String difficulty = mainScreen.getDifficulty();
+        int money = mainScreen.getMoney();
+        List<Car> playerCars = mainScreen.getPlayerCars();
+        List<Upgrade> playerUpgrades = mainScreen.getPlayerUpgrades();
 
-        moneyLabel.setText("Money: $" + String.valueOf(playerMoney));
-        racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength));
+        Car currentCar = mainScreen.getCurrentCar();
+        if (!playerCars.contains(currentCar)) {
+            currentCar = playerCars.get(0);
+        }
+        mainScreen.setCurrentCar(currentCar);
+
+        moneyLabel.setText("Money: $" + String.valueOf(money));
+        racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength)); // NEED TO FIX
         seasonLengthLabel.setText("Season Length: " + String.valueOf(seasonLength));
 
-        currentCarNameLabel.setText("Current car: " + currentCar.getName());
-        currentCarSpeedLabel.setText("Speed: " + currentCar.getSpeed());
-        currentCarHandlingLabel.setText("Handling: " + currentCar.getHandling());
-        currentCarReliabilityLabel.setText("Reliability: " + currentCar.getReliability());
-        currentCarFuelEconomyLabel.setText("Fuel Economy: " + currentCar.getFuelEconomy());
+        currentCarNameLabel.setText("Current car: " + currentCar.getCarName());
+        currentCarSpeedLabel.setText("Speed: " + currentCar.getCarSpeed());
+        currentCarHandlingLabel.setText("Handling: " + currentCar.getCarHandling());
+        currentCarReliabilityLabel.setText("Reliability: " + currentCar.getCarReliability());
+        currentCarFuelEconomyLabel.setText("Fuel Economy: " + currentCar.getCarFuelEconomy());
 
         toGarageButton.setOnAction(event -> onToGarageButtonClicked());
-
         toShopButton.setOnAction(event -> onToShopButtonClicked());
+        //selectRaceButton.setOnAction(event -> onSelectRaceButtonClicked());
+        //startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
     }
 
     @FXML
@@ -82,12 +98,8 @@ public class MainScreenController extends ScreenController {
     }
 
     @FXML
-    public void onToShopButtonClicked(){
-        getGameManager().goToShop(getGameManager().getPlayerMoney(), getGameManager().getSelectedCars());
+    public void onToShopButtonClicked() {
+        getGameManager().goToShop();
     }
 
-    @FXML
-    public void onBackButtonClicked() {
-        getGameManager().goToGarage();
-    }
 }
