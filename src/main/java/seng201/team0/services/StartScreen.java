@@ -40,7 +40,7 @@ public class StartScreen {
      * @throws IllegalArgumentException if length is outside 5–15.
      */
     public void selectSeasonLength(int length) throws IllegalArgumentException {
-        if (length < 5 || length > 15){
+        if (length < 5 || length > 15) {
             throw new IllegalArgumentException("Season length must be between 5 and 15 races");
         }
         this.seasonLength = length;

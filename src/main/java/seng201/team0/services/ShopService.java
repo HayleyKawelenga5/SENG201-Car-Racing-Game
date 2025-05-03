@@ -52,13 +52,13 @@ public class ShopService {
      * @param upgrade The upgrade to buy.
      * @return True if the purchase was successful, false otherwise.
      */
-    public boolean buyUpgrade(Upgrade upgrade) {
-        if (money < upgrade.getUpgradeCost()) {
-            return false;
+    public boolean buyUpgrade(Upgrade upgrade, GameManager shopScreen) {
+        if (shopScreen.getMoney() >= upgrade.getUpgradeCost() && shopScreen.getPlayerUpgrades().size() < 3) {
+            shopScreen.setMoney(shopScreen.getMoney() - upgrade.getUpgradeCost());
+            shopScreen.getPlayerUpgrades().add(upgrade);
+            return true;
         }
-        money -= upgrade.getUpgradeCost();
-        playerUpgrades.add(upgrade);
-        return true;
+        return false;
     }
 
     /**
@@ -67,9 +67,10 @@ public class ShopService {
      * @param upgrade The upgrade to sell.
      * @return True if the upgrade was sold, false otherwise.
      */
-    public boolean sellUpgrade(Upgrade upgrade) {
-        if (playerUpgrades.remove(upgrade)) {
-            money += upgrade.getUpgradeCost() / 2;
+    public boolean sellUpgrade(Upgrade upgrade, GameManager shopScreen) {
+        if (shopScreen.getPlayerUpgrades().contains(upgrade)) {
+            shopScreen.setMoney(shopScreen.getMoney() + (upgrade.getUpgradeCost() / 2));
+            shopScreen.getPlayerUpgrades().remove(upgrade);
             return true;
         }
         return false;
@@ -80,13 +81,14 @@ public class ShopService {
      * this method will generate them first.
      *
      * @return A list of available Car objects.
-     */
+     *
     public List<Car> getCarsForPurchase() {
         if (carService.getAvailableCars().isEmpty()) {
             carService.generateRandomCars(3);
         }
         return carService.getAvailableCars();
     }
+    */
 
     public int getMoney() {
         return money;

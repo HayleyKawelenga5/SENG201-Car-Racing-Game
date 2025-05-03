@@ -26,13 +26,14 @@ public class GameManager {
         navigator.launchStartScreen(this);
     }
 
-    public void toMainScreen(String playerName, int seasonLength, String difficulty, List<Car> playerCars, int money, Car currentCar) {
+    public void toMainScreen(String playerName, int seasonLength, String difficulty, List<Car> playerCars, int money, Car currentCar, List<Upgrade> playerUpgrades) {
         this.playerName = playerName;
         this.seasonLength = seasonLength;
         this.difficulty = difficulty;
         this.money = money;
         this.playerCars = playerCars;
         this.currentCar = currentCar;
+        this.playerUpgrades = playerUpgrades;
 
         navigator.launchMainScreen(this);
     }

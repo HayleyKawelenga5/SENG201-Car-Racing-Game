@@ -12,6 +12,7 @@ import seng201.team0.services.ShopService;
 import seng201.team0.models.Upgrade;
 import seng201.team0.services.UpgradeService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopScreenController extends ScreenController {
@@ -99,6 +100,8 @@ public class ShopScreenController extends ScreenController {
 
         buyCarButton.setOnAction(event -> onBuyCarButtonClicked());
         sellCarButton.setOnAction(event -> onSellCarButtonClicked());
+        buyUpgradeButton.setOnAction(event -> onBuyUpgradeButtonClicked());
+        sellUpgradeButton.setOnAction(event -> onSellUpgradeButtonClicked());
         backButton.setOnAction(event -> onBackButtonClicked());
 
         updateMoneyLabel();
@@ -139,6 +142,8 @@ public class ShopScreenController extends ScreenController {
 
         updatePlayerCarButtons();
         updateShopCarButtons();
+        updatePlayerUpgradeButtons();
+        updateShopUpgradeButtons();
     }
 
     @FXML
@@ -205,7 +210,7 @@ public class ShopScreenController extends ScreenController {
                 updateMoneyLabel();
                 updatePlayerCarButtons();
                 updateShopCarButtons();
-                updateUpgradeStats(null);
+                updateCarStats(null);
             } else {
                 showAlert("Purchase failed", "Not enough money or max cars reached.");
             }
@@ -235,7 +240,55 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
-    public void updateCarStats(Car car){
+    @FXML
+    public void onBuyUpgradeButtonClicked() {
+        if (selectedUpgrade == null) {
+            showAlert("Error", "Please select an upgrade to buy.");
+            return;
+        }
+        if (selectedUpgrade.getUpgradeCost() > getGameManager().getMoney()) {
+            showAlert("Error", "Insifficient funds to buy this upgrade.");
+            return;
+        }
+        if (playerUpgrades.size() >= 3) {
+            showAlert("Error", "Too many upgrades, please sell an upgrade before buying this upgrade.");
+            return;
+        }
+
+        if (selectedUpgrade != null) {
+            boolean bought = shopService.buyUpgrade(selectedUpgrade, getGameManager());
+            if (bought) {
+                availableUpgrades.set(shopSelectedUpgradeIndex, null);
+                updateMoneyLabel();
+                updatePlayerUpgradeButtons();
+                updateShopUpgradeButtons();
+                updateUpgradeStats(null);
+            } else {
+                showAlert("Purchase failed", "Not enough money or max upgrades reached.");
+            }
+        }
+    }
+
+    @FXML
+    public void onSellUpgradeButtonClicked() {
+        if (selectedUpgrade == null) {
+            showAlert("Error", "Please select an upgrade to sell.");
+            return;
+        }
+
+        if (selectedUpgrade != null) {
+            boolean sold = shopService.sellUpgrade(selectedUpgrade, getGameManager());
+            if (sold) {
+                updateMoneyLabel();
+                updatePlayerUpgradeButtons();
+                updateUpgradeStats(null);
+            } else {
+                showAlert("Sale failed", "Upgrade not found in your garage.");
+            }
+        }
+    }
+
+    public void updateCarStats(Car car) {
         if (car == null) {
             carSpeedLabel.setText("Speed: ");
             carHandlingLabel.setText("Handling: ");
@@ -267,7 +320,11 @@ public class ShopScreenController extends ScreenController {
             upgradeHandlingLabel.setText("Handling: " + upgrade.getUpgradeHandling());
             upgradeReliabilityLabel.setText("Reliability: " + upgrade.getUpgradeReliability());
             upgradeFuelEconomyLabel.setText("Fuel Economy: " + upgrade.getUpgradeFuelEconomy());
-            upgradeCostLabel.setText("Cost: $" + upgrade.getUpgradeCost());
+            if (playerUpgrades.contains(upgrade)) {
+                upgradeCostLabel.setText("Cost: $" + upgrade.getUpgradeCost() / 2);
+            } else {
+                upgradeCostLabel.setText("Cost: $" + upgrade.getUpgradeCost());
+            }
         }
     }
 
@@ -293,9 +350,32 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    private void updatePlayerUpgradeButtons() {
+        List<Button> playerUpgradeButtons = List.of(playerUpgrade1Button, playerUpgrade2Button, playerUpgrade3Button);
+        for (int i = 0; i < playerUpgradeButtons.size(); i++) {
+            if (i < playerUpgrades.size()) {
+                playerUpgradeButtons.get(i).setText(playerUpgrades.get(i).getUpgradeName());
+            } else {
+                playerUpgradeButtons.get(i).setText("");
+            }
+        }
+    }
+
+    private void updateShopUpgradeButtons() {
+        List<Button> shopUpgradeButtons = List.of(shopUpgrade1Button, shopUpgrade2Button, shopUpgrade3Button);
+        for (int i = 0; i < shopUpgradeButtons.size(); i++) {
+            if (i < availableUpgrades.size() && availableUpgrades.get(i) != null) {
+                shopUpgradeButtons.get(i).setText(availableUpgrades.get(i).getUpgradeName());
+            } else {
+                shopUpgradeButtons.get(i).setText("");
+            }
+        }
+    }
+
     @FXML
     public void onBackButtonClicked() {
         getGameManager().setPlayerCars(playerCars);
+        getGameManager().setPlayerUpgrades(playerUpgrades);
         getGameManager().goBack();
     }
 

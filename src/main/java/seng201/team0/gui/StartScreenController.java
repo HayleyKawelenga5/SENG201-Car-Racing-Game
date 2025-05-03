@@ -5,6 +5,7 @@ import seng201.team0.GameManager;
 import seng201.team0.services.StartScreen;
 
 import seng201.team0.models.Car;
+import seng201.team0.models.Upgrade;
 
 import javafx.fxml.FXML;
 
@@ -47,6 +48,7 @@ public class StartScreenController extends ScreenController {
 
     private List<Car> availableCars;
     private List<Car> playerCars = new ArrayList<>();
+    private List<Upgrade> playerUpgrades = new ArrayList<>();
 
     private Car selectedCar;
     private Car currentCar;
@@ -248,12 +250,12 @@ public class StartScreenController extends ScreenController {
             startScreen.selectDifficulty(difficulty);
             currentCar = playerCars.get(0);
 
-            if (startScreen.getPlayerCars().size() <= 0){
+            if (startScreen.getPlayerCars().size() <= 0) {
                 showAlert("Not cars selected", "Please select at least one car.");
                 return;
             }
             startScreen.setPlayerCars(playerCars);
-            getGameManager().toMainScreen(playerName, seasonLength, difficulty, playerCars, money, currentCar);
+            getGameManager().toMainScreen(playerName, seasonLength, difficulty, playerCars, money, currentCar, playerUpgrades);
         } catch (InvalidNameException e) {
             showAlert("Name Error", e.getMessage());
         } catch (IllegalArgumentException e) {

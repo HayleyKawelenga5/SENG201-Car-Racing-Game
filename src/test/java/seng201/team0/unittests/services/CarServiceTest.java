@@ -33,11 +33,11 @@ public class CarServiceTest {
         assertEquals(5, availableCars.size());
 
         for (Car car : availableCars) {
-            assertTrue(car.getSpeed() >= 1 && car.getSpeed() <= 10);
-            assertTrue(car.getHandling() >= 1 && car.getHandling() <= 10);
-            assertTrue(car.getReliability() >= 1 && car.getReliability() <= 10);
-            assertTrue(car.getFuelEconomy() >= 1 && car.getFuelEconomy() <= 10);
-            assertTrue(car.getCost() == ((car.getSpeed() + car.getHandling() + car.getReliability() + car.getFuelEconomy()) * 10));
+            assertTrue(car.getCarSpeed() >= 1 && car.getCarSpeed() <= 10);
+            assertTrue(car.getCarHandling() >= 1 && car.getCarHandling() <= 10);
+            assertTrue(car.getCarReliability() >= 1 && car.getCarReliability() <= 10);
+            assertTrue(car.getCarFuelEconomy() >= 1 && car.getCarFuelEconomy() <= 10);
+            assertTrue(car.getCarCost() == ((car.getCarSpeed() + car.getCarHandling() + car.getCarReliability() + car.getCarFuelEconomy()) * 10));
         }
     }
 

@@ -81,7 +81,7 @@ public class GarageScreenController extends ScreenController {
         selectUpgradeButton.setOnAction(event -> onSelectUpgradeButtonClicked());
         selectCarButton.setOnAction(event -> onSelectCarButtonClicked());
         makeCurrentCarButton.setOnAction(event -> onMakeCurrentCarButtonClicked());
-        installUpgradeButton.setOnAction(event -> onInstallUpgradeButtonClciked());
+        installUpgradeButton.setOnAction(event -> onInstallUpgradeButtonClicked());
         backButton.setOnAction(event -> onBackButtonClicked());
 
         for (int i = 0; i < playerCarButtons.size(); i++) {
@@ -163,7 +163,7 @@ public class GarageScreenController extends ScreenController {
     }
 
     @FXML
-    private void onInstallUpgradeButtonClciked() {
+    private void onInstallUpgradeButtonClicked() {
         if (chosenUpgrade == null) {
             showAlert("No upgrade selected", "Please select an upgarde to install.");
             return;
