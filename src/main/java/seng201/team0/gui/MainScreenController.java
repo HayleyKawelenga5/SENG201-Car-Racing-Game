@@ -4,6 +4,8 @@ import javafx.scene.control.*;
 
 import seng201.team0.GameManager;
 
+import seng201.team0.models.Race;
+import seng201.team0.services.RaceService;
 import seng201.team0.services.StartScreen;
 
 import seng201.team0.models.Car;
@@ -43,7 +45,10 @@ public class MainScreenController extends ScreenController {
 
     @FXML private Label selectedRaceLabel;
 
-
+    private RaceService raceService;
+    private List<Race> availableRaces;
+    private Race selectedRace;
+    private int selectedRaceIndex = -1;
 
     //private MainScreen mainScreen = new MainScreen();
 
@@ -76,6 +81,18 @@ public class MainScreenController extends ScreenController {
         }
         mainScreen.setCurrentCar(currentCar);
 
+        raceService = new RaceService();
+        availableRaces = raceService.generateRaces(3);
+
+
+        List<Button> availableRaceButtons = List.of(race1Button, race2Button, race3Button);
+        for (int i = 0; i < availableRaceButtons.size(); i++) {
+            int index = i;
+            availableRaceButtons.get(i).setOnAction(event -> onAvailableRaceButtonClicked(index));
+        }
+
+        selectRaceButton.setOnAction(event -> onSelectRaceButtonClicked());
+
         moneyLabel.setText("Money: $" + String.valueOf(money));
         racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength)); // NEED TO FIX
         seasonLengthLabel.setText("Season Length: " + String.valueOf(seasonLength));
@@ -93,6 +110,37 @@ public class MainScreenController extends ScreenController {
     }
 
     @FXML
+    private void onAvailableRaceButtonClicked(int index){
+        if (index >=0 && index < availableRaces.size()){
+            selectedRace = availableRaces.get(index);
+            selectedRaceIndex = index;
+            updateRaceStats(selectedRace);
+        }
+    }
+
+    @FXML
+    private void onSelectRaceButtonClicked() {
+        if (selectedRace == null){
+            showAlert("No Race Selected", "Please select a race.");
+            return;
+        }
+    }
+
+    private void updateRaceStats(Race race){
+        if (race == null){
+            raceHoursLabel.setText("Hours: ");
+            raceRoutesLabel.setText("Routes: ");
+            raceEntriesLabel.setText("Entries: ");
+            racePrizeMoneyLabel.setText("Prize Money: ");
+        } else {
+            raceHoursLabel.setText("Hours: " + race.getHours());
+            raceRoutesLabel.setText("Routes: " + race.getRoutes());
+            raceEntriesLabel.setText("Entries: " + race.getEntries());
+            racePrizeMoneyLabel.setText("Prize Money: " + race.getPrizeMoney());
+        }
+    }
+
+    @FXML
     public void onToGarageButtonClicked() {
         getGameManager().goToGarage();
     }
@@ -100,6 +148,14 @@ public class MainScreenController extends ScreenController {
     @FXML
     public void onToShopButtonClicked() {
         getGameManager().goToShop();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

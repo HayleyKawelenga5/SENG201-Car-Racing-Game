@@ -1,6 +1,6 @@
 package seng201.team0.models;
 
-import java.util.List;
+import java.util.*;
 
 public class Race {
 
@@ -20,8 +20,23 @@ public class Race {
         return hours;
     }
 
-    public List<Route> getRoutes() {
-        return routes;
+    public StringBuilder getRoutes() {
+        StringBuilder routeString = new StringBuilder();
+        Set<Route.RouteType> uniqueTypes = new HashSet<>();
+
+        for (Route route : routes) {
+            uniqueTypes.add(route.getDescription());
+        }
+
+        int count = 0;
+        for (Route.RouteType type : uniqueTypes) {
+            routeString.append(type);
+            if (++count < uniqueTypes.size()) {
+                routeString.append(", ");
+            }
+        }
+
+        return routeString;
     }
 
     public int getEntries() {

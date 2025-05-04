@@ -60,7 +60,9 @@ public class StartScreenController extends ScreenController {
 
     private GameManager gameManager;
 
-    public StartScreenController(GameManager manager) {super(manager);}
+    public StartScreenController(GameManager manager) {
+        super(manager);
+    }
 
     @Override
     protected String getFxmlFile() {return "/fxml/start_screen.fxml";}
