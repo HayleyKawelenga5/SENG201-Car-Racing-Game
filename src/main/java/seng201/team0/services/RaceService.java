@@ -19,7 +19,7 @@ public class RaceService {
     public Race generateRandomRace() {
         int hours = random.nextInt(2, 6);
         int entries = random.nextInt(3,9);
-        int prizeMoney = random.nextInt(200, 1000);
+        int prizeMoney = (new Random().nextInt(9) + 2) * 100;
 
         int numberOfRoutes = random.nextInt(1,4);
         List<Route> routes = new ArrayList<>();

@@ -246,16 +246,18 @@ public class StartScreenController extends ScreenController {
         String difficulty = difficultyChoiceBox.getValue();
         int money = startScreen.getMoney();
 
+        if (startScreen.getPlayerCars().size() <= 0) {
+            showAlert("Not cars selected", "Please select at least one car.");
+            return;
+        }
+
         try {
             startScreen.selectName(playerName);
             startScreen.selectSeasonLength(seasonLength);
             startScreen.selectDifficulty(difficulty);
             currentCar = playerCars.get(0);
 
-            if (startScreen.getPlayerCars().size() <= 0) {
-                showAlert("Not cars selected", "Please select at least one car.");
-                return;
-            }
+
             startScreen.setPlayerCars(playerCars);
             getGameManager().toMainScreen(playerName, seasonLength, difficulty, playerCars, money, currentCar, playerUpgrades);
         } catch (InvalidNameException e) {
