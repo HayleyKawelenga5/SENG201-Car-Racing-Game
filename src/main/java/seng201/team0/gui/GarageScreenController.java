@@ -190,10 +190,10 @@ public class GarageScreenController extends ScreenController {
             return;
         }
 
-        chosenCar.setCarSpeed(chosenCar.getCarSpeed() + chosenUpgrade.getUpgradeSpeed());
-        chosenCar.setCarHandling(chosenCar.getCarHandling() + chosenUpgrade.getUpgradeHandling());
-        chosenCar.setCarReliability(chosenCar.getCarReliability() + chosenUpgrade.getUpgradeReliability());
-        chosenCar.setCarFuelEconomy(chosenCar.getCarFuelEconomy() + chosenUpgrade.getUpgradeFuelEconomy());
+        chosenCar.setCarSpeed(Math.min(10, chosenCar.getCarSpeed() + chosenUpgrade.getUpgradeSpeed()));
+        chosenCar.setCarHandling(Math.min(10, chosenCar.getCarHandling() + chosenUpgrade.getUpgradeHandling()));
+        chosenCar.setCarReliability(Math.min(10, chosenCar.getCarReliability() + chosenUpgrade.getUpgradeReliability()));
+        chosenCar.setCarFuelEconomy(Math.min(10, chosenCar.getCarFuelEconomy() + chosenUpgrade.getUpgradeFuelEconomy()));
         chosenCar.setCarCost(chosenCar.getCarCost() + chosenUpgrade.getUpgradeCost());
 
         updateCarStats(chosenCar);
