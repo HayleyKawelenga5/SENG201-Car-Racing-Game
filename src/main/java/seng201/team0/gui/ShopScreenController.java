@@ -181,7 +181,7 @@ public class ShopScreenController extends ScreenController {
             return;
         }
         if (selectedCar.getCarCost() > getGameManager().getMoney()) {
-            showAlert("Error", "Insifficient funds to buy this car.");
+            showAlert("Error", "Insufficient funds to buy this car.");
             return;
         }
         if (playerCars.size() >= 5) {

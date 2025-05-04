@@ -20,7 +20,11 @@ public class Race {
         return hours;
     }
 
-    public StringBuilder getRoutes() {
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public StringBuilder getRoutesDescription() {
         StringBuilder routeString = new StringBuilder();
         Set<Route.RouteType> uniqueTypes = new HashSet<>();
 

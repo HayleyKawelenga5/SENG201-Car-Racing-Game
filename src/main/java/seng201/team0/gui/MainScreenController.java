@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import seng201.team0.GameManager;
 
 import seng201.team0.models.Race;
+import seng201.team0.models.Route;
 import seng201.team0.services.RaceService;
 import seng201.team0.services.StartScreen;
 
@@ -28,6 +29,11 @@ public class MainScreenController extends ScreenController {
     @FXML private Button selectRaceButton;
     @FXML private Button startRaceButton;
 
+    @FXML private Button route1Button;
+    @FXML private Button route2Button;
+    @FXML private Button route3Button;
+    @FXML private Button selectRouteButton;
+
     @FXML private Label currentCarNameLabel;
     @FXML private Label currentCarSpeedLabel;
     @FXML private Label currentCarHandlingLabel;
@@ -49,6 +55,12 @@ public class MainScreenController extends ScreenController {
     private List<Race> availableRaces;
     private Race selectedRace;
     private int selectedRaceIndex = -1;
+    private Route selectedRoute;
+
+    private Race chosenRace;
+    private Route chosenRoute;
+
+    private List<Button> routeButtons;
 
     //private MainScreen mainScreen = new MainScreen();
 
@@ -91,7 +103,19 @@ public class MainScreenController extends ScreenController {
             availableRaceButtons.get(i).setOnAction(event -> onAvailableRaceButtonClicked(index));
         }
 
+        routeButtons = List.of(route1Button, route2Button, route3Button);
+        for (int i = 0; i < routeButtons.size(); i++) {
+            int index = i;
+            routeButtons.get(i).setOnAction(event -> onRouteButtonClicked(index));
+        }
+
+        route1Button.setVisible(false);
+        route2Button.setVisible(false);
+        route3Button.setVisible(false);
+
+        selectRouteButton.setOnAction(event -> onSelectRouteButtonClicked());
         selectRaceButton.setOnAction(event -> onSelectRaceButtonClicked());
+        startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
 
         moneyLabel.setText("Money: $" + String.valueOf(money));
         racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength)); // NEED TO FIX
@@ -123,6 +147,39 @@ public class MainScreenController extends ScreenController {
         if (selectedRace == null){
             showAlert("No Race Selected", "Please select a race.");
             return;
+        } else {
+            chosenRace = selectedRace;
+        }
+
+    }
+
+    @FXML
+    private void onStartRaceButtonClicked() {
+        if (selectedRace == null){
+            showAlert("No Race Selected", "Please select a race.");
+        }
+
+    }
+
+    @FXML
+    private void onSelectRouteButtonClicked(){
+        if (selectedRoute == null){
+            showAlert("No Route Selected", "Please select a route.");
+        } else {
+            chosenRoute = selectedRoute;
+        }
+    }
+
+    @FXML
+    private void onRouteButtonClicked(int index) {
+        selectedRoute = selectedRace.getRoutes().get(index);
+
+        for (int i = 0; i < routeButtons.size(); i++) {
+            if (i == index){
+                routeButtons.get(i).setStyle("-fx-background-color: LightGreen");
+            } else {
+                routeButtons.get(i).setStyle("");
+            }
         }
     }
 
@@ -132,12 +189,25 @@ public class MainScreenController extends ScreenController {
             raceRoutesLabel.setText("Routes: ");
             raceEntriesLabel.setText("Entries: ");
             racePrizeMoneyLabel.setText("Prize Money: ");
+            route1Button.setVisible(false);
+            route2Button.setVisible(false);
+            route3Button.setVisible(false);
         } else {
             raceHoursLabel.setText("Hours: " + race.getHours());
-            raceRoutesLabel.setText("Routes: " + race.getRoutes());
+            raceRoutesLabel.setText("Routes: " + race.getRoutesDescription());
             raceEntriesLabel.setText("Entries: " + race.getEntries());
             racePrizeMoneyLabel.setText("Prize Money: " + race.getPrizeMoney());
-        }
+
+            List<Route> routes = race.getRoutes();
+            for (int i = 0; i < routeButtons.size(); i++) {
+                if (i < routes.size()){
+                routeButtons.get(i).setText(routes.get(i).getDescription().toString());
+                routeButtons.get(i).setVisible(true);
+
+            } else {
+                routeButtons.get(i).setVisible(false);
+            }
+        }}
     }
 
     @FXML
