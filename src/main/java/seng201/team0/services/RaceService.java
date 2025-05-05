@@ -1,5 +1,6 @@
 package seng201.team0.services;
 
+import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
 
@@ -35,5 +36,13 @@ public class RaceService {
             races.add(generateRandomRace());
         }
         return races;
+    }
+
+    public Car applyMultipliers(Car car, double multiplier){
+        car.setCarSpeed((int)(car.getCarSpeed()*multiplier));
+        car.setCarHandling((int)(car.getCarHandling()*multiplier));
+        car.setCarReliability((int)(car.getCarReliability()*multiplier));
+        car.setCarFuelEconomy((int)(car.getCarFuelEconomy()*multiplier));
+        return car;
     }
 }

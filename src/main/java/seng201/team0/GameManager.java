@@ -3,6 +3,8 @@ package seng201.team0;
 import seng201.team0.gui.ScreenNavigator;
 
 import seng201.team0.models.Car;
+import seng201.team0.models.Race;
+import seng201.team0.models.Route;
 import seng201.team0.models.Upgrade;
 
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ public class GameManager {
     private Car currentCar;
 
     private List<Upgrade> playerUpgrades;
+
+    private Race selectedRace;
+    private Route selectedRoute;
 
     public GameManager(ScreenNavigator navigator) {
         this.navigator = navigator;
@@ -66,6 +71,16 @@ public class GameManager {
 
     public void setPlayerUpgrades(List<Upgrade> playerUpgrades) { this.playerUpgrades = playerUpgrades; }
 
+    public Race getSelectedRace() { return selectedRace; }
+
+    public void setSelectedRace(Race selectedRace) {
+        this.selectedRace = selectedRace;
+    }
+
+    public Route getSelectedRoute() { return selectedRoute; }
+
+    public void setSelectedRoute(Route selectedRoute) { this.selectedRoute = selectedRoute; }
+
     public void goToShop() {
         this.money = money;
         this.playerCars = playerCars;
@@ -90,11 +105,13 @@ public class GameManager {
         navigator.launchMainScreen(this);
     }
 
-    public void startRace(){
+    public void startRace(Race race, Route route){
         this.money = money;
         this.playerCars = playerCars;
         this.currentCar = currentCar;
         this.playerUpgrades = playerUpgrades;
+        this.selectedRace = race;
+        this.selectedRoute = route;
         navigator.launchRaceScreen(this);
     }
 

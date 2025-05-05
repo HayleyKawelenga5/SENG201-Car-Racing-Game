@@ -23,6 +23,8 @@ public class RaceScreenController extends ScreenController {
     private Button handleEventButton;
     private Button startRaceButton;
 
+    private RaceService raceService = new RaceService();
+
     public RaceScreenController(GameManager manager) {
         super(manager);
     }
@@ -34,6 +36,10 @@ public class RaceScreenController extends ScreenController {
     protected String getTitle() {return "Race Screen";}
 
     public void initialize() {
-
+        Route selectedRoute = getGameManager().getSelectedRoute();
+        Race selectedRace = getGameManager().getSelectedRace();
+        Car currentCar = getGameManager().getCurrentCar();
+        double difficultyMultiplier = selectedRoute.getDifficultyMultiplier();
+        currentCar = raceService.applyMultipliers(currentCar, difficultyMultiplier); //MAY NEED TO CHANGE THIS METHOD TO ACCOUNT FOR MULTIPLIER BEING DOUBLE
     }
 }
