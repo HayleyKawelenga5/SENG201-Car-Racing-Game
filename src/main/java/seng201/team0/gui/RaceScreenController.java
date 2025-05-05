@@ -19,8 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RaceScreenController extends ScreenController {
+
+    @FXML
     private Button refuelButton;
+    @FXML
     private Button handleEventButton;
+    @FXML
     private Button startRaceButton;
 
     private RaceService raceService = new RaceService();
@@ -35,6 +39,7 @@ public class RaceScreenController extends ScreenController {
     @Override
     protected String getTitle() {return "Race Screen";}
 
+    @FXML
     public void initialize() {
         Route selectedRoute = getGameManager().getSelectedRoute();
         Race selectedRace = getGameManager().getSelectedRace();

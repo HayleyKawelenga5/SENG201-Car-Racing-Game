@@ -25,7 +25,7 @@ public class RaceEngine {
         this.race = race;
         this.selectedRoute = selectedRoute;
         this.playerCar = playerCar;
-        this.opponents = opponents;
+        this.opponents = carService.generateRandomCars(3);
         this.carDistances = new HashMap<>();
         for (Car car : opponents) {
             carDistances.put(car, 0);
@@ -33,9 +33,39 @@ public class RaceEngine {
         carDistances.put(playerCar, 0);
     }
 
+    public void applyRouteMultipliers(){
+        double multiplier = selectedRoute.getDifficultyMultiplier();
+        for (Car car :  carDistances.keySet()) {
+            car.setCarSpeed((int)(car.getCarSpeed()*multiplier));
+            car.setCarHandling((int)(car.getCarHandling()*multiplier));
+            car.setCarReliability((int)(car.getCarReliability()*multiplier));
+            car.setCarFuelEconomy((int)(car.getCarFuelEconomy()*multiplier));
+        }
+    }
+
     public void startRace(){
+        applyRouteMultipliers();
+
         while (raceTimeElapsed < race.getHours()) {
             raceTimeElapsed++;
+
+            for (Car car : carDistances.keySet()) {
+                if (car.getFuel() > 0){ //NEED TO IMPLEMENT GET FUEL METHOD IN CAR CLASS
+                    int distanceThisHour = car.getCarSpeed();
+                    carDistances.put(car, carDistances.get(car) + distanceThisHour);
+
+                    //FUEL CONSUMPTION
+                    car.setFuel(car.getFuel() - car.getCarFuelEconomy());
+
+                    //TRIGGER RANDOM EVENT??
+                }
+            }
+            if (carDistances.get(playerCar)>= selectedRoute.getDistance()){
+                playerFinished = true;
+            }
+            if (playerCar.getFuel() <= 0 && !playerRefueled){
+                playerOutOfFuel = true;
+            }
         }
     }
 }
