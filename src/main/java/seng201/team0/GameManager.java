@@ -90,6 +90,14 @@ public class GameManager {
         navigator.launchMainScreen(this);
     }
 
+    public void startRace(){
+        this.money = money;
+        this.playerCars = playerCars;
+        this.currentCar = currentCar;
+        this.playerUpgrades = playerUpgrades;
+        navigator.launchRaceScreen(this);
+    }
+
     public void onQuitRequested(){
         System.exit(0);
     }

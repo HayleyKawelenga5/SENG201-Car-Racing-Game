@@ -158,7 +158,7 @@ public class MainScreenController extends ScreenController {
         if (selectedRace == null){
             showAlert("No Race Selected", "Please select a race.");
         }
-
+        getGameManager().startRace();
     }
 
     @FXML
