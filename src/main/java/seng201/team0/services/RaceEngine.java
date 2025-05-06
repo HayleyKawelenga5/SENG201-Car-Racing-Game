@@ -26,7 +26,7 @@ public class RaceEngine {
         this.race = race;
         this.selectedRoute = selectedRoute;
         this.playerCar = playerCar;
-        this.opponents = carService.generateRandomCars(3);
+        this.opponents = carService.generateRandomCars(3); //ADD MORE OPPONENTS IF HARDER
         this.carDistances = new HashMap<>();
         for (Car car : opponents) {
             carDistances.put(car, 0);
@@ -63,7 +63,7 @@ public class RaceEngine {
                     //FUEL CONSUMPTION
                     car.setCarFuel(car.getCarFuel() - car.getCarFuelEconomy()); //ADD A FUNCTION FUELCONSUMPTION THAT DECREASES THE FUEL BASED ON FUEL ECONOMY
 
-                    //TRIGGER RANDOM EVENT??
+                    //TRIGGER RANDOM EVENT?? SHOULD BE AFFECTED BY DIFFICULTY
                 }
             }
             if (carDistances.get(playerCar)>= selectedRoute.getDistance()){

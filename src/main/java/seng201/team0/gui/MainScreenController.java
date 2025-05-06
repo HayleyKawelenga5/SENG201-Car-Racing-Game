@@ -15,7 +15,9 @@ import seng201.team0.models.Upgrade;
 import javafx.fxml.FXML;
 
 import javax.naming.InvalidNameException;
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class MainScreenController extends ScreenController {
@@ -199,9 +201,10 @@ public class MainScreenController extends ScreenController {
             racePrizeMoneyLabel.setText("Prize Money: " + race.getPrizeMoney());
 
             List<Route> routes = race.getRoutes();
+            List<Route> routesNoDuplicates = new ArrayList<>(new HashSet<>(routes));
             for (int i = 0; i < routeButtons.size(); i++) {
-                if (i < routes.size()){
-                routeButtons.get(i).setText(routes.get(i).getDescription().toString());
+                if (i < routesNoDuplicates.size()){
+                routeButtons.get(i).setText(routesNoDuplicates.get(i).getDescription().toString());
                 routeButtons.get(i).setVisible(true);
 
             } else {
