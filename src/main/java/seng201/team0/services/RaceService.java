@@ -12,28 +12,35 @@ public class RaceService {
 
     private RouteService routeService = new RouteService();
     private Random random = new Random();
+    private String gameDifficulty;
+    private int basePrizeMoney;
 
     public RaceService() {
         this.routeService = new RouteService();
     }
 
-    public Race generateRandomRace() {
+    public Race generateRandomRace(String gameDifficulty) {
         int hours = random.nextInt(2, 6);
         int entries = random.nextInt(3,9);
-        int prizeMoney = (new Random().nextInt(9) + 2) * 100;
+
+        if (gameDifficulty.equals("EASY")) {
+            basePrizeMoney = 1000;
+        } else if (gameDifficulty.equals("HARD")) {
+            basePrizeMoney = 500;
+        }
 
         int numberOfRoutes = random.nextInt(1,4);
         List<Route> routes = new ArrayList<>();
         for (int i = 0; i < numberOfRoutes; i++) {
             routes.add(routeService.generateRandomRoute());
         }
-       return new Race(hours, routes, entries, prizeMoney);
+       return new Race(hours, routes, entries, basePrizeMoney);
     }
 
-    public List<Race> generateRaces(int numberOfRaces){
+    public List<Race> generateRaces(int numberOfRaces, String gameDifficulty) {
         List<Race> races = new ArrayList<>();
         for (int i = 0; i < numberOfRaces; i++) {
-            races.add(generateRandomRace());
+            races.add(generateRandomRace(gameDifficulty));
         }
         return races;
     }

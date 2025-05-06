@@ -96,7 +96,7 @@ public class MainScreenController extends ScreenController {
         mainScreen.setCurrentCar(currentCar);
 
         raceService = new RaceService();
-        availableRaces = raceService.generateRaces(3);
+        availableRaces = raceService.generateRaces(3, difficulty);
 
 
         List<Button> availableRaceButtons = List.of(race1Button, race2Button, race3Button);

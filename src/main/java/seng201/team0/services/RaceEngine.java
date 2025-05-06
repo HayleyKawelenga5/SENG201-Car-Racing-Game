@@ -4,6 +4,7 @@ import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ public class RaceEngine {
     private boolean playerRefueled;
     private int playerDistanceCovered = 0;
     private CarService carService = new CarService();
+    private String gameDifficulty;
+    private List<Car> finishOrder = new ArrayList<>();
 
     private List<Car> opponents;
     private Map<Car, Integer> carDistances;
@@ -26,7 +29,12 @@ public class RaceEngine {
         this.race = race;
         this.selectedRoute = selectedRoute;
         this.playerCar = playerCar;
-        this.opponents = carService.generateRandomCars(3); //ADD MORE OPPONENTS IF HARDER
+
+        if (gameDifficulty.equals("EASY")) {
+            this.opponents = carService.generateRandomCars(3);
+        } else if (gameDifficulty.equals("HARD")){
+            this.opponents = carService.generateRandomCars(5);
+        }
         this.carDistances = new HashMap<>();
         for (Car car : opponents) {
             carDistances.put(car, 0);
@@ -45,9 +53,11 @@ public class RaceEngine {
     }
 
     public void consumeFuel(Car car){
-        //higher fuel economy = low fuel consumption??
-        //some calculation that returns fuel left as an integer
-    }
+        int fuelEconomy = car.getCarFuelEconomy();
+        double consumptionAmount = 10 * (11-fuelEconomy)/10;
+        int newFuel = (int) (car.getCarFuel() -  consumptionAmount);
+        car.setCarFuel(newFuel);
+        }
 
     public void startRace(){
         applyRouteMultipliers();
@@ -61,12 +71,15 @@ public class RaceEngine {
                     carDistances.put(car, carDistances.get(car) + distanceTravelled);
 
                     //FUEL CONSUMPTION
-                    car.setCarFuel(car.getCarFuel() - car.getCarFuelEconomy()); //ADD A FUNCTION FUELCONSUMPTION THAT DECREASES THE FUEL BASED ON FUEL ECONOMY
+                    consumeFuel(car);
 
+                    if (carDistances.get(car) >= selectedRoute.getDistance()){
+                        finishOrder.add(car);
+                    }
                     //TRIGGER RANDOM EVENT?? SHOULD BE AFFECTED BY DIFFICULTY
                 }
             }
-            if (carDistances.get(playerCar)>= selectedRoute.getDistance()){
+            if (carDistances.get(playerCar)>= selectedRoute.getDistance() && !finishOrder.contains(playerCar)){
                 playerFinished = true; //CHANGE THIS TO ADD THE CARS TO A LIST IN ORDER OF COMPLETION
             }
             if (playerCar.getCarFuel() <= 0 && !playerRefueled){
