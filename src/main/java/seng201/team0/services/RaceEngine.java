@@ -17,6 +17,7 @@ public class RaceEngine {
     private boolean playerOutOfFuel;
     private boolean playerRefueled;
     private int playerDistanceCovered = 0;
+    private CarService carService = new CarService();
 
     private List<Car> opponents;
     private Map<Car, Integer> carDistances;
@@ -43,6 +44,11 @@ public class RaceEngine {
         }
     }
 
+    public void consumeFuel(Car car){
+        //higher fuel economy = low fuel consumption??
+        //some calculation that returns fuel left as an integer
+    }
+
     public void startRace(){
         applyRouteMultipliers();
 
@@ -50,20 +56,20 @@ public class RaceEngine {
             raceTimeElapsed++;
 
             for (Car car : carDistances.keySet()) {
-                if (car.getFuel() > 0){ //NEED TO IMPLEMENT GET FUEL METHOD IN CAR CLASS
-                    int distanceThisHour = car.getCarSpeed();
-                    carDistances.put(car, carDistances.get(car) + distanceThisHour);
+                if (car.getCarFuel() > 0){
+                    int distanceTravelled = car.getCarSpeed();
+                    carDistances.put(car, carDistances.get(car) + distanceTravelled);
 
                     //FUEL CONSUMPTION
-                    car.setFuel(car.getFuel() - car.getCarFuelEconomy());
+                    car.setCarFuel(car.getCarFuel() - car.getCarFuelEconomy()); //ADD A FUNCTION FUELCONSUMPTION THAT DECREASES THE FUEL BASED ON FUEL ECONOMY
 
                     //TRIGGER RANDOM EVENT??
                 }
             }
             if (carDistances.get(playerCar)>= selectedRoute.getDistance()){
-                playerFinished = true;
+                playerFinished = true; //CHANGE THIS TO ADD THE CARS TO A LIST IN ORDER OF COMPLETION
             }
-            if (playerCar.getFuel() <= 0 && !playerRefueled){
+            if (playerCar.getCarFuel() <= 0 && !playerRefueled){
                 playerOutOfFuel = true;
             }
         }
