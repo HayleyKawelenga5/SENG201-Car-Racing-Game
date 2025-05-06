@@ -13,7 +13,7 @@ public class RaceService {
     private RouteService routeService = new RouteService();
     private Random random = new Random();
     private String gameDifficulty;
-    private int basePrizeMoney;
+    private int maxPrizeMoney;
 
     public RaceService() {
         this.routeService = new RouteService();
@@ -24,9 +24,9 @@ public class RaceService {
         int entries = random.nextInt(3,9);
 
         if (gameDifficulty.equals("EASY")) {
-            basePrizeMoney = 1000;
+            maxPrizeMoney = (hours + entries) * 50;
         } else if (gameDifficulty.equals("HARD")) {
-            basePrizeMoney = 500;
+            maxPrizeMoney = (hours + entries) * 30;
         }
 
         int numberOfRoutes = random.nextInt(1,4);
@@ -34,7 +34,7 @@ public class RaceService {
         for (int i = 0; i < numberOfRoutes; i++) {
             routes.add(routeService.generateRandomRoute());
         }
-       return new Race(hours, routes, entries, basePrizeMoney);
+       return new Race(hours, routes, entries, maxPrizeMoney);
     }
 
     public List<Race> generateRaces(int numberOfRaces, String gameDifficulty) {
@@ -46,10 +46,10 @@ public class RaceService {
     }
 
     public Car applyMultipliers(Car car, double multiplier){
-        car.setCarSpeed((int)(car.getCarSpeed()*multiplier));
-        car.setCarHandling((int)(car.getCarHandling()*multiplier));
-        car.setCarReliability((int)(car.getCarReliability()*multiplier));
-        car.setCarFuelEconomy((int)(car.getCarFuelEconomy()*multiplier));
+        car.setCarSpeed((int)(car.getCarSpeed() / multiplier));
+        car.setCarHandling((int)(car.getCarHandling() / multiplier));
+        car.setCarReliability((int)(car.getCarReliability() / multiplier));
+        car.setCarFuelEconomy((int)(car.getCarFuelEconomy() / multiplier));
         return car;
     }
 }

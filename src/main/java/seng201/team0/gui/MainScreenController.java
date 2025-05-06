@@ -29,12 +29,7 @@ public class MainScreenController extends ScreenController {
     @FXML private Button toShopButton;
     @FXML private Button toGarageButton;
     @FXML private Button selectRaceButton;
-    @FXML private Button startRaceButton;
-
-    @FXML private Button route1Button;
-    @FXML private Button route2Button;
-    @FXML private Button route3Button;
-    @FXML private Button selectRouteButton;
+    @FXML private Button toStartLineButton;
 
     @FXML private Label currentCarNameLabel;
     @FXML private Label currentCarSpeedLabel;
@@ -57,16 +52,9 @@ public class MainScreenController extends ScreenController {
     private List<Race> availableRaces;
     private Race selectedRace;
     private int selectedRaceIndex = -1;
-    private Route selectedRoute;
 
     private Race chosenRace;
     private Route chosenRoute;
-
-    private List<Button> routeButtons;
-
-    //private MainScreen mainScreen = new MainScreen();
-
-
 
     public MainScreenController(GameManager manager) {
         super(manager);
@@ -105,22 +93,11 @@ public class MainScreenController extends ScreenController {
             availableRaceButtons.get(i).setOnAction(event -> onAvailableRaceButtonClicked(index));
         }
 
-        routeButtons = List.of(route1Button, route2Button, route3Button);
-        for (int i = 0; i < routeButtons.size(); i++) {
-            int index = i;
-            routeButtons.get(i).setOnAction(event -> onRouteButtonClicked(index));
-        }
-
-        route1Button.setVisible(false);
-        route2Button.setVisible(false);
-        route3Button.setVisible(false);
-
-        selectRouteButton.setOnAction(event -> onSelectRouteButtonClicked());
         selectRaceButton.setOnAction(event -> onSelectRaceButtonClicked());
-        startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
+        toStartLineButton.setOnAction(event -> onToStartLineButtonClicked());
 
         moneyLabel.setText("Money: $" + String.valueOf(money));
-        racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength)); // NEED TO FIX
+        racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength));
         seasonLengthLabel.setText("Season Length: " + String.valueOf(seasonLength));
 
         currentCarNameLabel.setText("Current car: " + currentCar.getCarName());
@@ -131,13 +108,12 @@ public class MainScreenController extends ScreenController {
 
         toGarageButton.setOnAction(event -> onToGarageButtonClicked());
         toShopButton.setOnAction(event -> onToShopButtonClicked());
-        //selectRaceButton.setOnAction(event -> onSelectRaceButtonClicked());
-        //startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
     }
 
     @FXML
-    private void onAvailableRaceButtonClicked(int index){
-        if (index >=0 && index < availableRaces.size()){
+    private void onAvailableRaceButtonClicked (int index) {
+        if (index >= 0 && index < availableRaces.size()) {
+            selectRaceButton.setStyle("");
             selectedRace = availableRaces.get(index);
             selectedRaceIndex = index;
             updateRaceStats(selectedRace);
@@ -146,71 +122,37 @@ public class MainScreenController extends ScreenController {
 
     @FXML
     private void onSelectRaceButtonClicked() {
-        if (selectedRace == null){
-            showAlert("No Race Selected", "Please select a race.");
+        if (selectedRace == null) {
+            showAlert("No race selected", "Please select a race.");
             return;
         } else {
+            selectRaceButton.setStyle("-fx-background-color: LightGreen");
             chosenRace = selectedRace;
         }
 
     }
 
     @FXML
-    private void onStartRaceButtonClicked() {
-        if (selectedRace == null){
-            showAlert("No Race Selected", "Please select a race.");
+    private void onToStartLineButtonClicked() {
+        if (selectedRace == null) {
+            showAlert("No race selected", "Please select a race.");
         }
-        getGameManager().startRace(chosenRace, chosenRoute);
+        getGameManager().setSelectedRace(chosenRace);
+        getGameManager().startRace(chosenRace);
     }
 
-    @FXML
-    private void onSelectRouteButtonClicked(){
-        if (selectedRoute == null){
-            showAlert("No Route Selected", "Please select a route.");
-        } else {
-            chosenRoute = selectedRoute;
-        }
-    }
-
-    @FXML
-    private void onRouteButtonClicked(int index) {
-        selectedRoute = selectedRace.getRoutes().get(index);
-
-        for (int i = 0; i < routeButtons.size(); i++) {
-            if (i == index){
-                routeButtons.get(i).setStyle("-fx-background-color: LightGreen");
-            } else {
-                routeButtons.get(i).setStyle("");
-            }
-        }
-    }
-
-    private void updateRaceStats(Race race){
-        if (race == null){
+    private void updateRaceStats(Race race) {
+        if (race == null) {
             raceHoursLabel.setText("Hours: ");
             raceRoutesLabel.setText("Routes: ");
             raceEntriesLabel.setText("Entries: ");
             racePrizeMoneyLabel.setText("Prize Money: ");
-            route1Button.setVisible(false);
-            route2Button.setVisible(false);
-            route3Button.setVisible(false);
         } else {
-            raceHoursLabel.setText("Hours: " + race.getHours());
+            raceHoursLabel.setText("Hours: " + race.getRaceHours());
             raceRoutesLabel.setText("Routes: " + race.getRoutesDescription());
-            raceEntriesLabel.setText("Entries: " + race.getEntries());
-            racePrizeMoneyLabel.setText("Prize Money: " + race.getPrizeMoney());
-
-            List<Route> routes = race.getRoutes();
-            List<Route> routesNoDuplicates = new ArrayList<>(new HashSet<>(routes));
-            for (int i = 0; i < routeButtons.size(); i++) {
-                if (i < routesNoDuplicates.size()){
-                routeButtons.get(i).setText(routesNoDuplicates.get(i).getDescription().toString());
-                routeButtons.get(i).setVisible(true);
-
-            } else {
-                routeButtons.get(i).setVisible(false);
-            }
-        }}
+            raceEntriesLabel.setText("Entries: " + race.getRaceEntries());
+            racePrizeMoneyLabel.setText("Prize Money: $" + race.getRacePrizeMoney());
+        }
     }
 
     @FXML

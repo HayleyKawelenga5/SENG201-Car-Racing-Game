@@ -21,11 +21,6 @@ public class MainScreen {
     private int racesRemaining;
     private Car currentCar;
 
-    //private Shop shop;
-    //private Garage garage;
-    //private CarService carService;
-    //private UpgradeService upgradeService;
-
     /**
      * Constructs a new game environment with the given parameters.
      *
@@ -58,17 +53,4 @@ public class MainScreen {
         return this.racesRemaining;
     }
 
-    /**
-    public void visitShop(){
-        //implement later to open shop interface
-    }
-
-    public void visitGarage(){
-        //not yet implemented
-    }
-
-    public void selectRace(){
-        //not yet implemented
-    }
-     */
 }

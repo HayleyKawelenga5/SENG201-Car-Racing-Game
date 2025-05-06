@@ -43,7 +43,7 @@ public class RaceEngine {
     }
 
     public void applyRouteMultipliers(){
-        double multiplier = selectedRoute.getDifficultyMultiplier();
+        double multiplier = selectedRoute.getRouteDifficultyMultiplier();
         for (Car car :  carDistances.keySet()) {
             car.setCarSpeed((int)(car.getCarSpeed()*multiplier));
             car.setCarHandling((int)(car.getCarHandling()*multiplier));
@@ -62,7 +62,7 @@ public class RaceEngine {
     public void startRace(){
         applyRouteMultipliers();
 
-        while (raceTimeElapsed < race.getHours()) {
+        while (raceTimeElapsed < race.getRaceHours()) {
             raceTimeElapsed++;
 
             for (Car car : carDistances.keySet()) {
@@ -73,13 +73,13 @@ public class RaceEngine {
                     //FUEL CONSUMPTION
                     consumeFuel(car);
 
-                    if (carDistances.get(car) >= selectedRoute.getDistance()){
+                    if (carDistances.get(car) >= selectedRoute.getRouteDistance()){
                         finishOrder.add(car);
                     }
                     //TRIGGER RANDOM EVENT?? SHOULD BE AFFECTED BY DIFFICULTY
                 }
             }
-            if (carDistances.get(playerCar)>= selectedRoute.getDistance() && !finishOrder.contains(playerCar)){
+            if (carDistances.get(playerCar)>= selectedRoute.getRouteDistance() && !finishOrder.contains(playerCar)){
                 playerFinished = true; //CHANGE THIS TO ADD THE CARS TO A LIST IN ORDER OF COMPLETION
             }
             if (playerCar.getCarFuel() <= 0 && !playerRefueled){

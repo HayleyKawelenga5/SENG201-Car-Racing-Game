@@ -105,13 +105,12 @@ public class GameManager {
         navigator.launchMainScreen(this);
     }
 
-    public void startRace(Race race, Route route){
+    public void startRace(Race race){
         this.money = money;
         this.playerCars = playerCars;
         this.currentCar = currentCar;
         this.playerUpgrades = playerUpgrades;
         this.selectedRace = race;
-        this.selectedRoute = route;
         navigator.launchRaceScreen(this);
     }
 

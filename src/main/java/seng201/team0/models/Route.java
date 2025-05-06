@@ -32,36 +32,34 @@ public class Route {
         this.difficultyMultiplier = difficultyMultiplier;
     }
 
-    public RouteType getDescription() {
+    public RouteType getRouteDescription() {
         return description;
     }
 
-    public int getDistance() {
+    public int getRouteDistance() {
         return distance;
     }
 
-    public int getFuelStops() {
+    public int getRouteFuelStops() {
         return fuelStops;
     }
 
-    public double getDifficultyMultiplier() {
+    public double getRouteDifficultyMultiplier() {
         return difficultyMultiplier;
     }
 
-    public void setDescription(RouteType description) {
+    public void setRouteDescription(RouteType description) {
         this.description = description;
     }
 
-    public void setDistance(int distance) {
+    public void setRouteDistance(int distance) {
         this.distance = distance;
     }
 
-    public void setFuelStops(int fuelStops) {
+    public void setRouteFuelStops(int fuelStops) {
         this.fuelStops = fuelStops;
     }
 
-    public void setDifficultyMultiplier(double difficultyMultiplier) {
-        this.difficultyMultiplier = difficultyMultiplier;
-    }
+    public void setRouteDifficultyMultiplier(double difficultyMultiplier) { this.difficultyMultiplier = difficultyMultiplier; }
 
 }

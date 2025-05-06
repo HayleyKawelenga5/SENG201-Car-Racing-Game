@@ -36,27 +36,27 @@ public class UpgradeService {
 
             switch (name) {
                 case "Turbocharger":
-                    speed = random.nextInt(1, 4);
-                    cost = speed * 20;
+                    speed = random.nextInt(1, 4) * 10;
+                    cost = speed * 4;
                     break;
                 case "Offroad Tires":
-                    handling = random.nextInt(1, 4);
-                    reliability = random.nextInt(1, 4);
-                    cost = (handling + reliability) * 20;
+                    handling = random.nextInt(1, 4) * 10;
+                    reliability = random.nextInt(1, 4) * 10;
+                    cost = (handling + reliability) * 4;
                     break;
                 case "Lightweight Chassis":
                     speed = random.nextInt(1, 4);
-                    fuelEconomy = random.nextInt(1, 4);
-                    cost = (speed + fuelEconomy) * 20;
+                    fuelEconomy = random.nextInt(1, 4) * 10;
+                    cost = (speed + fuelEconomy) * 4;
                     break;
                 case "Air Suspension":
-                    handling = random.nextInt(1, 4);
-                    reliability = random.nextInt(1, 4);
-                    cost = (handling + reliability) * 20;
+                    handling = random.nextInt(1, 4) * 10;
+                    reliability = random.nextInt(1, 4) * 10;
+                    cost = (handling + reliability) * 4;
                     break;
                 case "Eco Tuner":
-                    fuelEconomy = random.nextInt(1, 4);
-                    cost = fuelEconomy * 20;
+                    fuelEconomy = random.nextInt(1, 4) * 10;
+                    cost = fuelEconomy * 4;
                     break;
             }
             availableUpgrades.add(new Upgrade(name, speed, handling, reliability, fuelEconomy, cost));

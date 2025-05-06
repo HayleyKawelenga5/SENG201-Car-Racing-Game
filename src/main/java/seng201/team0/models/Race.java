@@ -16,7 +16,7 @@ public class Race {
         this.prizeMoney = prizeMoney;
     }
 
-    public int getHours() {
+    public int getRaceHours() {
         return hours;
     }
 
@@ -29,7 +29,7 @@ public class Race {
         Set<Route.RouteType> uniqueTypes = new HashSet<>();
 
         for (Route route : routes) {
-            uniqueTypes.add(route.getDescription());
+            uniqueTypes.add(route.getRouteDescription());
         }
 
         int count = 0;
@@ -43,11 +43,11 @@ public class Race {
         return routeString;
     }
 
-    public int getEntries() {
+    public int getRaceEntries() {
         return entries;
     }
 
-    public int getPrizeMoney() {
+    public int getRacePrizeMoney() {
         return prizeMoney;
     }
 
