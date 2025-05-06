@@ -16,6 +16,7 @@ public class Car {
     private int cost;
     private String id;
     private String name;
+    private int fuel;
 
     /**
      * Constructor to create a Car object with the specified attributes.
@@ -36,6 +37,7 @@ public class Car {
         this.cost = cost;
         this.id = UUID.randomUUID().toString().toString();
         this.name = name;
+        this.fuel = 100;
     }
 
     public int getCarSpeed() { return speed; }
@@ -60,6 +62,8 @@ public class Car {
      */
     public String getCarName(){ return name == null || name.isBlank() ? "Unnamed Car" : name; }
 
+    public int getCarFuel() { return fuel; }
+
     public void setCarSpeed(int speed) { this.speed = speed; }
 
     public void setCarHandling(int handling) { this.handling = handling; }
@@ -72,6 +76,10 @@ public class Car {
 
     public void setCarName(String name){
         this.name = name;
+    }
+
+    public void setCarFuel(int fuel){
+        this.fuel = fuel;
     }
 
     /**
