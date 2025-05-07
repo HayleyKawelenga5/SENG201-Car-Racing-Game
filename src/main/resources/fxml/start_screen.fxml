@@ -14,8 +14,8 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team0.gui.StartScreenController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="333.0" minWidth="10.0" prefWidth="333.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="267.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="333.0" minWidth="10.0" prefWidth="295.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="10.0" prefWidth="305.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="74.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
@@ -65,9 +65,9 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#onStartGameButtonClicked" text="Start Game!" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#onStartGameButtonClicked" text="Start Game!" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
          <GridPane.margin>
-            <Insets left="170.0" />
+            <Insets right="10.0" />
          </GridPane.margin>
       </Button>
       <Slider fx:id="seasonLengthSlider" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -179,9 +179,9 @@
             </Button>
          </children>
       </HBox>
-      <Button fx:id="deleteCarButton" mnemonicParsing="false" onAction="#onDeleteCarButtonClicked" text="Delete Car" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <Button fx:id="deleteCarButton" mnemonicParsing="false" onAction="#onDeleteCarButtonClicked" text="Delete Car" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
          <GridPane.margin>
-            <Insets left="90.0" />
+            <Insets />
          </GridPane.margin>
       </Button>
       <Button fx:id="selectCarButton" layoutX="600.0" layoutY="357.0" mnemonicParsing="false" onAction="#onSelectCarButtonClicked" text="Select Car" GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -189,5 +189,37 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </Button>
+      <Label text="Top speed (km/h)" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="10.0" top="13.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label text="Maximum distance (km) of a full tank" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <font>
+            <Font size="9.0" />
+         </font>
+         <GridPane.margin>
+            <Insets right="10.0" top="88.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Ability to navigate turns and maintain control" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <font>
+            <Font size="9.0" />
+         </font>
+         <GridPane.margin>
+            <Insets right="10.0" top="38.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Race endurance" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="10.0" top="63.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
    </children>
 </GridPane>

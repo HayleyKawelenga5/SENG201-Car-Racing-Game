@@ -113,6 +113,7 @@ public class MainScreenController extends ScreenController {
     @FXML
     private void onAvailableRaceButtonClicked (int index) {
         if (index >= 0 && index < availableRaces.size()) {
+            chosenRace = null;
             selectRaceButton.setStyle("");
             selectedRace = availableRaces.get(index);
             selectedRaceIndex = index;
@@ -134,7 +135,7 @@ public class MainScreenController extends ScreenController {
 
     @FXML
     private void onToStartLineButtonClicked() {
-        if (selectedRace == null) {
+        if (chosenRace == null) {
             showAlert("No race selected", "Please select a race.");
         }
         getGameManager().setSelectedRace(chosenRace);

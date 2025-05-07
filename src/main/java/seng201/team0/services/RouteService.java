@@ -32,19 +32,19 @@ public class RouteService {
 
         switch (description) {
             case FLAT:
-                distance = random.nextInt(6, 10);
+                distance = random.nextInt(60, 150);
                 difficultyMultiplier = random.nextDouble(1.0, 1.4);
                 break;
             case HILLY:
-                distance = random.nextInt(4, 10);
+                distance = random.nextInt(40, 150);
                 difficultyMultiplier = random.nextDouble(1.0, 1.6);
                 break;
             case OFFROAD:
-                distance = random.nextInt(4, 10);
+                distance = random.nextInt(40, 150);
                 difficultyMultiplier = random.nextDouble(1.0, 1.8);
                 break;
             case WINDY:
-                distance = random.nextInt(4, 10);
+                distance = random.nextInt(40, 150);
                 difficultyMultiplier = random.nextDouble(1.0, 1.8);
                 break;
         }

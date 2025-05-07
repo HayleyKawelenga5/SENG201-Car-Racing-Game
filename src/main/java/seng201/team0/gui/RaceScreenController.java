@@ -136,7 +136,7 @@ public class RaceScreenController extends ScreenController {
              routeDifficultyLabel.setText("Difficulty: ");
          } else {
              routeDescriptionLabel.setText("Description: " + route.getRouteDescription());
-             routeDistanceLabel.setText("Distance: " +route. getRouteDistance());
+             routeDistanceLabel.setText("Distance: " + route. getRouteDistance() + "km");
              routeFuelStopsLabel.setText("Fuel Stops: " + route.getRouteFuelStops());
              routeDifficultyLabel.setText("Difficulty: " + route.getRouteDifficultyMultiplier());
          }
