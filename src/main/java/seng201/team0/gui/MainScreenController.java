@@ -150,7 +150,7 @@ public class MainScreenController extends ScreenController {
             racePrizeMoneyLabel.setText("Prize Money: ");
         } else {
             raceHoursLabel.setText("Hours: " + race.getRaceHours());
-            raceRoutesLabel.setText("Routes: " + race.getRoutesDescription());
+            raceRoutesLabel.setText("Routes: " + race.getRouteList());
             raceEntriesLabel.setText("Entries: " + race.getRaceEntries());
             racePrizeMoneyLabel.setText("Prize Money: $" + race.getRacePrizeMoney());
         }

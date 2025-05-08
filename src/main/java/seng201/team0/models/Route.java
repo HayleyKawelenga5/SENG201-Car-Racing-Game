@@ -10,7 +10,7 @@ public class Route {
      * Represents the type of a race route.
      * A route can be flat, hilly, off-road, or windy, which influences car performance during a race.
      */
-    public enum RouteType { FLAT, HILLY, OFFROAD, WINDY }
+    public enum RouteType { FLAT, HILLY, OFFROAD, WINDY, BEACH }
 
     private RouteType description;
     private int distance;

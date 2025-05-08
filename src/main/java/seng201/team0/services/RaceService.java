@@ -10,8 +10,9 @@ import java.util.Random;
 
 public class RaceService {
 
-    private RouteService routeService = new RouteService();
     private Random random = new Random();
+
+    private RouteService routeService = new RouteService();
     private String gameDifficulty;
     private int maxPrizeMoney;
 
@@ -20,6 +21,7 @@ public class RaceService {
     }
 
     public Race generateRandomRace(String gameDifficulty) {
+
         int hours = random.nextInt(2, 6);
         int entries = random.nextInt(3,9);
 
@@ -30,26 +32,37 @@ public class RaceService {
         }
 
         int numberOfRoutes = random.nextInt(1,4);
-        List<Route> routes = new ArrayList<>();
+        List<Route> availableRoutes = new ArrayList<>();
         for (int i = 0; i < numberOfRoutes; i++) {
-            routes.add(routeService.generateRandomRoute());
+            availableRoutes.add(routeService.generateRandomRoute());
         }
-       return new Race(hours, routes, entries, maxPrizeMoney);
+       return new Race(hours, availableRoutes, entries, maxPrizeMoney);
     }
 
     public List<Race> generateRaces(int numberOfRaces, String gameDifficulty) {
-        List<Race> races = new ArrayList<>();
+        List<Race> availableRaces = new ArrayList<>();
         for (int i = 0; i < numberOfRaces; i++) {
-            races.add(generateRandomRace(gameDifficulty));
+            availableRaces.add(generateRandomRace(gameDifficulty));
         }
-        return races;
+        return availableRaces;
     }
 
-    public Car applyMultipliers(Car car, double multiplier){
+    public Car applyMultipliers(Car car, double multiplier) {
         car.setCarSpeed((int)(car.getCarSpeed() / multiplier));
         car.setCarHandling((int)(car.getCarHandling() / multiplier));
         car.setCarReliability((int)(car.getCarReliability() / multiplier));
         car.setCarFuelEconomy((int)(car.getCarFuelEconomy() / multiplier));
         return car;
     }
+
+    public Car previewApplyMultipliers(Car car, double multiplier) {
+        int previewSpeed = (int) (car.getCarSpeed() / multiplier);
+        int previewHandling = (int) (car.getCarHandling() / multiplier);
+        int previewReliability = (int) (car.getCarReliability() / multiplier);
+        int previewFuelEconomy = (int) (car.getCarFuelEconomy() / multiplier);
+        int previewCost = car.getCarCost();
+        Car previewCar = new Car(previewSpeed, previewHandling, previewReliability, previewFuelEconomy, previewCost);
+        return previewCar;
+    }
+
 }

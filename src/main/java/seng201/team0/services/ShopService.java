@@ -76,20 +76,6 @@ public class ShopService {
         return false;
     }
 
-    /**
-     * Returns a list of available cars. If no cars have been generated yet,
-     * this method will generate them first.
-     *
-     * @return A list of available Car objects.
-     *
-    public List<Car> getCarsForPurchase() {
-        if (carService.getAvailableCars().isEmpty()) {
-            carService.generateRandomCars(3);
-        }
-        return carService.getAvailableCars();
-    }
-    */
-
     public int getMoney() {
         return money;
     }

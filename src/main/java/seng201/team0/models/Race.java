@@ -5,13 +5,13 @@ import java.util.*;
 public class Race {
 
     private int hours;
-    private List<Route> routes;
+    private List<Route> availableRoutes;
     private int entries;
     private int prizeMoney;
 
-    public Race(int hours, List<Route> routes, int entries, int prizeMoney) {
+    public Race(int hours, List<Route> availableRoutes, int entries, int prizeMoney) {
         this.hours = hours;
-        this.routes = routes;
+        this.availableRoutes = availableRoutes;
         this.entries = entries;
         this.prizeMoney = prizeMoney;
     }
@@ -20,15 +20,16 @@ public class Race {
         return hours;
     }
 
-    public List<Route> getRoutes() {
-        return routes;
+    public List<Route> getAvailableRoutes() {
+        return availableRoutes;
     }
 
-    public StringBuilder getRoutesDescription() {
+    public StringBuilder getRouteList() {
+
         StringBuilder routeString = new StringBuilder();
         Set<Route.RouteType> uniqueTypes = new HashSet<>();
 
-        for (Route route : routes) {
+        for (Route route : availableRoutes) {
             uniqueTypes.add(route.getRouteDescription());
         }
 
@@ -39,7 +40,6 @@ public class Race {
                 routeString.append(", ");
             }
         }
-
         return routeString;
     }
 
@@ -50,6 +50,5 @@ public class Race {
     public int getRacePrizeMoney() {
         return prizeMoney;
     }
-
 
 }

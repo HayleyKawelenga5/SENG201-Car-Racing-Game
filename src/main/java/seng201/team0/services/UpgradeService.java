@@ -45,7 +45,7 @@ public class UpgradeService {
                     cost = (handling + reliability) * 4;
                     break;
                 case "Lightweight Chassis":
-                    speed = random.nextInt(1, 4);
+                    speed = random.nextInt(1, 4) * 10;
                     fuelEconomy = random.nextInt(1, 4) * 10;
                     cost = (speed + fuelEconomy) * 4;
                     break;

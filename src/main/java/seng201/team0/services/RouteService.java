@@ -47,6 +47,10 @@ public class RouteService {
                 distance = random.nextInt(40, 150);
                 difficultyMultiplier = random.nextDouble(1.0, 1.8);
                 break;
+            case BEACH:
+                distance = random.nextInt(60, 150);
+                difficultyMultiplier = random.nextDouble(1.0, 2.0);
+                break;
         }
 
         int fuelStops = random.nextInt(1, 5);
