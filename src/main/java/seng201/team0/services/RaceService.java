@@ -22,7 +22,7 @@ public class RaceService {
 
     public Race generateRandomRace(String gameDifficulty) {
 
-        int hours = random.nextInt(2, 6);
+        int hours = random.nextInt(3, 9);
         int entries = random.nextInt(3,9);
 
         if (gameDifficulty.equals("EASY")) {

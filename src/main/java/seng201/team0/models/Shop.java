@@ -27,9 +27,11 @@ public class Shop {
     private int money;
 
     /**
-     * Creates a new Shop instance and generates an initial inventory.
+     * Constructs a new Shop instance and generates an initial inventory.
      *
      * @param money The amount of money the player has.
+     * @param carService the service used to handle car-related operations
+     * @param upgradeService the service used to handle upgrade-related operations
      */
     public Shop(int money, CarService carService, UpgradeService upgradeService) {
         this.money = money;
@@ -37,22 +39,47 @@ public class Shop {
         this.upgradeService = upgradeService;
     }
 
+    /**
+     * Returns the amount of money the player currently has.
+     *
+     * @return the player's available money
+     */
     public int getMoney() {
         return money;
     }
 
+    /**
+     * Returns the list of available cars for sale in the shop.
+     *
+     * @return a list of {@code Car} objects that are available to purchase
+     */
     public List<Car> getAvailableCars() {
         return availableCars;
     }
 
+    /**
+     * Returns the list of available upgrades for sale in the shop.
+     *
+     * @return a list of {@code Upgrade} objects that are available to purchase
+     */
     public List<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
 
+    /**
+     * Returns the list of cars the player currently owns.
+     *
+     * @return a list of {@code Car} objects that the player has purchased
+     */
     public List<Car> getPlayerCars() {
         return playerCars;
     }
 
+    /**
+     * Returns the list of upgrades the player currently owns.
+     *
+     * @return a list of {@code Upgrade} objects that the player has purchased
+     */
     public List<Upgrade> getPlayerUpgrades() {
         return playerUpgrades;
     }

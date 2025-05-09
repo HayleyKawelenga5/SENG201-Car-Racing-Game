@@ -7,8 +7,8 @@ package seng201.team0.models;
 public class Route {
 
     /**
-     * Represents the type of a race route.
-     * A route can be flat, hilly, off-road, or windy, which influences car performance during a race.
+     * Represents the type of race route.
+     * A route can be flat, hilly, off-road,windy or beach which influences car performance during a race.
      */
     public enum RouteType { FLAT, HILLY, OFFROAD, WINDY, BEACH }
 
@@ -32,34 +32,75 @@ public class Route {
         this.difficultyMultiplier = difficultyMultiplier;
     }
 
+    /**
+     * Returns the type or description of the route.
+     *
+     * @return the {@code RouteType} of the route (e.g., FLAT, HILLY, OFFROAD)
+     */
     public RouteType getRouteDescription() {
         return description;
     }
 
+    /**
+     * Returns the distance of the route in kilometers.
+     *
+     * @return the distance of the route
+     */
     public int getRouteDistance() {
         return distance;
     }
 
+    /**
+     * Returns the number of fuel stops along the route.
+     *
+     * @return the number of fuel stops
+     */
     public int getRouteFuelStops() {
         return fuelStops;
     }
 
+    /**
+     * Returns the difficulty multiplier of the route.
+     * The difficulty multiplier is a value that affects different attributes of the player's car
+     * @return the difficulty multiplier
+     */
     public double getRouteDifficultyMultiplier() {
         return difficultyMultiplier;
     }
 
+    /**
+     * Sets the type or description of the route.
+     *
+     * @param description the new type of the route (e.g., FLAT, HILLY, OFFROAD)
+     */
     public void setRouteDescription(RouteType description) {
         this.description = description;
     }
 
+    /**
+     * Sets the distance of the route in kilometers.
+     *
+     * @param distance the new distance for the route
+     */
     public void setRouteDistance(int distance) {
         this.distance = distance;
     }
 
+
+    /**
+     * Sets the number of fuel stops along the route.
+     *
+     * @param fuelStops the new number of fuel stops
+     */
     public void setRouteFuelStops(int fuelStops) {
         this.fuelStops = fuelStops;
     }
 
+    /**
+     * Sets the difficulty multiplier of the route.
+     *
+     * @param difficultyMultiplier the new difficulty multiplier
+     */
     public void setRouteDifficultyMultiplier(double difficultyMultiplier) { this.difficultyMultiplier = difficultyMultiplier; }
 
 }
