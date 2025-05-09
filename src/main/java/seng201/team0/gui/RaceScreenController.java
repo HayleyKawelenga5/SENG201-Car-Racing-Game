@@ -113,6 +113,7 @@ public class RaceScreenController extends ScreenController {
 
         selectRouteButton.setOnAction(event -> onSelectRouteButtonClicked());
         startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
+        continueButton.setOnAction(event -> onContinueButtonClicked());
 
         List<Button> availableRouteButtons = List.of(route1Button, route2Button, route3Button);
 
@@ -166,7 +167,7 @@ public class RaceScreenController extends ScreenController {
         backButton.setDisable(true);
         continueButton.setDisable(false);
 
-        raceEngine = new RaceEngine(getGameManager().getSelectedRace(), chosenRoute, getGameManager().getCurrentCar(), getGameManager().getDifficulty());
+        raceEngine = new RaceEngine(getGameManager().getSelectedRace(), chosenRoute, getGameManager().getCurrentCar(), getGameManager().getDifficulty(), getGameManager().getMoney());
         this.startRace();
     }
 
@@ -211,6 +212,11 @@ public class RaceScreenController extends ScreenController {
             routeDifficultyLabel.setText("Difficulty: " + String.format("%.2f", route.getRouteDifficultyMultiplier()));
         }
 
+    }
+
+    @FXML
+    private void onContinueButtonClicked(){
+        raceEngine.resumeRaceFromUI();
     }
 
     private void showAlert(String title, String message) {

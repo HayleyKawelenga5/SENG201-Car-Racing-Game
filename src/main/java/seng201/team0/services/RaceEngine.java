@@ -15,6 +15,7 @@ public class RaceEngine {
     private Race race;
     private Route selectedRoute;
     private Car playerCar;
+    private int playerMoney;
     private int raceTimeElapsed = 0;
     private boolean playerFinished;
     private boolean playerOutOfFuel;
@@ -34,17 +35,21 @@ public class RaceEngine {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private volatile boolean raceRunning = false;
 
+    private final Object pauseLock = new Object();
+    private boolean waitForUser = false;
+
     public interface RaceUpdateListener {
         void onProgressUpdate(int distance, int fuel, int timeElapsed);
         void onFuelStop(int stopIndex, int currentDistance);
         void onRaceEnd(boolean finished, boolean outOfFuel, boolean outOfTime);
     }
 
-    public RaceEngine(Race race, Route selectedRoute, Car playerCar, String gameDifficulty) {
+    public RaceEngine(Race race, Route selectedRoute, Car playerCar, String gameDifficulty, int playerMoney) {
         this.race = race;
         this.selectedRoute = selectedRoute;
         this.playerCar = playerCar;
         this.gameDifficulty = gameDifficulty;
+        this.playerMoney = playerMoney;
 
 
         if (gameDifficulty.equals("EASY")) {
@@ -113,10 +118,7 @@ public class RaceEngine {
                         if (car == playerCar) {
                             for (int stop : fuelStops) {
                                 if (!triggeredStops.contains(stop) && oldDistance < stop && newDistance >= stop) {
-                                    //boolean choseToRefuel = propmt player UI logic to be implemented later
-//                                    handleFuelStop(car); //??
-//                                    triggeredStops.add(stop);
-//                                    Platform.runLater(() -> listener.onFuelStop(stop, newDistance));
+
 
                                     int stopFinal = stop;
                                     Platform.runLater(() -> {
@@ -127,6 +129,14 @@ public class RaceEngine {
                                 }
                             }
                             Platform.runLater(() -> listener.onProgressUpdate(newDistance, car.getCarFuel(), raceTimeElapsed));
+
+                            //pause game each hour to show progress
+                            synchronized (pauseLock) {
+                                waitForUser = true;
+                            }
+
+                            pauseUntilUserContinues(); //wait until UI tells race to resume
+
                             triggerRandomEvent();
                         }
                         //FUEL CONSUMPTION
@@ -164,6 +174,25 @@ public class RaceEngine {
         });
     }
 
+    private void pauseUntilUserContinues() {
+        synchronized (pauseLock) {
+            while (waitForUser) {
+                try {
+                    pauseLock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
+    public void resumeRaceFromUI() {
+        synchronized (pauseLock) {
+            waitForUser = false;
+            pauseLock.notifyAll();
+        }
+    }
+
     public void handleFuelStop(Car car){
         car.setCarFuel(car.getCarFuel() + 20); //MAYBE CHANGE THIS TO DEPEND ON DIFFICULTY?? THOUGHTS??
         carDistances.put(car, carDistances.get(car) - 20); //REDUCES PLAYER DISTANCE
@@ -193,7 +222,7 @@ public class RaceEngine {
         String alertText = "Your car has broken down!" ;
         int newDistance = carDistances.get(playerCar) - 20;
         carDistances.put(playerCar, newDistance); //REDUCES PLAYER DISTANCE
-        //ADD CODE THAT REDUCES PLAYER MONEY
+        playerMoney -= 50;
         return alertText;
     }
 
@@ -202,7 +231,7 @@ public class RaceEngine {
         String alertText = "You should help a traveller. Lost 30km but gained money!";
         int newDistance = carDistances.get(playerCar) - 20;
         carDistances.put(playerCar, newDistance);
-        //ADD CODE THAT INCREASES PLAYER MONEY
+        playerMoney += 50;
         return alertText;
     }
 
