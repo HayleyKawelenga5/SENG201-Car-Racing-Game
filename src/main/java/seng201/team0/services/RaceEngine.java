@@ -75,8 +75,9 @@ public class RaceEngine {
     }
 
     public void consumeFuel(Car car){
-        int fuelEconomy = car.getCarFuelEconomy();
-        int newFuel = car.getCarFuelAmount() -  fuelEconomy;
+        int carFuelEconomy = car.getCarFuelEconomy();
+        int carSpeed = car.getCarSpeed();
+        int newFuel = car.getCarFuelAmount() -  carSpeed/carFuelEconomy;
         car.setCarFuelAmount(newFuel);
     }
 
@@ -105,7 +106,7 @@ public class RaceEngine {
             applyRouteMultipliers();
             generateFuelStops();
             while (raceTimeElapsed < race.getRaceHours()) {
-                raceTimeElapsed++;
+
 
                 for (Car car : new ArrayList<>(carDistances.keySet())) {
                     if (car.getCarFuelAmount() > 0){
@@ -127,19 +128,22 @@ public class RaceEngine {
                                     break;
                                 }
                             }
-                            Platform.runLater(() -> listener.onProgressUpdate(newDistance, car.getCarFuelAmount(), raceTimeElapsed));
 
+                            //FUEL CONSUMPTION
+                            consumeFuel(car);
                             //pause game each hour to show progress
                             synchronized (pauseLock) {
                                 waitForUser = true;
                             }
-
+                            Platform.runLater(() -> listener.onProgressUpdate(newDistance, car.getCarFuelAmount(), raceTimeElapsed));
                             pauseUntilUserContinues(); //wait until UI tells race to resume
-
+                            raceTimeElapsed++;
+                            if (!raceRunning){
+                                break;
+                            }
                             triggerRandomEvent();
                         }
-                        //FUEL CONSUMPTION
-                        consumeFuel(car);
+
                         if (car.getCarFuelAmount() <= 0) {
                             carDistances.remove(car); //effectively removes car from race
                             if (car == playerCar){
@@ -156,9 +160,8 @@ public class RaceEngine {
                             }
                         }
                     }
-
-                    //TRIGGER RANDOM EVENT?? PROBABILITY OF EVENT OCCURING SHOULD BE AFFECTED BY DIFFICULTY
                 }
+
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -192,9 +195,10 @@ public class RaceEngine {
         }
     }
 
-    public void handleFuelStop(Car car){
+    public int[] handleFuelStop(Car car){
         car.setCarFuelAmount(car.getCarFuelAmount() + 20); //MAYBE CHANGE THIS TO DEPEND ON DIFFICULTY?? THOUGHTS??
-        carDistances.put(car, carDistances.get(car) - 20); //REDUCES PLAYER DISTANCE
+        carDistances.put(car, carDistances.get(car) - 20);//REDUCES PLAYER DISTANCE
+        return new int[] {car.getCarFuelAmount(), carDistances.get(car)};
     }
 
     public void triggerRandomEvent(){

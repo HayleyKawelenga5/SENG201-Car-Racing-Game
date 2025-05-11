@@ -255,12 +255,17 @@ public class RaceScreenController extends ScreenController {
             public void onFuelStop(int stopIndex, int currentDistance) {
                 boolean shouldRefuel = showRefuelConfirmation();
                 if (shouldRefuel) {
-                    raceEngine.handleFuelStop(getGameManager().getCurrentCar());
+                    int[] carFuelAndDistance = raceEngine.handleFuelStop(getGameManager().getCurrentCar());
+                    fuelProgressBar.setProgress((double) carFuelAndDistance[0]/100);
+                    distanceProgressBar.setProgress((double) carFuelAndDistance[1]/100);
                 }
             }
 
+            //shows reason why player did not finish race
             @Override
             public void onRaceEnd(boolean finished, boolean outOfFuel, boolean outOfTime) {
+                continueButton.setDisable(true);
+                continueButton.setStyle("-fx-text-fill: red;");
                 if (finished) {
                     showAlert("Race finished", "You finished the race!");
                 } else if (outOfFuel) {

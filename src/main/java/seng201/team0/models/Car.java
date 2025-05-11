@@ -22,7 +22,7 @@ public class Car {
      * @param speed       The average velocity of the car in km/h (20-100).
      * @param handling    The handling ability of the car (20-100).
      * @param reliability The reliability measure of the car (20-100).
-     * @param fuelEconomy The fuel economy of the car (20-100).
+     * @param fuelEconomy The fuel economy of the car (100-500).
      * @param cost        The cost of the car.
      */
     public Car(int speed, int handling, int reliability, int fuelEconomy, int cost) {
