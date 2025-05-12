@@ -257,7 +257,7 @@ public class RaceScreenController extends ScreenController {
                 if (shouldRefuel) {
                     int[] carFuelAndDistance = raceEngine.handleFuelStop(getGameManager().getCurrentCar());
                     fuelProgressBar.setProgress((double) carFuelAndDistance[0]/100);
-                    distanceProgressBar.setProgress((double) carFuelAndDistance[1]/100);
+                    distanceProgressBar.setProgress((double) carFuelAndDistance[1]/chosenRoute.getRouteDistance());
                 }
             }
 

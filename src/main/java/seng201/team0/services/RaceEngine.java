@@ -77,7 +77,8 @@ public class RaceEngine {
     public void consumeFuel(Car car){
         int carFuelEconomy = car.getCarFuelEconomy();
         int carSpeed = car.getCarSpeed();
-        int newFuel = car.getCarFuelAmount() -  carSpeed/carFuelEconomy;
+        int newFuel = car.getCarFuelAmount() -  (carSpeed/carFuelEconomy)*5;
+        System.out.println(newFuel);
         car.setCarFuelAmount(newFuel);
     }
 
@@ -128,19 +129,18 @@ public class RaceEngine {
                                     break;
                                 }
                             }
-
+                            raceTimeElapsed++;
                             //FUEL CONSUMPTION
                             consumeFuel(car);
+
                             //pause game each hour to show progress
                             synchronized (pauseLock) {
                                 waitForUser = true;
                             }
                             Platform.runLater(() -> listener.onProgressUpdate(newDistance, car.getCarFuelAmount(), raceTimeElapsed));
                             pauseUntilUserContinues(); //wait until UI tells race to resume
-                            raceTimeElapsed++;
-                            if (!raceRunning){
-                                break;
-                            }
+
+
                             triggerRandomEvent();
                         }
 
