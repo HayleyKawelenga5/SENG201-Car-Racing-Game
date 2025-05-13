@@ -131,18 +131,10 @@ public class RaceEngine {
 
     private boolean updateOpponentCar(Car car) {
 
-        int penalty = refuelPenalties.getOrDefault(car, 0);
-        refuelPenalties.put(car, 0);
-
         int currentDistance = carDistances.get(car);
-        int nextDistance = currentDistance + car.getCarSpeed() - penalty;
+        int nextDistance = currentDistance + car.getCarSpeed();
 
         Set<Integer> triggeredStops = triggeredFuelStops.get(car);
-
-        if (car.getCarFuelAmount() <= 0) {
-            carStatus.put(car, RaceStatus.DNF);
-            DNF.add(car);
-        }
 
         for (int fuelStop : fuelStops) {
             if (!triggeredStops.contains(fuelStop) && fuelStop > currentDistance && fuelStop <= nextDistance) {
@@ -150,9 +142,9 @@ public class RaceEngine {
                 Random random = new Random();
                 if (random.nextInt(1, 3) == 1) {
                     refuel(car);
-                    refuelPenalties.put(car, 10);
+                    refuelPenalties.put(car, refuelPenalties.getOrDefault(car, 0) + 10);
                 }
-                return false;
+                return true;
             }
         }
 
@@ -169,35 +161,30 @@ public class RaceEngine {
             carStatus.put(car, RaceStatus.FINISHED);
             System.out.println("Opponent finished. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
             finishPositions.add(car);
+            carHours.put(car, carHours.get(car) + 1);
         }
 
-        return true;
+        return false;
     }
 
 
     private boolean updatePlayerCar() {
 
-        int penalty = refuelPenalties.getOrDefault(playerCar, 0);
-        refuelPenalties.put(playerCar, 0);
-
         int currentDistance = carDistances.get(playerCar);
-        int nextDistance = currentDistance + playerCar.getCarSpeed() - penalty;
+        int nextDistance = currentDistance + playerCar.getCarSpeed();
 
         Set<Integer> triggeredStops = triggeredFuelStops.get(playerCar);
-
-        if (playerCar.getCarFuelAmount() <= 0) {
-            carStatus.put(playerCar, RaceStatus.DNF);
-            DNF.add(playerCar);
-        }
 
         for (int fuelStop : fuelStops) {
             if (!triggeredStops.contains(fuelStop) && fuelStop > currentDistance && fuelStop <= nextDistance) {
                 triggeredStops.add(fuelStop);
-                refuelPenalties.put(playerCar, 10);
                 Platform.runLater(() ->
                         raceScreenController.onFuelStop(currentDistance, fuelStop, playerCar.getCarFuelAmount())
                 );
-                return false;
+                if (playerCar.getCarFuelAmount() == playerCar.getCarFuelEconomy()) {
+                    refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 10);
+                }
+                return true;
             }
         }
 
@@ -213,18 +200,21 @@ public class RaceEngine {
 
         carDistances.put(playerCar, nextDistance);
 
-        if (carDistances.get(playerCar) >= selectedRoute.getRouteDistance()) {
-            carStatus.put(playerCar, RaceStatus.FINISHED);
-            finishPositions.add(playerCar);
-            System.out.println("Player finished. Hours: " + carHours.get(playerCar) + ". Status: " + carStatus.get(playerCar) + ". Distance: " + carDistances.get(playerCar));
-            playerFinished();
-        }
-
         Platform.runLater(() ->
                 raceScreenController.onHourUpdate(nextDistance, playerCar.getCarFuelAmount(), carHours.get(playerCar))
         );
 
-        return true;
+        System.out.println("[RaceEngine] Fuel left: " + playerCar.getCarFuelAmount());
+        System.out.println("[RaceEngine] Updating bar with: " + playerCar.getCarFuelEconomy());
+        if (carDistances.get(playerCar) >= selectedRoute.getRouteDistance()) {
+            carStatus.put(playerCar, RaceStatus.FINISHED);
+            finishPositions.add(playerCar);
+            carHours.put(playerCar, carHours.get(playerCar) + 1);
+            System.out.println("Player finished. Hours: " + carHours.get(playerCar) + ". Status: " + carStatus.get(playerCar) + ". Distance: " + carDistances.get(playerCar));
+            playerFinished();
+        }
+
+        return false;
     }
 
     private synchronized void waitForPlayerContinue() {
@@ -285,6 +275,11 @@ public class RaceEngine {
     }
 
     private void updateFinishPositions() {
+        for (Car car : finishPositions) {
+            int currentDistance = carDistances.getOrDefault(car, 0);
+            int penalty = refuelPenalties.getOrDefault(car, 0);
+            carDistances.put(car, currentDistance - penalty);
+        }
         finishPositions.sort((car1, car2) -> {
             int hourComparison = Integer.compare(carHours.get(car1), carHours.get(car2));
             if (hourComparison != 0) {
@@ -292,6 +287,14 @@ public class RaceEngine {
             }
             return Integer.compare(carDistances.get(car2), carDistances.get(car1));
         });
+        System.out.println("Finish Positions:");
+        for (int i = 0; i < finishPositions.size(); i++) {
+            Car car = finishPositions.get(i);
+            System.out.println((i + 1) + ". " + car.getCarName()
+                    + " | Hours: " + carHours.get(car)
+                    + " | Final Distance: " + carDistances.get(car)
+                    + " | Penalty: " + refuelPenalties.getOrDefault(car, 0));
+        }
     }
 
     private void playerDNF() {
