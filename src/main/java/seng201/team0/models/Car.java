@@ -31,7 +31,7 @@ public class Car {
         this.reliability = reliability;
         this.fuelEconomy = fuelEconomy;
         this.cost = cost;
-        this.fuelAmount = 100;
+        this.fuelAmount = fuelEconomy;
     }
 
     /**
@@ -124,8 +124,8 @@ public class Car {
      * Sets the fuel amount for the car.
      * @param fuel fuel amount to be set
      */
-    public void setCarFuelAmount(int fuel){
-        this.fuelAmount = fuel;
+    public void setCarFuelAmount(int fuelAmount){
+        this.fuelAmount = fuelAmount;
     }
 
     /**

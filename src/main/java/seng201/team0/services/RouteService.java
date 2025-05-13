@@ -41,15 +41,15 @@ public class RouteService {
                 break;
             case OFFROAD:
                 distance = random.nextInt(40, 150);
-                difficultyMultiplier = random.nextDouble(1.0, 1.8);
+                difficultyMultiplier = random.nextDouble(1.0, 1.6);
                 break;
             case WINDY:
                 distance = random.nextInt(40, 150);
-                difficultyMultiplier = random.nextDouble(1.0, 1.8);
+                difficultyMultiplier = random.nextDouble(1.0, 1.6);
                 break;
             case BEACH:
                 distance = random.nextInt(60, 150);
-                difficultyMultiplier = random.nextDouble(1.0, 2.0);
+                difficultyMultiplier = random.nextDouble(1.0, 1.8);
                 break;
         }
 

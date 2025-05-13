@@ -5,13 +5,310 @@ import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
 
+import seng201.team0.GameManager;
+
+import seng201.team0.gui.RaceScreenController;
+
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+import java.util.Random;
 
 public class RaceEngine {
+
+    private Race race;
+    private Route selectedRoute;
+    private Car playerCar;
+    private String gameDifficulty;
+    private int playerMoney;
+
+    private List<Car> opponents;
+    private Map<Car, Integer> carDistances;
+    private List<Integer> fuelStops = new ArrayList<>();
+    private List<Car> finishPositions = new ArrayList<>();
+    private List<Car> DNF = new ArrayList<>();
+    private Map<Car, Integer> refuelPenalties = new HashMap<>();
+    private Map<Car, Set<Integer>> triggeredFuelStopsMap = new HashMap<>();
+    private Map<Car, Integer> carHours = new HashMap<>();
+
+    private CarService carService = new CarService();
+
+    private int currentHour;
+
+    private RaceScreenController raceScreenController;
+
+    public RaceEngine(Race race, Route selectedRoute, Car playerCar, String difficulty, int playerMoney, RaceScreenController raceScreenController) {
+        this.race = race;
+        this.selectedRoute = selectedRoute;
+        this.playerCar = playerCar;
+        this.gameDifficulty = difficulty;
+        this.playerMoney = playerMoney;
+        this.raceScreenController = raceScreenController;
+
+        this.opponents = carService.generateRandomCars(race.getRaceEntries());
+        this.carDistances = new HashMap<>();
+        this.fuelStops = new ArrayList<>();
+
+        for (Car car : opponents) {
+            carDistances.put(car, 0);
+            triggeredFuelStopsMap.put(car, new HashSet<>());
+        }
+        carDistances.put(playerCar, 0);
+        triggeredFuelStopsMap.put(playerCar, new HashSet<>());
+
+        for (Car car : opponents) {
+            carHours.put(car, 0);
+        }
+        carHours.put(playerCar, 0);
+
+    }
+
+    public void applyRouteMultipliers() {
+        double difficultyMultiplier = selectedRoute.getRouteDifficultyMultiplier();
+        for (Car car : carDistances.keySet()) {
+            car.setCarSpeed((int) (car.getCarSpeed() / difficultyMultiplier));
+            car.setCarHandling((int) (car.getCarHandling() / difficultyMultiplier));
+            car.setCarReliability((int) (car.getCarReliability() / difficultyMultiplier));
+            car.setCarFuelEconomy((int) (car.getCarFuelEconomy() / difficultyMultiplier));
+        }
+    }
+
+    public void consumeFuel(Car car) {
+        car.setCarFuelAmount(car.getCarFuelAmount() - (car.getCarSpeed() / 2));
+    }
+
+    public void refuel(Car car) {
+        car.setCarFuelAmount(car.getCarFuelEconomy());
+    }
+
+    public void generateFuelStops() {
+        int routeFuelStops = selectedRoute.getRouteFuelStops();
+        int routeDistance = selectedRoute.getRouteDistance();
+        int fuelStopDistance = routeDistance / (routeFuelStops + 1);
+        for (int i = 0; i < routeFuelStops; i++) {
+            fuelStops.add((i + 1) * fuelStopDistance);
+        }
+    }
+
+    public void startRace() {
+        new Thread(() -> {
+            currentHour = 0;
+            applyRouteMultipliers();
+            generateFuelStops();
+            refuel(playerCar);
+            System.out.println("Race hours: " + race.getRaceHours());
+
+            while (carHours.get(playerCar) < race.getRaceHours()) {
+                for (Car car : opponents) {
+                    if (carDistances.containsKey(car)) {
+                        boolean atFuelStop = updateOpponentCar(car);
+                        if (!atFuelStop) {
+                            carHours.put(car, carHours.get(car) + 1);
+                        }
+                    }
+                }
+                boolean atFuelStop = updatePlayerCar();
+                if (!atFuelStop) {
+                    carHours.put(playerCar, carHours.get(playerCar) + 1);
+                }
+
+                waitForPlayerContinue();
+
+                currentHour++;
+            }
+        }).start();
+    }
+
+
+
+    private boolean updateOpponentCar(Car car) {
+        int penalty = refuelPenalties.getOrDefault(car, 0);
+        refuelPenalties.put(car, 0);
+
+        int currentDistance = carDistances.getOrDefault(car, 0);
+        int nextDistance = currentDistance + car.getCarSpeed() - penalty;
+
+        Set<Integer> triggeredStops = triggeredFuelStopsMap.get(car);
+
+        for (int fuelStop : fuelStops) {
+            if (!triggeredStops.contains(fuelStop) && fuelStop > currentDistance && fuelStop <= nextDistance) {
+                triggeredStops.add(fuelStop);
+                refuelPenalties.put(playerCar, 20);
+                Random random = new Random();
+                if (random.nextInt(1, 3) == 1) {
+                    refuel(car);
+                    refuelPenalties.put(car, 20);
+                }
+                return false;
+            }
+        }
+
+        consumeFuel(car);
+
+        if (car.getCarFuelAmount() <= 0) {
+            carDistances.remove(car);
+            DNF.add(car);
+        }
+
+        if (nextDistance >= selectedRoute.getRouteDistance()) {
+            finishPositions.add(car);
+            carDistances.remove(car);
+        }
+
+        carDistances.put(car, nextDistance);
+
+        return true;
+    }
+
+
+    private boolean updatePlayerCar() {
+        int penalty = refuelPenalties.getOrDefault(playerCar, 0);
+        refuelPenalties.put(playerCar, 0);
+
+        int currentDistance = carDistances.get(playerCar);
+        int nextDistance = currentDistance + playerCar.getCarSpeed();
+
+        Set<Integer> triggeredStops = triggeredFuelStopsMap.get(playerCar);
+
+        for (int fuelStop : fuelStops) {
+            if (!triggeredStops.contains(fuelStop) && fuelStop > currentDistance && fuelStop <= nextDistance) {
+                triggeredStops.add(fuelStop);
+                refuelPenalties.put(playerCar, 20);
+                Platform.runLater(() ->
+                        raceScreenController.onFuelStop(currentDistance, fuelStop, playerCar.getCarFuelAmount())
+                );
+                return false;
+            }
+        }
+
+        consumeFuel(playerCar);
+
+        if (playerCar.getCarFuelAmount() <= 0) {
+            carDistances.remove(playerCar);
+            DNF.add(playerCar);
+            playerDNF();
+        }
+
+        if (nextDistance >= selectedRoute.getRouteDistance()) {
+            carDistances.remove(playerCar);
+            finishPositions.add(playerCar);
+            playerFinished();
+        }
+
+        triggerRandomEvent();
+
+        carDistances.put(playerCar, nextDistance);
+
+        Platform.runLater(() ->
+                raceScreenController.onHourUpdate(nextDistance, playerCar.getCarFuelAmount(), carHours.get(playerCar))
+        );
+
+        return true;
+    }
+
+    private synchronized void waitForPlayerContinue() {
+        try {
+            wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void playerClickedContinue() {
+        notifyAll();
+    }
+
+    public void triggerRandomEvent() {
+        double chance = gameDifficulty.equals("HARD") ? 10 : 5;
+        Random random = new Random();
+        if (random.nextInt(1, 101) < chance) {
+            int eventType = new Random().nextInt(3);
+            String alertText = "";
+            switch(eventType) {
+                case 0:
+                    alertText = handleBreakdownEvent();
+                    break;
+                case 1:
+                    alertText = handleStrandedTraveller();
+                    break;
+                case 2:
+                    alertText = handleSevereWeatherEvent();
+                    break;
+            }
+        }
+    }
+
+    public String handleBreakdownEvent() {
+        String alertText = "Your car has broken down!";
+        int newDistance = carDistances.get(playerCar) - 20;
+        carDistances.put(playerCar, newDistance); //REDUCES PLAYER DISTANCE
+        playerMoney -= 50;
+        return alertText;
+    }
+
+    public String handleStrandedTraveller() {
+        String alertText = "You help a traveller. This costs you 20km but you receive $100!";
+        int newDistance = carDistances.get(playerCar) - 20;
+        carDistances.put(playerCar, newDistance);
+        playerMoney += 50;
+        return alertText;
+    }
+
+    public String handleSevereWeatherEvent() {
+        String alertText = "Severe weather! All cars retire!";
+        for (Car car : carDistances.keySet()) {
+            carDistances.remove(car);
+            DNF.add(car);
+        }
+        return alertText;
+    }
+
+    private void updateFinishPositions() {
+        finishPositions.sort((car1, car2) -> {
+            int hourComparison = Integer.compare(carHours.get(car1), carHours.get(car2));
+            if (hourComparison != 0) {
+                return hourComparison;
+            }
+            return Integer.compare(carDistances.get(car2), carDistances.get(car1));
+        });
+    }
+
+    private void playerDNF() {
+        Platform.runLater(() -> {
+            raceScreenController.onPlayerDNF();
+        });
+    }
+
+    private void playerFinished() {
+        updateFinishPositions();
+
+        int playerPosition = finishPositions.indexOf(playerCar) + 1;
+
+        int prizeMoney = calculatePrizeMoney(playerPosition);
+
+        Platform.runLater(() -> {
+            raceScreenController.onPlayerFinished(playerPosition, prizeMoney);
+        });
+    }
+
+    private int calculatePrizeMoney(int position) {
+        int prizeMoney = race.getRacePrizeMoney();
+        switch (position) {
+            case 1: prizeMoney = prizeMoney; ; break;
+            case 2: prizeMoney *= .75; break;
+            case 3: prizeMoney *= .5; break;
+            default: prizeMoney = 0; break;
+        }
+        return prizeMoney;
+    }
+
+
+
+
+
+    /**
     private Race race;
     private Route selectedRoute;
     private Car playerCar;
@@ -51,12 +348,8 @@ public class RaceEngine {
         this.gameDifficulty = gameDifficulty;
         this.playerMoney = playerMoney;
 
+        this.opponents = carService.generateRandomCars(race.getRaceEntries());
 
-        if (gameDifficulty.equals("EASY")) {
-            this.opponents = carService.generateRandomCars(race.getRaceEntries());
-        } else if (gameDifficulty.equals("HARD")){
-            this.opponents = carService.generateRandomCars(5);
-        }
         this.carDistances = new HashMap<>();
         for (Car car : opponents) {
             carDistances.put(car, 0);
@@ -67,37 +360,28 @@ public class RaceEngine {
     public void applyRouteMultipliers(){
         double multiplier = selectedRoute.getRouteDifficultyMultiplier();
         for (Car car :  carDistances.keySet()) {
-            car.setCarSpeed((int)(car.getCarSpeed()*multiplier));
-            car.setCarHandling((int)(car.getCarHandling()*multiplier));
-            car.setCarReliability((int)(car.getCarReliability()*multiplier));
-            car.setCarFuelEconomy((int)(car.getCarFuelEconomy()*multiplier));
+            car.setCarSpeed((int)(car.getCarSpeed() / multiplier));
+            car.setCarHandling((int)(car.getCarHandling() / multiplier));
+            car.setCarReliability((int)(car.getCarReliability() / multiplier));
+            car.setCarFuelEconomy((int)(car.getCarFuelEconomy() / multiplier));
         }
     }
 
-    public void consumeFuel(Car car){
+    public void consumeFuel(Car car) {
         int carFuelEconomy = car.getCarFuelEconomy();
         int carSpeed = car.getCarSpeed();
         int newFuel = car.getCarFuelAmount() -  carSpeed/carFuelEconomy;
         car.setCarFuelAmount(newFuel);
     }
 
-    public void generateFuelStops(){
-        numberOfFuelStops = selectedRoute.getRouteFuelStops();
+    public void generateFuelStops() {
+        int numberOfFuelStops = selectedRoute.getRouteFuelStops();
         int raceDistance = selectedRoute.getRouteDistance();
-        int fuelStopInterval = raceDistance/(numberOfFuelStops+1); //+1 so it doesnt generate stops at the start or end of the race
+        int fuelStopInterval = raceDistance / (numberOfFuelStops + 1); //+1 so it doesnt generate stops at the start or end of the race
 
         for (int i = 0; i < numberOfFuelStops; i++) {
-            fuelStops.add(i* fuelStopInterval); //generates fuel stops evenly spaced along route distance
+            fuelStops.add(i * fuelStopInterval); //generates fuel stops evenly spaced along route distance
         }
-    }
-
-    public List<Integer> getFuelStopDistances(Route selectedRoute) {
-        List<Integer> fuelStopDistances = new ArrayList<>();
-        int stopInterval = selectedRoute.getRouteDistance() / (selectedRoute.getRouteFuelStops() + 1);
-        for (int i = 1; i <= selectedRoute.getRouteFuelStops(); i++) {
-            fuelStopDistances.add(stopInterval * i);
-        }
-        return fuelStopDistances;
     }
 
     public void startRaceAsync(RaceUpdateListener listener){
@@ -264,6 +548,7 @@ public class RaceEngine {
         }
         return -1;
     }
+     */
 
 }
 
