@@ -43,10 +43,10 @@ public class GameManager {
         navigator.launchMainScreen(this);
     }
 
-    public void toMainScreenFromRace(int money, Car currentCar) {
+    public void toMainScreenFromRace(int money, Car currentCar, int seasonLength) {
         this.money = money;
         this.currentCar = currentCar;
-
+        this.seasonLength = seasonLength;
         navigator.launchMainScreen(this);
     }
 
@@ -57,6 +57,8 @@ public class GameManager {
     public int getSeasonLength() {
         return seasonLength;
     }
+
+    public void setSeasonLength(int seasonLength) {this.seasonLength = seasonLength;}
 
     public String getDifficulty() {
         return difficulty;

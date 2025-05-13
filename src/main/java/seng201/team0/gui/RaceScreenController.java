@@ -217,12 +217,13 @@ public class RaceScreenController extends ScreenController {
     public void onBackButtonClicked() {
         int money = getGameManager().getMoney() + prizeMoney;
         getGameManager().setMoney(money);
-        getGameManager().toMainScreenFromRace(money, currentCar);
-        currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
-        currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
-        currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
-        currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
-        currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
+        getGameManager().setSeasonLength(getGameManager().getSeasonLength()-1);
+        getGameManager().toMainScreenFromRace(money, currentCar, getGameManager().getSeasonLength());
+//        currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
+//        currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
+//        currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
+//        currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
+//        currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
         getGameManager().setCurrentCar(currentCar);
     }
 

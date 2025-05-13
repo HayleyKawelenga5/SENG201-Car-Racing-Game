@@ -186,6 +186,7 @@ public class RaceEngine {
                 if (playerCar.getCarFuelAmount() <= 0) {
                     carStatus.put(playerCar, RaceStatus.DNF);
                     playerDNF();
+                    return false;
                 }
                 return true;
             }
