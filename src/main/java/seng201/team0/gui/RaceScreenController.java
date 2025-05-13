@@ -66,6 +66,7 @@ public class RaceScreenController extends ScreenController {
     private Car currentCarCopy;
     private Car currentCar;
     private RaceEngine raceEngine;
+    private int prizeMoney;
 
     private int currentDistance;
     private int nextFuelStopDistance;
@@ -95,6 +96,7 @@ public class RaceScreenController extends ScreenController {
         startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
         continueButton.setOnAction(event -> onContinueButtonClicked());
         refuelButton.setOnAction(event -> onRefuelButtonClicked());
+        backButton.setOnAction(event -> onBackButtonClicked());
 
         List<Button> availableRouteButtons = List.of(route1Button, route2Button, route3Button);
 
@@ -211,12 +213,22 @@ public class RaceScreenController extends ScreenController {
         info.showAndWait();
     }
 
+    @FXML
+    public void onBackButtonClicked() {
+        GameManager raceScreen = getGameManager();
+        int money = raceScreen.getMoney() + prizeMoney;
+        raceScreen.toMainScreenFromRace(money, currentCar);
+    }
+
     public void onPlayerFinished(int playerPosition, int prizeMoney) {
-        showInfo("Race finished", "Position: " + playerPosition + ", Prize Money: " + prizeMoney);
+        prizeMoney = prizeMoney;
+        showInfo("Race finished", "Position: " + playerPosition + " | Prize Money: $" + prizeMoney);
+        backButton.setDisable(false);
     }
 
     public void onPlayerDNF() {
         showAlert("Out of fuel!", "Position: DNF | Prize money: $0");
+        backButton.setDisable(false);
     }
 
     public void onHourUpdate(int currentDistance, int fuelAmount, int currentHour) {
