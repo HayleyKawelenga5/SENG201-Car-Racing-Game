@@ -43,7 +43,7 @@ public class RaceEngine {
     private RaceScreenController raceScreenController;
 
     public enum RaceStatus {
-        RUNNING, FINISHED, DNF
+        RUNNING, FINISHED, OUTOFFUEL, BREAKDOWN, DNF
     }
 
     private Map<Car, RaceStatus> carStatus = new HashMap<>();
@@ -106,8 +106,10 @@ public class RaceEngine {
             applyRouteMultipliers();
             generateFuelStops();
             refuel(playerCar);
-
-            for (Car car : opponents) {
+            Platform.runLater(() -> {
+                raceScreenController.onHourUpdate(0, playerCar.getCarFuelEconomy(), currentHour); //updates progress at beginning
+            });
+                for (Car car : opponents) {
                 while (carHours.get(car) < race.getRaceHours() && carStatus.get(car).equals(RaceStatus.RUNNING)) {
                     boolean atFuelStop = updateOpponentCar(car);
                     if (!atFuelStop) {
@@ -207,6 +209,7 @@ public class RaceEngine {
             carStatus.put(playerCar, RaceStatus.DNF);
             DNF.add(playerCar);
             playerDNF();
+            return false;
         }
 
         triggerRandomEvent();
@@ -219,7 +222,8 @@ public class RaceEngine {
             System.out.println("Player finished. Hours: " + carHours.get(playerCar) + ". Status: " + carStatus.get(playerCar) + ". Distance: " + carDistances.get(playerCar));
             playerFinished();
         }
-
+        System.out.println("[RaceEngine] Fuel left: " + playerCar.getCarFuelAmount());
+        System.out.println("[RaceEngine] Updating bar with: " + playerCar.getCarFuelEconomy());
         Platform.runLater(() ->
                 raceScreenController.onHourUpdate(nextDistance, playerCar.getCarFuelAmount(), carHours.get(playerCar))
         );

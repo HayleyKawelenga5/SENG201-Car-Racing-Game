@@ -183,7 +183,7 @@ public class RaceScreenController extends ScreenController {
     private void onRefuelButtonClicked() {
         raceEngine.refuel(currentCarCopy);
         currentFuelLabel.setText("Current fuel: " + currentCarCopy.getCarFuelAmount());
-        fuelProgressBar.setProgress(currentCarCopy.getCarFuelAmount() / 100.0);
+        fuelProgressBar.setProgress((double) currentCarCopy.getCarFuelAmount() / currentCarCopy.getCarFuelEconomy());
         refuelButton.setDisable(true);
     }
 
@@ -192,7 +192,7 @@ public class RaceScreenController extends ScreenController {
         currentDistanceLabel.setText("Current distance: " + nextFuelStopDistance + "km");
         currentFuelLabel.setText("Current fuel: " + (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)));
         distanceProgressBar.setProgress(nextFuelStopDistance / (double) chosenRoute.getRouteDistance());
-        fuelProgressBar.setProgress((fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)) / 100.0);
+        fuelProgressBar.setProgress((double) (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)) / currentCarCopy.getCarFuelEconomy());
         showInfo("Fuel Stop", "You are at a fuel stop!");
         refuelButton.setDisable(false);
     }
@@ -221,7 +221,7 @@ public class RaceScreenController extends ScreenController {
     }
 
     public void onPlayerFinished(int playerPosition, int prizeMoney) {
-        prizeMoney = prizeMoney;
+        this.prizeMoney = prizeMoney;
         showInfo("Race finished", "Position: " + playerPosition + " | Prize Money: $" + prizeMoney);
         backButton.setDisable(false);
     }
@@ -229,12 +229,19 @@ public class RaceScreenController extends ScreenController {
     public void onPlayerDNF() {
         showAlert("Out of fuel!", "Position: DNF | Prize money: $0");
         backButton.setDisable(false);
+        continueButton.setDisable(true);
+        refuelButton.setDisable(true);
+        startRaceButton.setDisable(true);
+        selectRouteButton.setDisable(true);
+        route1Button.setDisable(true);
+        route2Button.setDisable(true);
+        route3Button.setDisable(true);
     }
 
-    public void onHourUpdate(int currentDistance, int fuelAmount, int currentHour) {
+    public void onHourUpdate(int currentDistance, int carFuelAmount, int currentHour) {
         hoursLabel.setText("Hour: " + (currentHour + 1));
-        fuelProgressBar.setProgress(fuelAmount / 100.0);
-        currentFuelLabel.setText("Current fuel: " + fuelAmount);
+        fuelProgressBar.setProgress((double) carFuelAmount / currentCarCopy.getCarFuelEconomy());
+        currentFuelLabel.setText("Current fuel: " + carFuelAmount);
         currentDistanceLabel.setText("Current distance: " + currentDistance + "km");
         distanceProgressBar.setProgress(currentDistance / (double) chosenRoute.getRouteDistance());
     }
