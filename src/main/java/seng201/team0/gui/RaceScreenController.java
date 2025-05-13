@@ -2,6 +2,8 @@ package seng201.team0.gui;
 
 import javafx.scene.control.*;
 
+import javafx.application.Platform;
+
 import seng201.team0.GameManager;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
@@ -11,75 +13,46 @@ import seng201.team0.models.Car;
 
 import javafx.fxml.FXML;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class RaceScreenController extends ScreenController {
 
-    @FXML
-    private Label informationLabel;
+    @FXML private Label informationLabel;
 
-    @FXML
-    private Button route1Button;
-    @FXML
-    private Button route2Button;
-    @FXML
-    private Button route3Button;
-    @FXML
-    private Button selectRouteButton;
+    @FXML private Button route1Button;
+    @FXML private Button route2Button;
+    @FXML private Button route3Button;
+    @FXML private Button selectRouteButton;
 
-    @FXML
-    private Label routeDescriptionLabel;
-    @FXML
-    private Label routeDistanceLabel;
-    @FXML
-    private Label routeFuelStopsLabel;
-    @FXML
-    private Label routeDifficultyLabel;
+    @FXML private Label routeDescriptionLabel;
+    @FXML private Label routeDistanceLabel;
+    @FXML private Label routeFuelStopsLabel;
+    @FXML private Label routeDifficultyLabel;
 
-    @FXML
-    private Button startRaceButton;
+    @FXML private Button startRaceButton;
 
-    @FXML
-    private Label carNameLabel;
-    @FXML
-    private Label carSpeedLabel;
-    @FXML
-    private Label carHandlingLabel;
-    @FXML
-    private Label carReliabilityLabel;
-    @FXML
-    private Label carFuelEconomyLabel;
+    @FXML private Label currentDistanceLabel;
+    @FXML private Label currentFuelLabel;
 
-    @FXML
-    private ProgressBar distanceProgressBar;
-    @FXML
-    private ProgressBar fuelProgressBar;
+    @FXML private Label carNameLabel;
+    @FXML private Label carSpeedLabel;
+    @FXML private Label carHandlingLabel;
+    @FXML private Label carReliabilityLabel;
+    @FXML private Label carFuelEconomyLabel;
 
-    @FXML
-    private Label hoursLabel;
+    @FXML private ProgressBar distanceProgressBar;
+    @FXML private ProgressBar fuelProgressBar;
 
-    @FXML
-    private Button refuelButton;
-    @FXML
-    private Button continueButton;
+    @FXML private Label hoursLabel;
 
-    @FXML
-    private Label positionLabel;
-    @FXML
-    private Label prizeMoneyLabel;
+    @FXML private Button refuelButton;
+    @FXML private Button continueButton;
 
-    @FXML
-    private Button backButton;
+    @FXML private Label positionLabel;
+    @FXML private Label prizeMoneyLabel;
 
-    private double currentDistance = 0;
-    private double maxDistance;
-    private int currentHour = 0;
-    private int nextFuelStopIndex = 0;
-    private List<Integer> fuelStopDistances;
-
-    private boolean isRaceRunning = false;
-
+    @FXML private Button backButton;
 
     private RaceService raceService = new RaceService();
     private Route chosenRoute;
@@ -88,9 +61,15 @@ public class RaceScreenController extends ScreenController {
     private int selectedRouteIndex = -1;
     private List<Route> availableRoutes;
     private Car previewCurrentCar;
-    private Car currentCar = getGameManager().getCurrentCar();
+    private Car currentCarCopy;
+    private Car currentCar;
     private RaceEngine raceEngine;
+    private int prizeMoney;
 
+    private int currentDistance;
+    private int nextFuelStopDistance;
+
+    private RaceScreenController raceScreenController;
 
     public RaceScreenController(GameManager manager) {
         super(manager);
@@ -114,6 +93,8 @@ public class RaceScreenController extends ScreenController {
         selectRouteButton.setOnAction(event -> onSelectRouteButtonClicked());
         startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
         continueButton.setOnAction(event -> onContinueButtonClicked());
+        refuelButton.setOnAction(event -> onRefuelButtonClicked());
+        backButton.setOnAction(event -> onBackButtonClicked());
 
         List<Button> availableRouteButtons = List.of(route1Button, route2Button, route3Button);
 
@@ -122,8 +103,12 @@ public class RaceScreenController extends ScreenController {
             availableRouteButtons.get(i).setOnAction(event -> onRouteButtonClicked(index));
         }
 
+        backButton.setDisable(true);
+
+        currentCar = getGameManager().getCurrentCar();
         carNameLabel.setText("Current car: " + currentCar.getCarName());
         updateCarStats(currentCar);
+        currentCarCopy = raceService.copyCar(currentCar);
 
         updateRouteButtons();
 
@@ -147,9 +132,176 @@ public class RaceScreenController extends ScreenController {
         } else {
             selectRouteButton.setStyle("-fx-background-color: LightGreen");
             chosenRoute = selectedRoute;
+            currentCarCopy = raceService.copyCar(currentCar);
         }
     }
 
+    private void updateCarStats(Car car) {
+        if (car == null) {
+            carSpeedLabel.setText("Speed: ");
+            carHandlingLabel.setText("Handling: ");
+            carReliabilityLabel.setText("Reliability: ");
+            carFuelEconomyLabel.setText("Fuel Economy: ");
+        } else {
+            carSpeedLabel.setText("Speed: " + car.getCarSpeed());
+            carHandlingLabel.setText("Handling: " + car.getCarHandling());
+            carReliabilityLabel.setText("Reliability: " + car.getCarReliability());
+            carFuelEconomyLabel.setText("Fuel Economy: " + car.getCarFuelEconomy());
+        }
+    }
+
+    @FXML
+    private void onRouteButtonClicked(int index) {
+        if (index >= 0 && index < availableRoutes.size()) {
+            previewCurrentCar = null;
+            previewCurrentCar = raceService.previewMultiplier(currentCarCopy, availableRoutes.get(index).getRouteDifficultyMultiplier());
+            updateCarStats(previewCurrentCar);
+            selectRouteButton.setStyle("");
+            selectedRoute = availableRoutes.get(index);
+            selectedRouteIndex = index;
+            updateRouteStats(selectedRoute);
+        }
+    }
+
+    private void updateRouteStats(Route route) {
+        if (route == null) {
+            routeDescriptionLabel.setText("Description: ");
+            routeDistanceLabel.setText("Distance: ");
+            routeFuelStopsLabel.setText("Fuel Stops: ");
+            routeDifficultyLabel.setText("Difficulty: ");
+        } else {
+            routeDescriptionLabel.setText("Description: " + route.getRouteDescription());
+            routeDistanceLabel.setText("Distance: " + route.getRouteDistance() + "km");
+            routeFuelStopsLabel.setText("Fuel Stops: " + route.getRouteFuelStops());
+            routeDifficultyLabel.setText("Difficulty: " + String.format("%.2f", route.getRouteDifficultyMultiplier()));
+        }
+    }
+
+
+
+    @FXML
+    private void onRefuelButtonClicked() {
+        raceEngine.refuel(currentCarCopy);
+        currentFuelLabel.setText("Current fuel: " + currentCarCopy.getCarFuelAmount());
+        fuelProgressBar.setProgress((double) currentCarCopy.getCarFuelAmount() / currentCarCopy.getCarFuelEconomy());
+        refuelButton.setDisable(true);
+    }
+
+
+    public void onFuelStop(int currentDistance, int nextFuelStopDistance, int fuelAmount) {
+        currentDistanceLabel.setText("Current distance: " + nextFuelStopDistance + "km");
+        currentFuelLabel.setText("Current fuel: " + (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)));
+        distanceProgressBar.setProgress(nextFuelStopDistance / (double) chosenRoute.getRouteDistance());
+        fuelProgressBar.setProgress((double) (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)) / currentCarCopy.getCarFuelEconomy());
+        showInfo("Fuel Stop", "You are at a fuel stop!");
+        refuelButton.setDisable(false);
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String title, String message) {
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle(title);
+        info.setHeaderText(null);
+        info.setContentText(message);
+        info.showAndWait();
+    }
+
+    @FXML
+    public void onBackButtonClicked() {
+        int money = getGameManager().getMoney() + prizeMoney;
+        getGameManager().setMoney(money);
+        getGameManager().toMainScreenFromRace(money, currentCar);
+        currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
+        currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
+        currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
+        currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
+        currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
+        getGameManager().setCurrentCar(currentCar);
+    }
+
+    public void onPlayerFinished(int playerPosition, int prizeMoney) {
+        this.prizeMoney = prizeMoney;
+        showInfo("Race finished", "Position: " + playerPosition + " | Prize Money: $" + prizeMoney);
+        positionLabel.setText("Place: " + playerPosition);
+        prizeMoneyLabel.setText("Prize Money: $" + prizeMoney);
+        backButton.setDisable(false);
+        continueButton.setDisable(true);
+    }
+
+    public void onPlayerDNF() {
+        showAlert("Out of fuel!", "Position: DNF | Prize money: $0");
+        positionLabel.setText("Place: DNF");
+        prizeMoneyLabel.setText("Prize Money: $0");
+        backButton.setDisable(false);
+        continueButton.setDisable(true);
+    }
+
+    public void onPlayerOutOfTime() {
+        showAlert("Out of time!", "Position: DNF | Prize money: $0");
+        positionLabel.setText("Place: DNF");
+        prizeMoneyLabel.setText("Prize Money: $0");
+        backButton.setDisable(false);
+        continueButton.setDisable(true);
+    }
+
+    public void onHourUpdate(int currentDistance, int carFuelAmount, int currentHour) {
+        hoursLabel.setText("Hour: " + currentHour);
+        fuelProgressBar.setProgress((double) carFuelAmount / currentCarCopy.getCarFuelEconomy());
+        currentFuelLabel.setText("Current fuel: " + carFuelAmount);
+        currentDistanceLabel.setText("Current distance: " + currentDistance + "km");
+        distanceProgressBar.setProgress(currentDistance / (double) chosenRoute.getRouteDistance());
+    }
+
+
+
+    @FXML
+    private void onContinueButtonClicked() {
+        refuelButton.setDisable(true);
+        raceEngine.playerClickedContinue();
+    }
+
+    @FXML
+    private void onStartRaceButtonClicked() {
+        if (chosenRoute == null) {
+            showAlert("No route selected", "Please select and confirm a route first.");
+            return;
+        }
+
+        informationLabel.setVisible(false);
+        route1Button.setVisible(false);
+        route2Button.setVisible(false);
+        route3Button.setVisible(false);
+        selectRouteButton.setVisible(false);
+        startRaceButton.setVisible(false);
+        refuelButton.setDisable(true);
+        backButton.setDisable(true);
+        continueButton.setDisable(false);
+
+        raceEngine = new RaceEngine(
+                getGameManager().getSelectedRace(),
+                chosenRoute,
+                currentCarCopy,
+                getGameManager().getDifficulty(),
+                getGameManager().getMoney(),
+                this
+        );
+
+        raceEngine.startRace();
+
+    }
+
+
+
+
+
+    /**
     @FXML
     private void onStartRaceButtonClicked() {
         if (chosenRoute == null) {
@@ -171,61 +323,11 @@ public class RaceScreenController extends ScreenController {
         this.startRace();
     }
 
-    private void updateCarStats(Car car) {
-        if (car == null) {
-            carSpeedLabel.setText("Speed: ");
-            carHandlingLabel.setText("Handling: ");
-            carReliabilityLabel.setText("Reliability: ");
-            carFuelEconomyLabel.setText("Fuel Economy: ");
-        } else {
-            carSpeedLabel.setText("Speed: " + car.getCarSpeed());
-            carHandlingLabel.setText("Handling: " + car.getCarHandling());
-            carReliabilityLabel.setText("Reliability: " + car.getCarReliability());
-            carFuelEconomyLabel.setText("Fuel Economy: " + car.getCarFuelEconomy());
-        }
-    }
-
-
-    @FXML
-    private void onRouteButtonClicked(int index) {
-        if (index >= 0 && index < availableRoutes.size()) {
-            previewCurrentCar = null;
-            previewCurrentCar = raceService.previewApplyMultipliers(currentCar, availableRoutes.get(index).getRouteDifficultyMultiplier());
-            updateCarStats(previewCurrentCar);
-            selectRouteButton.setStyle("");
-            selectedRoute = availableRoutes.get(index);
-            selectedRouteIndex = index;
-            updateRouteStats(selectedRoute);
-        }
-    }
-
-    private void updateRouteStats(Route route) {
-        if (route == null) {
-            routeDescriptionLabel.setText("Description: ");
-            routeDistanceLabel.setText("Distance: ");
-            routeFuelStopsLabel.setText("Fuel Stops: ");
-            routeDifficultyLabel.setText("Difficulty: ");
-        } else {
-            routeDescriptionLabel.setText("Description: " + route.getRouteDescription());
-            routeDistanceLabel.setText("Distance: " + route.getRouteDistance() + "km");
-            routeFuelStopsLabel.setText("Fuel Stops: " + route.getRouteFuelStops());
-            routeDifficultyLabel.setText("Difficulty: " + String.format("%.2f", route.getRouteDifficultyMultiplier()));
-        }
-
-    }
-
     @FXML
     private void onContinueButtonClicked(){
         raceEngine.resumeRaceFromUI();
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
     private boolean showRefuelConfirmation() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -240,6 +342,7 @@ public class RaceScreenController extends ScreenController {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == yesButton;
     }
+
 
     private void startRace() {
         raceEngine.startRaceAsync(new RaceEngine.RaceUpdateListener() {
@@ -278,4 +381,5 @@ public class RaceScreenController extends ScreenController {
 
 
     }
+    */
 }

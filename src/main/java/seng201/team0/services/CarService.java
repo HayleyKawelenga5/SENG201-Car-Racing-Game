@@ -26,10 +26,10 @@ public class CarService {
         Random random = new Random();
 
         for (int i = 0; i < maxValue; i++) {
-            int speed = random.nextInt(20, 100);
-            int handling = random.nextInt(20, 100);
-            int reliability = random.nextInt(20, 100);
-            int fuelEconomy = random.nextInt(20, 100);
+            int speed = random.nextInt(20, 101);
+            int handling = random.nextInt(20, 101);
+            int reliability = random.nextInt(20, 101);
+            int fuelEconomy = random.nextInt(20, 101);
             int cost = speed + handling + reliability + fuelEconomy;
             availableCars.add(new Car(speed, handling, reliability, fuelEconomy, cost));
         }

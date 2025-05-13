@@ -43,6 +43,13 @@ public class GameManager {
         navigator.launchMainScreen(this);
     }
 
+    public void toMainScreenFromRace(int money, Car currentCar) {
+        this.money = money;
+        this.currentCar = currentCar;
+
+        navigator.launchMainScreen(this);
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -105,7 +112,7 @@ public class GameManager {
         navigator.launchMainScreen(this);
     }
 
-    public void startRace(Race race){
+    public void startRace(Race race) {
         this.money = money;
         this.playerCars = playerCars;
         this.currentCar = currentCar;

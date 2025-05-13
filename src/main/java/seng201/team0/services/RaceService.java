@@ -55,7 +55,7 @@ public class RaceService {
         return car;
     }
 
-    public Car previewApplyMultipliers(Car car, double multiplier) {
+    public Car previewMultiplier(Car car, double multiplier) {
         int previewSpeed = (int) (car.getCarSpeed() / multiplier);
         int previewHandling = (int) (car.getCarHandling() / multiplier);
         int previewReliability = (int) (car.getCarReliability() / multiplier);
@@ -63,6 +63,17 @@ public class RaceService {
         int previewCost = car.getCarCost();
         Car previewCar = new Car(previewSpeed, previewHandling, previewReliability, previewFuelEconomy, previewCost);
         return previewCar;
+    }
+
+    public Car copyCar(Car car) {
+        int copySpeed = car.getCarSpeed();
+        int copyHandling = car.getCarHandling();
+        int copyReliability = car.getCarReliability();
+        int copyFuelEconomy = car.getCarFuelEconomy();
+        int copyCost = car.getCarCost();
+        Car copyCar = new Car(copySpeed, copyHandling, copyReliability, copyFuelEconomy, copyCost);
+        copyCar.setCarName(car.getCarName());
+        return copyCar;
     }
 
 }
