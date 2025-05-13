@@ -32,7 +32,6 @@ public class RaceEngine {
     private Map<Car, Integer> refuelPenalties = new HashMap<>();
 
     private List<Car> finishPositions = new ArrayList<>();
-    private List<Car> DNF = new ArrayList<>();
 
     private Map<Car, Integer> carHours = new HashMap<>();
 
@@ -89,6 +88,7 @@ public class RaceEngine {
 
     public void refuel(Car car) {
         car.setCarFuelAmount(car.getCarFuelEconomy());
+        refuelPenalties.put(car, refuelPenalties.getOrDefault(car, 0) + 10);
     }
 
     public void generateFuelStops() {
@@ -105,7 +105,7 @@ public class RaceEngine {
             currentHour = 0;
             applyRouteMultipliers();
             generateFuelStops();
-            refuel(playerCar);
+            playerCar.setCarFuelAmount(playerCar.getCarFuelEconomy());
 
             for (Car car : opponents) {
                 while (carHours.get(car) < race.getRaceHours() && carStatus.get(car).equals(RaceStatus.RUNNING)) {
@@ -116,12 +116,15 @@ public class RaceEngine {
                 }
             }
 
-            while (carHours.get(playerCar) < race.getRaceHours() && carStatus.get(playerCar).equals(RaceStatus.RUNNING)) {
+            while (carHours.get(playerCar) <= race.getRaceHours() && carStatus.get(playerCar).equals(RaceStatus.RUNNING)) {
                 boolean atFuelStop = updatePlayerCar();
                 if (!atFuelStop) {
                     carHours.put(playerCar, carHours.get(playerCar) + 1);
                 }
                 waitForPlayerContinue();
+            }
+            if (carHours.get(playerCar) > race.getRaceHours()) {
+                playerOutOfTime();
             }
 
         }).start();
@@ -142,31 +145,30 @@ public class RaceEngine {
                 Random random = new Random();
                 if (random.nextInt(1, 3) == 1) {
                     refuel(car);
-                    refuelPenalties.put(car, refuelPenalties.getOrDefault(car, 0) + 10);
                 }
                 return true;
             }
         }
 
         consumeFuel(car);
+        carDistances.put(car, nextDistance);
 
         if (car.getCarFuelAmount() <= 0) {
             carStatus.put(car, RaceStatus.DNF);
-            DNF.add(car);
+            System.out.println("Opponent DNF. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
+            return true;
         }
-
-        carDistances.put(car, nextDistance);
 
         if (carDistances.get(car) >= selectedRoute.getRouteDistance()) {
             carStatus.put(car, RaceStatus.FINISHED);
             System.out.println("Opponent finished. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
             finishPositions.add(car);
             carHours.put(car, carHours.get(car) + 1);
+            return true;
         }
 
         return false;
     }
-
 
     private boolean updatePlayerCar() {
 
@@ -181,37 +183,35 @@ public class RaceEngine {
                 Platform.runLater(() ->
                         raceScreenController.onFuelStop(currentDistance, fuelStop, playerCar.getCarFuelAmount())
                 );
-                if (playerCar.getCarFuelAmount() == playerCar.getCarFuelEconomy()) {
-                    refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 10);
+                if (playerCar.getCarFuelAmount() <= 0) {
+                    carStatus.put(playerCar, RaceStatus.DNF);
+                    playerDNF();
                 }
                 return true;
             }
         }
 
         consumeFuel(playerCar);
-
-        if (playerCar.getCarFuelAmount() <= 0) {
-            carStatus.put(playerCar, RaceStatus.DNF);
-            DNF.add(playerCar);
-            playerDNF();
-        }
-
-        triggerRandomEvent();
-
         carDistances.put(playerCar, nextDistance);
+        triggerRandomEvent();
 
         Platform.runLater(() ->
                 raceScreenController.onHourUpdate(nextDistance, playerCar.getCarFuelAmount(), carHours.get(playerCar))
         );
 
-        System.out.println("[RaceEngine] Fuel left: " + playerCar.getCarFuelAmount());
-        System.out.println("[RaceEngine] Updating bar with: " + playerCar.getCarFuelEconomy());
+        if (playerCar.getCarFuelAmount() <= 0) {
+            carStatus.put(playerCar, RaceStatus.DNF);
+            playerDNF();
+            return true;
+        }
+
         if (carDistances.get(playerCar) >= selectedRoute.getRouteDistance()) {
             carStatus.put(playerCar, RaceStatus.FINISHED);
             finishPositions.add(playerCar);
             carHours.put(playerCar, carHours.get(playerCar) + 1);
             System.out.println("Player finished. Hours: " + carHours.get(playerCar) + ". Status: " + carStatus.get(playerCar) + ". Distance: " + carDistances.get(playerCar));
             playerFinished();
+            return true;
         }
 
         return false;
@@ -268,8 +268,7 @@ public class RaceEngine {
     public String handleSevereWeatherEvent() {
         String alertText = "Severe weather! All cars retire!";
         for (Car car : carDistances.keySet()) {
-            carDistances.remove(car);
-            DNF.add(car);
+            carStatus.put(car, RaceStatus.DNF);
         }
         return alertText;
     }
@@ -303,6 +302,12 @@ public class RaceEngine {
         });
     }
 
+    private void playerOutOfTime() {
+        Platform.runLater(() -> {
+            raceScreenController.onPlayerOutOfTime();
+        });
+    }
+
     private void playerFinished() {
         updateFinishPositions();
 
@@ -319,8 +324,10 @@ public class RaceEngine {
         int prizeMoney = race.getRacePrizeMoney();
         switch (position) {
             case 1: prizeMoney = prizeMoney; ; break;
-            case 2: prizeMoney *= .75; break;
-            case 3: prizeMoney *= .5; break;
+            case 2: prizeMoney *= .8; break;
+            case 3: prizeMoney *= .6; break;
+            case 4: prizeMoney *= .4; break;
+            case 5: prizeMoney *= .2; break;
             default: prizeMoney = 0; break;
         }
         return prizeMoney;

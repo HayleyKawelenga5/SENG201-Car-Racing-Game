@@ -11,12 +11,10 @@ import seng201.team0.services.RaceEngine;
 import seng201.team0.services.RaceService;
 import seng201.team0.models.Car;
 
-
 import javafx.fxml.FXML;
 
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.Optional;
 
 public class RaceScreenController extends ScreenController {
 
@@ -51,8 +49,8 @@ public class RaceScreenController extends ScreenController {
     @FXML private Button refuelButton;
     @FXML private Button continueButton;
 
-    //@FXML private Label positionLabel;
-    //@FXML private Label prizeMoneyLabel;
+    @FXML private Label positionLabel;
+    @FXML private Label prizeMoneyLabel;
 
     @FXML private Button backButton;
 
@@ -217,27 +215,44 @@ public class RaceScreenController extends ScreenController {
 
     @FXML
     public void onBackButtonClicked() {
-        GameManager raceScreen = getGameManager();
-        int money = raceScreen.getMoney() + prizeMoney;
-        raceScreen.setMoney(money + prizeMoney);
-        raceScreen.toMainScreenFromRace(money, currentCar);
+        int money = getGameManager().getMoney() + prizeMoney;
+        getGameManager().setMoney(money);
+        getGameManager().toMainScreenFromRace(money, currentCar);
+        currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
+        currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
+        currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
+        currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
+        currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
+        getGameManager().setCurrentCar(currentCar);
     }
 
     public void onPlayerFinished(int playerPosition, int prizeMoney) {
         this.prizeMoney = prizeMoney;
         showInfo("Race finished", "Position: " + playerPosition + " | Prize Money: $" + prizeMoney);
+        positionLabel.setText("Place: " + playerPosition);
+        prizeMoneyLabel.setText("Prize Money: $" + prizeMoney);
         backButton.setDisable(false);
         continueButton.setDisable(true);
     }
 
     public void onPlayerDNF() {
         showAlert("Out of fuel!", "Position: DNF | Prize money: $0");
+        positionLabel.setText("Place: DNF");
+        prizeMoneyLabel.setText("Prize Money: $0");
+        backButton.setDisable(false);
+        continueButton.setDisable(true);
+    }
+
+    public void onPlayerOutOfTime() {
+        showAlert("Out of time!", "Position: DNF | Prize money: $0");
+        positionLabel.setText("Place: DNF");
+        prizeMoneyLabel.setText("Prize Money: $0");
         backButton.setDisable(false);
         continueButton.setDisable(true);
     }
 
     public void onHourUpdate(int currentDistance, int carFuelAmount, int currentHour) {
-        hoursLabel.setText("Hour: " + (currentHour + 1));
+        hoursLabel.setText("Hour: " + currentHour);
         fuelProgressBar.setProgress((double) carFuelAmount / currentCarCopy.getCarFuelEconomy());
         currentFuelLabel.setText("Current fuel: " + carFuelAmount);
         currentDistanceLabel.setText("Current distance: " + currentDistance + "km");
