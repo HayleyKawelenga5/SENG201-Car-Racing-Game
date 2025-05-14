@@ -104,6 +104,7 @@ public class RaceScreenController extends ScreenController {
         }
 
         backButton.setDisable(true);
+        continueButton.setDisable(true);
 
         currentCar = getGameManager().getCurrentCar();
         carNameLabel.setText("Current car: " + currentCar.getCarName());
@@ -238,7 +239,7 @@ public class RaceScreenController extends ScreenController {
 
     public void onPlayerDNF() {
         showAlert("Out of fuel!", "Position: DNF | Prize money: $0");
-        positionLabel.setText("Place: DNF");
+        positionLabel.setText("Place: DNF. Ran out of fuel!");
         prizeMoneyLabel.setText("Prize Money: $0");
         backButton.setDisable(false);
         continueButton.setDisable(true);
@@ -246,7 +247,7 @@ public class RaceScreenController extends ScreenController {
 
     public void onPlayerOutOfTime() {
         showAlert("Out of time!", "Position: DNF | Prize money: $0");
-        positionLabel.setText("Place: DNF");
+        positionLabel.setText("Place: DNF. Ran out of time!");
         prizeMoneyLabel.setText("Prize Money: $0");
         backButton.setDisable(false);
         continueButton.setDisable(true);

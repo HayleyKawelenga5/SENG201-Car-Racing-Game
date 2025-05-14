@@ -174,8 +174,8 @@ public class RaceEngine {
 
         int currentDistance = carDistances.get(playerCar);
         int nextDistance = currentDistance + playerCar.getCarSpeed();
-
         Set<Integer> triggeredStops = triggeredFuelStops.get(playerCar);
+
 
         for (int fuelStop : fuelStops) {
             if (!triggeredStops.contains(fuelStop) && fuelStop > currentDistance && fuelStop <= nextDistance) {
@@ -186,7 +186,7 @@ public class RaceEngine {
                 if (playerCar.getCarFuelAmount() <= 0) {
                     carStatus.put(playerCar, RaceStatus.DNF);
                     playerDNF();
-                    return false;
+                    return true;
                 }
                 return true;
             }
