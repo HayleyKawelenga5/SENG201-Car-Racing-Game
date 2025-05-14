@@ -21,6 +21,8 @@ public class GameManager {
     private List<Car> playerCars;
     private Car currentCar;
 
+    private int racesRemaining;
+
     private List<Upgrade> playerUpgrades;
 
     private Race selectedRace;
@@ -58,7 +60,13 @@ public class GameManager {
         return seasonLength;
     }
 
+    public int getRacesRemaining() {
+        return racesRemaining;
+    }
+
     public void setSeasonLength(int seasonLength) {this.seasonLength = seasonLength;}
+
+    public void setRacesRemaining(int racesRemaining) { this.racesRemaining = racesRemaining; }
 
     public String getDifficulty() {
         return difficulty;

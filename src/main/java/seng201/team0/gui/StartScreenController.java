@@ -257,7 +257,7 @@ public class StartScreenController extends ScreenController {
             startScreen.selectDifficulty(difficulty);
             currentCar = playerCars.get(0);
 
-
+            getGameManager().setRacesRemaining(seasonLength);
             startScreen.setPlayerCars(playerCars);
             getGameManager().toMainScreen(playerName, seasonLength, difficulty, playerCars, money, currentCar, playerUpgrades);
         } catch (InvalidNameException e) {
