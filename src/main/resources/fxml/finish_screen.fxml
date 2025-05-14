@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team0.gui.FinishScreenController">
+   <children>
+      <GridPane layoutX="6.0" layoutY="5.0" prefHeight="392.0" prefWidth="594.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="playerNameLabel" text="Player Name : ">
+               <GridPane.margin>
+                  <Insets bottom="400.0" left="100.0" top="100.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="32.0" />
+               </font></Label>
+            <Label fx:id="seasonLengthLabel" text="Season Length : ">
+               <GridPane.margin>
+                  <Insets bottom="200.0" left="100.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="playerRacesCompetedLabel" text="Races Competed : ">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="100.0" left="100.0" />
+               </GridPane.margin></Label>
+            <Label fx:id="playerAveragePlacingLabel" text="Average Placing">
+               <GridPane.margin>
+                  <Insets left="100.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="playerPrizeMoney" text="Total Prize Money : ">
+               <GridPane.margin>
+                  <Insets left="100.0" top="100.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="32.0" />
+               </font></Label>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

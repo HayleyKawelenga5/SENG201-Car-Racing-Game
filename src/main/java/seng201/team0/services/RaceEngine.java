@@ -32,6 +32,8 @@ public class RaceEngine {
     private Map<Car, Integer> refuelPenalties = new HashMap<>();
 
     private List<Car> finishPositions = new ArrayList<>();
+    private List<Integer> playerFinishPositions = new ArrayList<>();
+    private int playerTotalPrizeMoney;
 
     private Map<Car, Integer> carHours = new HashMap<>();
 
@@ -175,11 +177,6 @@ public class RaceEngine {
         int currentDistance = carDistances.get(playerCar);
         int nextDistance = currentDistance + playerCar.getCarSpeed();
         Set<Integer> triggeredStops = triggeredFuelStops.get(playerCar);
-//        if (playerCar.getCarFuelAmount() <= 0) {
-//            carStatus.put(playerCar, RaceStatus.DNF);
-//            playerDNF();
-//            return true;
-//        }
 
         for (int fuelStop : fuelStops) {
             if (!triggeredStops.contains(fuelStop) && fuelStop > currentDistance && fuelStop <= nextDistance) {
@@ -187,11 +184,6 @@ public class RaceEngine {
                 Platform.runLater(() ->
                         raceScreenController.onFuelStop(currentDistance, fuelStop, playerCar.getCarFuelAmount())
                 );
-//                if (playerCar.getCarFuelAmount() <= 0) {
-//                    carStatus.put(playerCar, RaceStatus.DNF);
-//                    playerDNF();
-//                    return true;
-//                }
                 return true;
             }
         }
@@ -318,12 +310,25 @@ public class RaceEngine {
         updateFinishPositions();
 
         int playerPosition = finishPositions.indexOf(playerCar) + 1;
-
+        playerFinishPositions.add(playerPosition); //list to keep track of player positions throughout race
         int prizeMoney = calculatePrizeMoney(playerPosition);
-
+        playerTotalPrizeMoney += prizeMoney;
         Platform.runLater(() -> {
             raceScreenController.onPlayerFinished(playerPosition, prizeMoney);
         });
+    }
+
+    public double getPlayerAveragePlacing(){
+        int playerAveragePlacing = 0;
+        for (int i = 0; i < playerFinishPositions.size(); i++){
+            playerAveragePlacing += playerFinishPositions.get(i);
+        }
+        playerAveragePlacing /= playerFinishPositions.size();
+        return playerAveragePlacing;
+    }
+
+    public int getPlayerPosition() {
+        return playerTotalPrizeMoney;
     }
 
     private int calculatePrizeMoney(int position) {
