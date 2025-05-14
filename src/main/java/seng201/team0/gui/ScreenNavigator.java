@@ -78,6 +78,11 @@ public class ScreenNavigator {
         launchScreen(controller);
     }
 
+    public void launchFinishScreen(GameManager gameManager) {
+        ScreenController controller = new FinishScreenController(gameManager);
+        launchScreen(controller);
+    }
+
     /**
      * Replaces the root border pane's center component with the screen defined by the given {@link ScreenController}
      * @param controller The JavaFX screen controller for the screen to be launched

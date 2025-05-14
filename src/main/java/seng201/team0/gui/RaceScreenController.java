@@ -216,6 +216,14 @@ public class RaceScreenController extends ScreenController {
 
     @FXML
     public void onBackButtonClicked() {
+        int racesRemaining = getGameManager().getRacesRemaining();
+        if (racesRemaining <= 1){ //races not yet decreased so check < = 1
+            getGameManager().toFinishScreen(raceEngine.getPlayerAveragePlacing(), raceEngine.getPlayerPosition());
+        }
+//        if (no functioning car){
+//            //to be implemented. go to end screen
+//        }
+
         int money = getGameManager().getMoney() + prizeMoney;
         getGameManager().setMoney(money);
         getGameManager().setRacesRemaining(getGameManager().getRacesRemaining() - 1);

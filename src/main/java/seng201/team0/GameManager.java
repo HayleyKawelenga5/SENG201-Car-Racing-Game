@@ -22,6 +22,8 @@ public class GameManager {
     private Car currentCar;
 
     private int racesRemaining;
+    private double averagePlayerFinishPosition;
+    private int playerTotalPrizeMoney;
 
     private List<Upgrade> playerUpgrades;
 
@@ -52,6 +54,12 @@ public class GameManager {
         navigator.launchMainScreen(this);
     }
 
+    public void toFinishScreen(double averagePlayerFinishPosition, int playerTotalPrizeMoney) {
+        this.averagePlayerFinishPosition = averagePlayerFinishPosition;
+        this.playerTotalPrizeMoney = playerTotalPrizeMoney;
+        navigator.launchFinishScreen(this);
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -73,6 +81,14 @@ public class GameManager {
     }
 
     public int getMoney() { return money; }
+
+    public double getAveragePlayerFinishPositions(){
+        return averagePlayerFinishPosition;
+    }
+
+    public int getPlayerTotalPrizeMoney(){
+        return playerTotalPrizeMoney;
+    }
 
     public void setMoney(int money) { this.money = money; }
 
