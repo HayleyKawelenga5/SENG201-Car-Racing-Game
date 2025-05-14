@@ -76,6 +76,7 @@ public class MainScreenController extends ScreenController {
         int money = mainScreen.getMoney();
         List<Car> playerCars = mainScreen.getPlayerCars();
         List<Upgrade> playerUpgrades = mainScreen.getPlayerUpgrades();
+        int racesRemaining = mainScreen.getRacesRemaining();
 
         Car currentCar = mainScreen.getCurrentCar();
         if (!playerCars.contains(currentCar)) {
@@ -97,7 +98,7 @@ public class MainScreenController extends ScreenController {
         toStartLineButton.setOnAction(event -> onToStartLineButtonClicked());
 
         moneyLabel.setText("Money: $" + String.valueOf(money));
-        racesRemainingLabel.setText("Races Remaining: " + String.valueOf(seasonLength));
+        racesRemainingLabel.setText("Races Remaining: " + String.valueOf(racesRemaining));
         seasonLengthLabel.setText("Season Length: " + String.valueOf(seasonLength));
 
         currentCarNameLabel.setText("Current car: " + currentCar.getCarName());
