@@ -191,9 +191,9 @@ public class RaceScreenController extends ScreenController {
 
     public void onFuelStop(int currentDistance, int nextFuelStopDistance, int fuelAmount) {
         currentDistanceLabel.setText("Current distance: " + nextFuelStopDistance + "km");
-        currentFuelLabel.setText("Current fuel: " + (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)));
+        currentFuelLabel.setText("Current fuel: " + Math.max(0, (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2))));
         distanceProgressBar.setProgress(nextFuelStopDistance / (double) chosenRoute.getRouteDistance());
-        fuelProgressBar.setProgress((double) (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)) / currentCarCopy.getCarFuelEconomy());
+        fuelProgressBar.setProgress(Math.max(0, (double) (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)) / currentCarCopy.getCarFuelEconomy()));
         showInfo("Fuel Stop", "You are at a fuel stop!");
         refuelButton.setDisable(false);
     }
@@ -253,14 +253,39 @@ public class RaceScreenController extends ScreenController {
         continueButton.setDisable(true);
     }
 
+    public void onPlayerBreakdown() {
+        showAlert("Breakdown!", "Car retired from race!\nTip: Upgrade car reliability");
+        positionLabel.setText("Place: DNF. Breakdown!");
+        prizeMoneyLabel.setText("Prize Money: $0");
+        backButton.setDisable(false);
+        continueButton.setDisable(true);
+    }
+
+    public void onPlayerMalfunction() {
+        showInfo("Malfunction!", "Challenging route conditions are impacting car performance.\nTip: Upgrade car handling");
+    }
+
+    public void onSevereWeatherEvent(String alertText) {
+        showAlert("Severe Weather", alertText);
+        positionLabel.setText("Place: DNF. Severe Weather!");
+        prizeMoneyLabel.setText("Prize Money: $0");
+        backButton.setDisable(false);
+        continueButton.setDisable(true);
+    }
+
+    public void onHitchhikerEvent(String infoText) {
+        showInfo("Hitchhiker", infoText);
+        int money = getGameManager().getMoney() + 50;
+        getGameManager().setMoney(money);
+    }
+
     public void onHourUpdate(int currentDistance, int carFuelAmount, int currentHour) {
         hoursLabel.setText("Hour: " + currentHour);
-        fuelProgressBar.setProgress((double) carFuelAmount / currentCarCopy.getCarFuelEconomy());
-        currentFuelLabel.setText("Current fuel: " + carFuelAmount);
+        fuelProgressBar.setProgress(Math.max(0, (double) carFuelAmount / currentCarCopy.getCarFuelEconomy()));
+        currentFuelLabel.setText("Current fuel: " + Math.max(0, carFuelAmount));
         currentDistanceLabel.setText("Current distance: " + currentDistance + "km");
         distanceProgressBar.setProgress(currentDistance / (double) chosenRoute.getRouteDistance());
     }
-
 
 
     @FXML

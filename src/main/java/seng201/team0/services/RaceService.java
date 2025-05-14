@@ -26,9 +26,9 @@ public class RaceService {
         int entries = random.nextInt(3,9);
 
         if (gameDifficulty.equals("EASY")) {
-            maxPrizeMoney = (hours + entries) * 50;
+            maxPrizeMoney = (hours + entries) * 40;
         } else if (gameDifficulty.equals("HARD")) {
-            maxPrizeMoney = (hours + entries) * 30;
+            maxPrizeMoney = (hours + entries) * 20;
         }
 
         int numberOfRoutes = random.nextInt(1,4);

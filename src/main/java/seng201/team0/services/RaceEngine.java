@@ -153,17 +153,17 @@ public class RaceEngine {
         consumeFuel(car);
         carDistances.put(car, nextDistance);
 
-        if (car.getCarFuelAmount() <= 0) {
-            carStatus.put(car, RaceStatus.DNF);
-            System.out.println("Opponent DNF. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
-            return true;
-        }
-
         if (carDistances.get(car) >= selectedRoute.getRouteDistance()) {
             carStatus.put(car, RaceStatus.FINISHED);
             System.out.println("Opponent finished. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
             finishPositions.add(car);
             carHours.put(car, carHours.get(car) + 1);
+            return true;
+        }
+
+        if (car.getCarFuelAmount() <= 0) {
+            carStatus.put(car, RaceStatus.DNF);
+            System.out.println("Opponent DNF. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
             return true;
         }
 
@@ -174,6 +174,7 @@ public class RaceEngine {
 
         int currentDistance = carDistances.get(playerCar);
         int nextDistance = currentDistance + playerCar.getCarSpeed();
+
         Set<Integer> triggeredStops = triggeredFuelStops.get(playerCar);
 //        if (playerCar.getCarFuelAmount() <= 0) {
 //            carStatus.put(playerCar, RaceStatus.DNF);
@@ -198,7 +199,6 @@ public class RaceEngine {
 
         consumeFuel(playerCar);
         carDistances.put(playerCar, nextDistance);
-        triggerRandomEvent();
 
         Platform.runLater(() ->
                 raceScreenController.onHourUpdate(nextDistance, playerCar.getCarFuelAmount(), carHours.get(playerCar))
@@ -219,6 +219,8 @@ public class RaceEngine {
             return true;
         }
 
+        triggerRandomEvent();
+        triggerCarPerformanceIssue();
 
         return false;
     }
@@ -235,48 +237,72 @@ public class RaceEngine {
         notifyAll();
     }
 
-    public void triggerRandomEvent() {
-        double chance = gameDifficulty.equals("HARD") ? 10 : 5;
+    public void triggerCarPerformanceIssue() {
         Random random = new Random();
-        if (random.nextInt(1, 101) < chance) {
-            int eventType = new Random().nextInt(3);
-            String alertText = "";
-            switch(eventType) {
-                case 0:
-                    alertText = handleBreakdownEvent();
-                    break;
+        int value = new Random().nextInt(1, 3);
+            switch (value) {
                 case 1:
-                    alertText = handleStrandedTraveller();
+                    triggerCarBreakdown();
                     break;
                 case 2:
-                    alertText = handleSevereWeatherEvent();
+                    triggerCarMalfunction();
+                    break;
+            }
+    }
+
+    public void triggerCarBreakdown() {
+        Random random = new Random();
+        if (random.nextInt(1, 101) > (playerCar.getCarReliability() + 20)) {
+            carStatus.put(playerCar, RaceStatus.DNF);
+            Platform.runLater(() -> {
+                raceScreenController.onPlayerBreakdown();
+            });
+        }
+    }
+
+    public void triggerCarMalfunction() {
+        Random random = new Random();
+        if (random.nextInt(1, 101) > (playerCar.getCarHandling() + 20)) {
+            int penalty = random.nextInt(1, 3) * 10;
+            refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + penalty);
+            Platform.runLater(() -> {
+                raceScreenController.onPlayerMalfunction();
+            });
+        }
+    }
+
+    public void triggerRandomEvent() {
+        int chance = gameDifficulty.equals("HARD") ? 20 : 10;
+        Random random = new Random();
+        if (random.nextInt(1, 101) < chance) {
+            int value = new Random().nextInt(1, 3);
+            switch(value) {
+                case 1:
+                    handleHitchhiker();
+                    break;
+                case 2:
+                    handleSevereWeatherEvent();
                     break;
             }
         }
     }
 
-    public String handleBreakdownEvent() {
-        String alertText = "Your car has broken down!";
-        int newDistance = carDistances.get(playerCar) - 20;
-        carDistances.put(playerCar, newDistance);
-        playerMoney -= 50;
-        return alertText;
+    public void handleHitchhiker() {
+        String infoText = "Pick up a hitchhiker. This costs you time, but they pay you $50!";
+        refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 20);
+        Platform.runLater(() -> {
+            raceScreenController.onHitchhikerEvent(infoText);
+        });
     }
 
-    public String handleStrandedTraveller() {
-        String alertText = "You help a traveller. This costs you 20km but you receive $100!";
-        int newDistance = carDistances.get(playerCar) - 20;
-        carDistances.put(playerCar, newDistance);
-        playerMoney += 50;
-        return alertText;
-    }
-
-    public String handleSevereWeatherEvent() {
-        String alertText = "Severe weather! All cars retire!";
-        for (Car car : carDistances.keySet()) {
+    public void handleSevereWeatherEvent() {
+        String alertText = "Severe weather! All cars forecd to retire from the race!";
+        for (Car car : carStatus.keySet()) {
             carStatus.put(car, RaceStatus.DNF);
         }
-        return alertText;
+        Platform.runLater(() -> {
+            raceScreenController.onSevereWeatherEvent(alertText);
+        });
     }
 
     private void updateFinishPositions() {
