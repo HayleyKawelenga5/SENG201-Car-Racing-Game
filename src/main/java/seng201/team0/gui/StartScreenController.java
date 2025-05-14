@@ -193,6 +193,10 @@ public class StartScreenController extends ScreenController {
             showAlert("Selection limit reached", "You can only select up to a maximum of three cars.");
             return;
         }
+        if (startScreen.getMoney() < selectedCar.getCarCost()) {
+            showAlert("Not enough money", "You don't have enough money to buy this car.");
+            return;
+        }
 
         if (difficultySelected) {
             TextInputDialog nameDialog = new TextInputDialog();

@@ -175,7 +175,11 @@ public class RaceEngine {
         int currentDistance = carDistances.get(playerCar);
         int nextDistance = currentDistance + playerCar.getCarSpeed();
         Set<Integer> triggeredStops = triggeredFuelStops.get(playerCar);
-
+//        if (playerCar.getCarFuelAmount() <= 0) {
+//            carStatus.put(playerCar, RaceStatus.DNF);
+//            playerDNF();
+//            return true;
+//        }
 
         for (int fuelStop : fuelStops) {
             if (!triggeredStops.contains(fuelStop) && fuelStop > currentDistance && fuelStop <= nextDistance) {
@@ -183,11 +187,11 @@ public class RaceEngine {
                 Platform.runLater(() ->
                         raceScreenController.onFuelStop(currentDistance, fuelStop, playerCar.getCarFuelAmount())
                 );
-                if (playerCar.getCarFuelAmount() <= 0) {
-                    carStatus.put(playerCar, RaceStatus.DNF);
-                    playerDNF();
-                    return true;
-                }
+//                if (playerCar.getCarFuelAmount() <= 0) {
+//                    carStatus.put(playerCar, RaceStatus.DNF);
+//                    playerDNF();
+//                    return true;
+//                }
                 return true;
             }
         }
@@ -200,12 +204,6 @@ public class RaceEngine {
                 raceScreenController.onHourUpdate(nextDistance, playerCar.getCarFuelAmount(), carHours.get(playerCar))
         );
 
-        if (playerCar.getCarFuelAmount() <= 0) {
-            carStatus.put(playerCar, RaceStatus.DNF);
-            playerDNF();
-            return true;
-        }
-
         if (carDistances.get(playerCar) >= selectedRoute.getRouteDistance()) {
             carStatus.put(playerCar, RaceStatus.FINISHED);
             finishPositions.add(playerCar);
@@ -214,6 +212,13 @@ public class RaceEngine {
             playerFinished();
             return true;
         }
+
+        if (playerCar.getCarFuelAmount() <= 0) {
+            carStatus.put(playerCar, RaceStatus.DNF);
+            playerDNF();
+            return true;
+        }
+
 
         return false;
     }
