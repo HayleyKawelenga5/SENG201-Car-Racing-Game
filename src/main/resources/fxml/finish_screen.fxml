@@ -30,14 +30,14 @@
                   <Font size="32.0" />
                </font>
             </Label>
-            <Label fx:id="playerRacesCompetedLabel" text="Races Competed : ">
+            <Label fx:id="playerRacesCompetedLabel" text="Races Completed : ">
                <font>
                   <Font size="32.0" />
                </font>
                <GridPane.margin>
                   <Insets bottom="100.0" left="100.0" />
                </GridPane.margin></Label>
-            <Label fx:id="playerAveragePlacingLabel" text="Average Placing">
+            <Label fx:id="playerAveragePlacingLabel" text="Average Position: ">
                <GridPane.margin>
                   <Insets left="100.0" />
                </GridPane.margin>

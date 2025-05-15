@@ -214,6 +214,10 @@ public class RaceEngine {
         triggerRandomEvent();
         triggerCarPerformanceIssue();
 
+        Platform.runLater(() ->
+                raceScreenController.onHourUpdate(nextDistance, playerCar.getCarFuelAmount(), carHours.get(playerCar))
+        );
+
         return false;
     }
 
@@ -256,6 +260,7 @@ public class RaceEngine {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarHandling() + 20)) {
             int penalty = random.nextInt(1, 3) * 10;
+            System.out.println("Malfunction penalty: " + penalty);
             refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + penalty);
             Platform.runLater(() -> {
                 raceScreenController.onPlayerMalfunction();
@@ -282,6 +287,7 @@ public class RaceEngine {
     public void handleHitchhiker() {
         String infoText = "Pick up a hitchhiker. This costs you time, but they pay you $50!";
         refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 20);
+        System.out.println("Hitchhiker penalty: 20");
         Platform.runLater(() -> {
             raceScreenController.onHitchhikerEvent(infoText);
         });
@@ -344,7 +350,7 @@ public class RaceEngine {
         });
     }
 
-    public double getPlayerAveragePlacing(){
+    public double getPlayerAveragePlacing() {
         int playerAveragePlacing = 0;
         for (int i = 0; i < playerFinishPositions.size(); i++){
             playerAveragePlacing += playerFinishPositions.get(i);
