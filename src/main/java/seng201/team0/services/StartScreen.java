@@ -55,10 +55,10 @@ public class StartScreen {
     public void selectDifficulty(String difficulty) {
         switch (difficulty) {
             case "EASY":
-                this.money = 750;
+                this.money = 600;
                 break;
             case "HARD":
-                this.money = 500;
+                this.money = 400;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid difficulty. Please select either EASY or HARD.");

@@ -21,6 +21,8 @@ public class FinishScreenController extends ScreenController {
     private Label playerAveragePlacingLabel;
     @FXML
     private Label playerPrizeMoneyLabel;
+    @FXML
+    private Button quitButton;
 
     /**
      * Constructs a FinishScreenController with the given GameManager.
@@ -62,5 +64,12 @@ public class FinishScreenController extends ScreenController {
         playerRacesCompetedLabel.setText("Races Competed : " + playerRacesCompeted);
         playerAveragePlacingLabel.setText("Average Placing : " + playerAveragePlacing);
         playerPrizeMoneyLabel.setText("Total Prize Money : $" + playerPrizeMoney);
+
+        quitButton.setOnAction(event -> onQuitButtonClicked());
+    }
+
+    @FXML
+    public void onQuitButtonClicked() {
+        System.exit(0);
     }
 }
