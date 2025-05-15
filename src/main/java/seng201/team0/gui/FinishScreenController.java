@@ -37,7 +37,7 @@ public class FinishScreenController extends ScreenController {
         GameManager finishScreen = getGameManager();
         playerName = finishScreen.getPlayerName();
         seasonLength = finishScreen.getSeasonLength();
-        playerRacesCompeted = finishScreen.getSeasonLength() - finishScreen.getRacesRemaining();
+        playerRacesCompeted = finishScreen.getSeasonLength() - (finishScreen.getRacesRemaining()-1);
         playerAveragePlacing = finishScreen.getAveragePlayerFinishPositions();
         playerPrizeMoney = finishScreen.getPlayerTotalPrizeMoney();
 
@@ -45,6 +45,6 @@ public class FinishScreenController extends ScreenController {
         seasonLengthLabel.setText("Season Length : " + Integer.toString(seasonLength));
         playerRacesCompetedLabel.setText("Races Competed : " + Integer.toString(playerRacesCompeted));
         playerAveragePlacingLabel.setText("Average Placing : " + Double.toString(playerAveragePlacing));
-        playerPrizeMoneyLabel.setText("Total Prize Money : " + Integer.toString(playerPrizeMoney));
+        playerPrizeMoneyLabel.setText("Total Prize Money : $" + Integer.toString(playerPrizeMoney));
     }
 }

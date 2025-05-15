@@ -1,6 +1,7 @@
 package seng201.team0.services;
 
 import javafx.application.Platform;
+import seng201.team0.GameManager;
 import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
@@ -346,7 +347,7 @@ public class RaceEngine {
 
     public double getPlayerAveragePlacing() {
         if (playerFinishPositions.size() == 0) {
-            return -1; //player did not place in any races
+            return 0; //player did not place in any races, could change this to display DNF
         }
         int playerAveragePlacing = 0;
         for (int i = 0; i < playerFinishPositions.size(); i++) {
@@ -360,7 +361,14 @@ public class RaceEngine {
         return playerTotalPrizeMoney;
     }
 
-
+    public boolean noCarsFunctioning(List<Car> cars) {
+        for (Car car : cars){
+            if (car.getCarSpeed() == 0 || car.getCarReliability() == 0 || car.getCarFuelEconomy()==0){
+                return true;
+            }
+        }
+        return false;
+    }
 
     private int calculatePrizeMoney(int position) {
         int prizeMoney = race.getRacePrizeMoney();

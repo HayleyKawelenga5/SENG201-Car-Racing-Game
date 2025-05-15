@@ -11,6 +11,7 @@ import seng201.team0.models.Car;
 
 import javafx.fxml.FXML;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RaceScreenController extends ScreenController {
@@ -62,6 +63,7 @@ public class RaceScreenController extends ScreenController {
     private Car currentCar;
     private RaceEngine raceEngine;
     private int prizeMoney;
+    private List<Car> playerCars = new ArrayList<>();
 
     private int currentDistance;
     private int nextFuelStopDistance;
@@ -86,6 +88,8 @@ public class RaceScreenController extends ScreenController {
     public void initialize() {
         Race selectedRace = getGameManager().getSelectedRace();
         availableRoutes = selectedRace.getAvailableRoutes();
+
+        playerCars = getGameManager().getPlayerCars();
 
         selectRouteButton.setOnAction(event -> onSelectRouteButtonClicked());
         startRaceButton.setOnAction(event -> onStartRaceButtonClicked());
@@ -219,9 +223,10 @@ public class RaceScreenController extends ScreenController {
             getGameManager().toFinishScreen(raceEngine.getPlayerAveragePlacing(), raceEngine.getPlayerTotalPrizeMoney());
             return;
         }
-//        if (no functioning car){
-//            //to be implemented. go to end screen
-//        }
+        if (raceEngine.noCarsFunctioning(playerCars) && getGameManager().getMoney() <= 0){
+            getGameManager().toFinishScreen(raceEngine.getPlayerAveragePlacing(), raceEngine.getPlayerTotalPrizeMoney());
+            return;
+        }
 
         int money = getGameManager().getMoney() + prizeMoney;
         getGameManager().setMoney(money);
