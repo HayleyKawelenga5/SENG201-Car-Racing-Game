@@ -190,20 +190,17 @@ public class GarageScreenController extends ScreenController {
             return;
         }
 
-        chosenCar.setCarSpeed(Math.min(100, chosenCar.getCarSpeed() + chosenUpgrade.getUpgradeSpeed()));
-        chosenCar.setCarHandling(Math.min(100, chosenCar.getCarHandling() + chosenUpgrade.getUpgradeHandling()));
-        chosenCar.setCarReliability(Math.min(100, chosenCar.getCarReliability() + chosenUpgrade.getUpgradeReliability()));
-        chosenCar.setCarFuelEconomy(Math.min(100, chosenCar.getCarFuelEconomy() + chosenUpgrade.getUpgradeFuelEconomy()));
-        chosenCar.setCarCost(chosenCar.getCarCost() + chosenUpgrade.getUpgradeCost());
+        if (garageService.installUpgrade(chosenCar, chosenUpgrade, playerUpgrades)) {
+            updateCarStats(chosenCar);
+            updatePlayerUpgradeButtons();
+            selectUpgradeButton.setStyle("");
+            selectCarButton.setStyle("");
+            chosenUpgrade = null;
+            updateUpgradeStats(null);
+        } else {
+            showAlert("Error", "Failed to install upgrade.");
+        }
 
-        updateCarStats(chosenCar);
-
-        playerUpgrades.remove(chosenUpgrade);
-        updatePlayerUpgradeButtons();
-        selectUpgradeButton.setStyle("");
-        selectCarButton.setStyle("");
-        chosenUpgrade = null;
-        updateUpgradeStats(null);
     }
 
     private void updatePlayerUpgradeButtons() {

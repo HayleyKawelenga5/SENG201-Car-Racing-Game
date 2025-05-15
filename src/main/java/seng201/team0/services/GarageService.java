@@ -32,15 +32,18 @@ public class GarageService {
      * @param upgrade The upgrade to install.
      * @return True if installed, false if not in list.
      */
-    public boolean installUpgrade(Upgrade upgrade) {
-        if (playerUpgrades.remove(upgrade)) {
-            currentCar.setCarSpeed(currentCar.getCarSpeed() + upgrade.getUpgradeSpeed());
-            currentCar.setCarHandling(currentCar.getCarHandling() + upgrade.getUpgradeHandling());
-            currentCar.setCarReliability(currentCar.getCarReliability() + upgrade.getUpgradeReliability());
-            currentCar.setCarFuelEconomy(currentCar.getCarFuelEconomy() + upgrade.getUpgradeFuelEconomy());
-            return true;
+    public boolean installUpgrade(Car currentCar, Upgrade upgrade, List<Upgrade> playerUpgrades) {
+        if (currentCar == null || upgrade == null || !playerUpgrades.contains(upgrade)) {
+            return false;
         }
-        return false;
+
+        currentCar.setCarSpeed(Math.min(100, currentCar.getCarSpeed() + upgrade.getUpgradeSpeed()));
+        currentCar.setCarHandling(Math.min(100, currentCar.getCarHandling() + upgrade.getUpgradeHandling()));
+        currentCar.setCarReliability(Math.min(100, currentCar.getCarReliability() + upgrade.getUpgradeReliability()));
+        currentCar.setCarFuelEconomy(Math.min(100, currentCar.getCarFuelEconomy() + upgrade.getUpgradeFuelEconomy()));
+        currentCar.setCarCost(currentCar.getCarCost() + upgrade.getUpgradeCost());
+        playerUpgrades.remove(upgrade);
+        return true;
     }
 
 }
