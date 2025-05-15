@@ -45,7 +45,7 @@
                   <Font size="32.0" />
                </font>
             </Label>
-            <Label fx:id="playerPrizeMoney" text="Total Prize Money : ">
+            <Label fx:id="playerPrizeMoneyLabel" text="Total Prize Money : ">
                <GridPane.margin>
                   <Insets left="100.0" top="100.0" />
                </GridPane.margin>

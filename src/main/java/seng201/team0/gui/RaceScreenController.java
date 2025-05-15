@@ -2,8 +2,6 @@ package seng201.team0.gui;
 
 import javafx.scene.control.*;
 
-import javafx.application.Platform;
-
 import seng201.team0.GameManager;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
@@ -13,7 +11,6 @@ import seng201.team0.models.Car;
 
 import javafx.fxml.FXML;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RaceScreenController extends ScreenController {
@@ -219,7 +216,8 @@ public class RaceScreenController extends ScreenController {
     public void onBackButtonClicked() {
         int racesRemaining = getGameManager().getRacesRemaining();
         if (racesRemaining <= 1){ //races not yet decreased so check < = 1
-            getGameManager().toFinishScreen(raceEngine.getPlayerAveragePlacing(), raceEngine.getPlayerPosition());
+            getGameManager().toFinishScreen(raceEngine.getPlayerAveragePlacing(), raceEngine.getPlayerTotalPrizeMoney());
+            return;
         }
 //        if (no functioning car){
 //            //to be implemented. go to end screen
