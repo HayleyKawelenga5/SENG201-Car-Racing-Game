@@ -1,6 +1,7 @@
 package seng201.team0.gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import seng201.team0.GameManager;
 
@@ -25,7 +26,7 @@ public class FinishScreenController extends ScreenController {
     private Button quitButton;
 
     /**
-     * Constructs a FinishScreenController with the given GameManager.
+     * Constructs a FinishScreenController with the given {@link GameManager}.
      * @param manager The GameManager managing game state.
      */
     public FinishScreenController(GameManager manager) {
@@ -68,6 +69,9 @@ public class FinishScreenController extends ScreenController {
         quitButton.setOnAction(event -> onQuitButtonClicked());
     }
 
+    /**
+     * Handles the event when the "Quit" button is clicked on the finish screen.
+     */
     @FXML
     public void onQuitButtonClicked() {
         System.exit(0);

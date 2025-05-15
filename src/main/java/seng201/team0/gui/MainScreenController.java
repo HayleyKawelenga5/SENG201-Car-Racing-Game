@@ -5,19 +5,12 @@ import javafx.scene.control.*;
 import seng201.team0.GameManager;
 
 import seng201.team0.models.Race;
-import seng201.team0.models.Route;
 import seng201.team0.services.RaceService;
-import seng201.team0.services.StartScreen;
 
 import seng201.team0.models.Car;
-import seng201.team0.models.Upgrade;
 
 import javafx.fxml.FXML;
 
-import javax.naming.InvalidNameException;
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class MainScreenController extends ScreenController {
@@ -46,15 +39,9 @@ public class MainScreenController extends ScreenController {
     @FXML private Label raceEntriesLabel;
     @FXML private Label racePrizeMoneyLabel;
 
-    @FXML private Label selectedRaceLabel;
-
-    private RaceService raceService;
     private List<Race> availableRaces;
     private Race selectedRace;
-    private int selectedRaceIndex = -1;
-
     private Race chosenRace;
-    private Route chosenRoute;
 
     public MainScreenController(GameManager manager) {
         super(manager);
@@ -70,23 +57,19 @@ public class MainScreenController extends ScreenController {
     public void initialize() {
         GameManager mainScreen = getGameManager();
 
-        String playerName = mainScreen.getPlayerName();
         int seasonLength = mainScreen.getSeasonLength();
         String difficulty = mainScreen.getDifficulty();
         int money = mainScreen.getMoney();
         List<Car> playerCars = mainScreen.getPlayerCars();
-        List<Upgrade> playerUpgrades = mainScreen.getPlayerUpgrades();
         int racesRemaining = mainScreen.getRacesRemaining();
+        RaceService raceService = new RaceService();
+        availableRaces = raceService.generateRaces(3, difficulty);
 
         Car currentCar = mainScreen.getCurrentCar();
         if (!playerCars.contains(currentCar)) {
-            currentCar = playerCars.get(0);
+            currentCar = playerCars.getFirst();
         }
-        mainScreen.setCurrentCar(currentCar);
-
-        raceService = new RaceService();
-        availableRaces = raceService.generateRaces(3, difficulty);
-
+        mainScreen.setCurrentCar(currentCar); //sets the player's current car to be the first car in the list of cars they own
 
         List<Button> availableRaceButtons = List.of(race1Button, race2Button, race3Button);
         for (int i = 0; i < availableRaceButtons.size(); i++) {
@@ -96,19 +79,18 @@ public class MainScreenController extends ScreenController {
 
         selectRaceButton.setOnAction(event -> onSelectRaceButtonClicked());
         toStartLineButton.setOnAction(event -> onToStartLineButtonClicked());
+        toGarageButton.setOnAction(event -> onToGarageButtonClicked());
+        toShopButton.setOnAction(event -> onToShopButtonClicked());
 
-        moneyLabel.setText("Money: $" + String.valueOf(money));
-        racesRemainingLabel.setText("Races Remaining: " + String.valueOf(racesRemaining));
-        seasonLengthLabel.setText("Season Length: " + String.valueOf(seasonLength));
+        moneyLabel.setText("Money: $" + money);
+        racesRemainingLabel.setText("Races Remaining: " + racesRemaining);
+        seasonLengthLabel.setText("Season Length: " + seasonLength);
 
         currentCarNameLabel.setText("Current car: " + currentCar.getCarName());
         currentCarSpeedLabel.setText("Speed: " + currentCar.getCarSpeed());
         currentCarHandlingLabel.setText("Handling: " + currentCar.getCarHandling());
         currentCarReliabilityLabel.setText("Reliability: " + currentCar.getCarReliability());
         currentCarFuelEconomyLabel.setText("Fuel Economy: " + currentCar.getCarFuelEconomy());
-
-        toGarageButton.setOnAction(event -> onToGarageButtonClicked());
-        toShopButton.setOnAction(event -> onToShopButtonClicked());
     }
 
     @FXML
@@ -117,7 +99,6 @@ public class MainScreenController extends ScreenController {
             chosenRace = null;
             selectRaceButton.setStyle("");
             selectedRace = availableRaces.get(index);
-            selectedRaceIndex = index;
             updateRaceStats(selectedRace);
         }
     }
@@ -126,7 +107,6 @@ public class MainScreenController extends ScreenController {
     private void onSelectRaceButtonClicked() {
         if (selectedRace == null) {
             showAlert("No race selected", "Please select a race.");
-            return;
         } else {
             selectRaceButton.setStyle("-fx-background-color: LightGreen");
             chosenRace = selectedRace;
