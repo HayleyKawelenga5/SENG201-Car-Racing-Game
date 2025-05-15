@@ -4,18 +4,14 @@ import javafx.scene.control.*;
 
 import seng201.team0.GameManager;
 
-import seng201.team0.services.MainScreen;
-
 import seng201.team0.services.GarageService;
 
 import seng201.team0.models.Car;
-import seng201.team0.models.Garage;
 import seng201.team0.models.Upgrade;
 
 import javafx.fxml.FXML;
+import seng201.team0.utils.ScreenUpdater;
 
-import javax.naming.InvalidNameException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GarageScreenController extends ScreenController {
@@ -29,8 +25,6 @@ public class GarageScreenController extends ScreenController {
     @FXML private Button upgrade1Button;
     @FXML private Button upgrade2Button;
     @FXML private Button upgrade3Button;
-    @FXML private Button upgrade4Button;
-    @FXML private Button upgrade5Button;
 
     @FXML private Button car1Button;
     @FXML private Button car2Button;
@@ -67,8 +61,6 @@ public class GarageScreenController extends ScreenController {
 
     private Car chosenCar;
     private Upgrade chosenUpgrade;
-
-    private int money;
 
     private GarageService garageService = new GarageService();
 
@@ -110,20 +102,6 @@ public class GarageScreenController extends ScreenController {
 
     }
 
-    private void updateCarStats(Car car) {
-        if (car == null) {
-            carSpeedLabel.setText("Speed: ");
-            carHandlingLabel.setText("Handling: ");
-            carReliabilityLabel.setText("Reliability: ");
-            carFuelEconomyLabel.setText("Fuel Economy: ");
-        } else {
-            carSpeedLabel.setText("Speed: " + car.getCarSpeed());
-            carHandlingLabel.setText("Handling: " + car.getCarHandling());
-            carReliabilityLabel.setText("Reliability: " + car.getCarReliability());
-            carFuelEconomyLabel.setText("Fuel Economy: " + car.getCarFuelEconomy());
-        }
-    }
-
     private void updateUpgradeStats(Upgrade upgrade) {
         if (upgrade == null) {
             upgradeSpeedLabel.setText("Speed: ");
@@ -143,7 +121,7 @@ public class GarageScreenController extends ScreenController {
         if (index >= 0 && index < playerCars.size()) {
             selectCarButton.setStyle("");
             selectedCar = playerCars.get(index);
-            updateCarStats(selectedCar);
+            ScreenUpdater.updateCarStats(selectedCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
         }
     }
 
@@ -174,14 +152,14 @@ public class GarageScreenController extends ScreenController {
         } else {
             chosenCar = selectedCar;
             selectCarButton.setStyle("-fx-background-color: LightGreen");
-            updateCarStats(chosenCar);
+            ScreenUpdater.updateCarStats(chosenCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
         }
     }
 
     @FXML
     private void onInstallUpgradeButtonClicked() {
         if (chosenUpgrade == null) {
-            showAlert("No upgrade selected", "Please select an upgarde to install.");
+            showAlert("No upgrade selected", "Please select an upgrade to install.");
             return;
         }
 
@@ -191,8 +169,9 @@ public class GarageScreenController extends ScreenController {
         }
 
         if (garageService.installUpgrade(chosenCar, chosenUpgrade, playerUpgrades)) {
-            updateCarStats(chosenCar);
-            updatePlayerUpgradeButtons();
+            List<Button> playerUpgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);
+            ScreenUpdater.updateUpgradeButtons(playerUpgradeButtons, playerUpgrades);
+            ScreenUpdater.updateCarStats(chosenCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
             selectUpgradeButton.setStyle("");
             selectCarButton.setStyle("");
             chosenUpgrade = null;
@@ -203,16 +182,6 @@ public class GarageScreenController extends ScreenController {
 
     }
 
-    private void updatePlayerUpgradeButtons() {
-        List<Button> playerUpgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);
-        for (int i = 0; i < playerUpgradeButtons.size(); i++) {
-            if (i < playerUpgrades.size()) {
-                playerUpgradeButtons.get(i).setText(playerUpgrades.get(i).getUpgradeName());
-            } else {
-                playerUpgradeButtons.get(i).setText("");
-            }
-        }
-    }
 
     @FXML
     public void onMakeCurrentCarButtonClicked() {
