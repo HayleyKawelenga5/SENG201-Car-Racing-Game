@@ -266,7 +266,6 @@ public class RaceEngine {
     public void triggerCarBreakdown() {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarReliability() + 20)) {
-            //carStatus.put(playerCar, RaceStatus.DNF);
             Platform.runLater(() -> {
                 raceScreenController.onPlayerBreakdown();
             });

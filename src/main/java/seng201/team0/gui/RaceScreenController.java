@@ -286,6 +286,9 @@ public class RaceScreenController extends ScreenController {
                 continueButton.setDisable(true);
             } else {
                 showInfo("Continued!", "You continued the race at a cost!\nTip: Upgrade car reliability");
+                int money = getGameManager().getMoney() - 50;
+                getGameManager().setMoney(money);
+                raceEngine.breakdownContinue();
                 raceEngine.updatePlayerCar();
             }
         }
@@ -356,89 +359,4 @@ public class RaceScreenController extends ScreenController {
 
     }
 
-
-
-
-
-    /**
-    @FXML
-    private void onStartRaceButtonClicked() {
-        if (chosenRoute == null) {
-            showAlert("No route selected", "Please select and confirm a route first.");
-            return;
-        }
-
-        informationLabel.setVisible(false);
-        route1Button.setVisible(false);
-        route2Button.setVisible(false);
-        route3Button.setVisible(false);
-        selectRouteButton.setVisible(false);
-        startRaceButton.setVisible(false);
-        refuelButton.setDisable(true);
-        backButton.setDisable(true);
-        continueButton.setDisable(false);
-
-        raceEngine = new RaceEngine(getGameManager().getSelectedRace(), chosenRoute, getGameManager().getCurrentCar(), getGameManager().getDifficulty(), getGameManager().getMoney());
-        this.startRace();
-    }
-
-    @FXML
-    private void onContinueButtonClicked(){
-        raceEngine.resumeRaceFromUI();
-    }
-
-
-    private boolean showRefuelConfirmation() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Fuel Stop");
-        alert.setHeaderText("Do you want to refuel?");
-        alert.setContentText("Refueling will cost you 20km");
-
-        ButtonType yesButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
-
-        alert.getButtonTypes().setAll(yesButton, noButton);
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == yesButton;
-    }
-
-
-    private void startRace() {
-        raceEngine.startRaceAsync(new RaceEngine.RaceUpdateListener() {
-
-            @Override
-            public void onProgressUpdate(int distance, int fuel, int timeElapsed) {
-                distanceProgressBar.setProgress((double) distance / chosenRoute.getRouteDistance());
-                fuelProgressBar.setProgress((double) fuel / 100); // assuming 100 max fuel
-                hoursLabel.setText("Time: " + timeElapsed + "h");
-            }
-
-            @Override
-            public void onFuelStop(int stopIndex, int currentDistance) {
-                boolean shouldRefuel = showRefuelConfirmation();
-                if (shouldRefuel) {
-                    int[] carFuelAndDistance = raceEngine.handleFuelStop(getGameManager().getCurrentCar());
-                    fuelProgressBar.setProgress((double) carFuelAndDistance[0]/100);
-                    distanceProgressBar.setProgress((double) carFuelAndDistance[1]/chosenRoute.getRouteDistance());
-                }
-            }
-
-            //shows reason why player did not finish race
-            @Override
-            public void onRaceEnd(boolean finished, boolean outOfFuel, boolean outOfTime) {
-                continueButton.setDisable(true);
-                continueButton.setStyle("-fx-text-fill: red;");
-                if (finished) {
-                    showAlert("Race finished", "You finished the race!");
-                } else if (outOfFuel) {
-                    showAlert("No fuel!", "You ran out of fuel!");
-                } else if (outOfTime) {
-                    showAlert("No time!", "Time ran out!");
-                }
-            }
-        });
-
-
-    }
-    */
 }
