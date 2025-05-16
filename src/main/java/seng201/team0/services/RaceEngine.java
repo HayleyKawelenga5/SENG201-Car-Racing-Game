@@ -106,6 +106,11 @@ public class RaceEngine {
         refuelPenalties.put(car, refuelPenalties.getOrDefault(car, 0) + 10);
     }
 
+    public void breakdownContinue() {
+        refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 20);
+        System.out.println("Breakdown continue penalty: " + 20);
+    }
+
     public void generateFuelStops() {
         int routeFuelStops = selectedRoute.getRouteFuelStops();
         int routeDistance = selectedRoute.getRouteDistance();
@@ -271,9 +276,8 @@ public class RaceEngine {
     public void triggerCarMalfunction() {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarHandling() + 20)) {
-            int penalty = random.nextInt(1, 3) * 10;
-            System.out.println("Malfunction penalty: " + penalty);
-            refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + penalty);
+            System.out.println("Malfunction penalty: " + 10);
+            refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 10);
             Platform.runLater(() -> {
                 raceScreenController.onPlayerMalfunction();
             });
