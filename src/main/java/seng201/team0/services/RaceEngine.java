@@ -252,7 +252,7 @@ public class RaceEngine {
 
     public void triggerCarPerformanceIssue() {
         Random random = new Random();
-        int value = new Random().nextInt(1, 2);
+        int value = new Random().nextInt(1, 3);
         switch (value) {
             case 1:
                 triggerCarBreakdown();
