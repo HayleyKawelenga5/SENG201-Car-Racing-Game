@@ -1,7 +1,6 @@
 package seng201.team0.services;
 
 import javafx.application.Platform;
-import seng201.team0.GameManager;
 import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
@@ -25,7 +24,7 @@ public class RaceEngine {
 
     private List<Integer> fuelStops = new ArrayList<>();
     private Map<Car, Set<Integer>> triggeredFuelStops = new HashMap<>();
-    private Map<Car, Integer> refuelPenalties = new HashMap<>();
+    private Map<Car, Integer> racePenalties = new HashMap<>();
 
     private List<Car> finishPositions = new ArrayList<>();
     private List<Integer> playerFinishPositions = new ArrayList<>();
@@ -103,11 +102,11 @@ public class RaceEngine {
 
     public void refuel(Car car) {
         car.setCarFuelAmount(car.getCarFuelEconomy());
-        refuelPenalties.put(car, refuelPenalties.getOrDefault(car, 0) + 10);
+        racePenalties.put(car, racePenalties.getOrDefault(car, 0) + 10);
     }
 
     public void breakdownContinue() {
-        refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 20);
+        racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 20);
         System.out.println("Breakdown continue penalty: " + 20);
     }
 
@@ -276,7 +275,7 @@ public class RaceEngine {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarHandling() + 20)) {
             System.out.println("Malfunction penalty: " + 10);
-            refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 10);
+            racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 10);
             Platform.runLater(() -> {
                 raceScreenController.onPlayerMalfunction();
             });
@@ -301,7 +300,7 @@ public class RaceEngine {
 
     public void handleHitchhiker() {
         String infoText = "Pick up a hitchhiker. This costs you time, but they pay you $50!";
-        refuelPenalties.put(playerCar, refuelPenalties.getOrDefault(playerCar, 0) + 20);
+        racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 20);
         System.out.println("Hitchhiker penalty: 20");
         Platform.runLater(() -> {
             raceScreenController.onHitchhikerEvent(infoText);
@@ -321,7 +320,7 @@ public class RaceEngine {
     private void updateFinishPositions() {
         for (Car car : finishPositions) {
             int currentDistance = carDistances.getOrDefault(car, 0);
-            int penalty = refuelPenalties.getOrDefault(car, 0);
+            int penalty = racePenalties.getOrDefault(car, 0);
             carDistances.put(car, currentDistance - penalty);
         }
         finishPositions.sort((car1, car2) -> {
@@ -337,7 +336,7 @@ public class RaceEngine {
             System.out.println((i + 1) + ". " + car.getCarName()
                     + " | Hours: " + carHours.get(car)
                     + " | Final Distance: " + carDistances.get(car)
-                    + " | Penalty: " + refuelPenalties.getOrDefault(car, 0));
+                    + " | Penalty: " + racePenalties.getOrDefault(car, 0));
         }
     }
 

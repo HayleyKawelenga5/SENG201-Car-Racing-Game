@@ -7,12 +7,10 @@ import seng201.team0.GameManager;
 
 import seng201.team0.models.Car;
 import seng201.team0.services.CarService;
-import seng201.team0.models.Shop;
 import seng201.team0.services.ShopService;
 import seng201.team0.models.Upgrade;
 import seng201.team0.services.UpgradeService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShopScreenController extends ScreenController {
@@ -23,10 +21,6 @@ public class ShopScreenController extends ScreenController {
     @FXML private Button buyUpgradeButton;
     @FXML private Button sellCarButton;
     @FXML private Button buyCarButton;
-
-    @FXML private Button myUpgradeButton1;
-    @FXML private Button myUpgradeButton2;
-    @FXML private Button myUpgradeButton3;
 
     @FXML private Label upgradeSpeedLabel;
     @FXML private Label upgradeHandlingLabel;
@@ -58,28 +52,23 @@ public class ShopScreenController extends ScreenController {
     @FXML private Label carFuelEconomyLabel;
     @FXML private Label carCostLabel;
 
-    @FXML
-    private Button backButton;
+    @FXML private Button backButton;
 
-    private int playerSelectedCarIndex = -1;
     private int shopSelectedCarIndex = -1;
-    private int playerSelectedUpgradeIndex = -1;
     private int shopSelectedUpgradeIndex = -1;
 
     private List<Car> availableCars;
     private List<Upgrade> availableUpgrades;
 
-    private CarService carService = new CarService();
-    private ShopService shopService = new ShopService();
-    private UpgradeService upgradeService = new UpgradeService();
+    private final CarService carService = new CarService();
+    private final ShopService shopService = new ShopService();
+    private final UpgradeService upgradeService = new UpgradeService();
 
     private List<Car> playerCars;
     private List<Upgrade> playerUpgrades;
 
     private Car selectedCar;
     private Upgrade selectedUpgrade;
-
-    private int money;
 
     public ShopScreenController(GameManager manager) {
         super(manager);
@@ -94,7 +83,6 @@ public class ShopScreenController extends ScreenController {
     public void initialize() {
         GameManager shopScreen = getGameManager();
 
-        int money = shopScreen.getMoney();
         playerCars = shopScreen.getPlayerCars();
         playerUpgrades = shopScreen.getPlayerUpgrades();
 
@@ -104,8 +92,6 @@ public class ShopScreenController extends ScreenController {
         sellUpgradeButton.setOnAction(event -> onSellUpgradeButtonClicked());
         backButton.setOnAction(event -> onBackButtonClicked());
 
-        updateMoneyLabel();
-
         List<Button> playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button, playerCar4Button, playerCar5Button);
         List<Button> shopCarButtons = List.of(shopCar1Button, shopCar2Button, shopCar3Button);
         List<Button> playerUpgradeButtons = List.of(playerUpgrade1Button, playerUpgrade2Button, playerUpgrade3Button);
@@ -113,11 +99,11 @@ public class ShopScreenController extends ScreenController {
 
         for (int i = 0; i < playerCarButtons.size(); i++) {
             int index = i;
-            playerCarButtons.get(i).setOnAction(event -> onPlayerCarButtonClicked(playerCarButtons, index));
+            playerCarButtons.get(i).setOnAction(event -> onPlayerCarButtonClicked(index));
         }
         for (int i = 0; i < shopCarButtons.size(); i++) {
             int index = i;
-            shopCarButtons.get(i).setOnAction(event -> onShopCarButtonClicked(shopCarButtons, index));
+            shopCarButtons.get(i).setOnAction(event -> onShopCarButtonClicked(index));
         }
         for (int i = 0; i < playerCars.size(); i++) {
             playerCarButtons.get(i).setText(playerCars.get(i).getCarName());
@@ -128,18 +114,18 @@ public class ShopScreenController extends ScreenController {
 
         for (int i = 0; i < playerUpgradeButtons.size(); i++) {
             int index = i;
-            playerUpgradeButtons.get(i).setOnAction(event -> onPlayerUpgradeButtonClicked(playerCarButtons, index));
+            playerUpgradeButtons.get(i).setOnAction(event -> onPlayerUpgradeButtonClicked(index));
          }
 
         for (int i = 0; i < shopUpgradeButtons.size(); i++) {
             int index = i;
-            shopUpgradeButtons.get(i).setOnAction(event -> onShopUpgradeButtonClicked(playerUpgradeButtons, index));
+            shopUpgradeButtons.get(i).setOnAction(event -> onShopUpgradeButtonClicked(index));
         }
 
         for (int i = 0; i < availableUpgrades.size(); i++) {
             shopUpgradeButtons.get(i).setText(availableUpgrades.get(i).getUpgradeName());
         }
-
+        updateMoneyLabel();
         updatePlayerCarButtons();
         updateShopCarButtons();
         updatePlayerUpgradeButtons();
@@ -147,29 +133,27 @@ public class ShopScreenController extends ScreenController {
     }
 
     @FXML
-    public void onShopCarButtonClicked(List<Button> shopCarButtons, int index) {
+    public void onShopCarButtonClicked(int index) {
         shopSelectedCarIndex = index;
         selectedCar = availableCars.get(index);
         updateCarStats(selectedCar);
     }
 
     @FXML
-    public void onPlayerCarButtonClicked(List<Button> playerCarButtons, int index) {
-        playerSelectedCarIndex = index;
+    public void onPlayerCarButtonClicked(int index) {
         selectedCar = playerCars.get(index);
         updateCarStats(selectedCar);
     }
 
     @FXML
-    public void onShopUpgradeButtonClicked(List<Button> shopUpgradeButtons, int index) {
+    public void onShopUpgradeButtonClicked(int index) {
         shopSelectedUpgradeIndex = index;
         selectedUpgrade = availableUpgrades.get(index);
         updateUpgradeStats(selectedUpgrade);
     }
 
     @FXML
-    public void onPlayerUpgradeButtonClicked(List<Button> playerUpgradeButtons, int index) {
-        playerSelectedUpgradeIndex = index;
+    public void onPlayerUpgradeButtonClicked(int index) {
         selectedUpgrade = playerUpgrades.get(index);
         updateUpgradeStats(selectedUpgrade);
     }
@@ -197,15 +181,10 @@ public class ShopScreenController extends ScreenController {
                 nameDialog.setHeaderText("Optional: Give your car a name or press OK");
                 nameDialog.setContentText("Car name:");
 
-                nameDialog.showAndWait().ifPresentOrElse(name -> {
-                    if (!name.isBlank()) {
-                        selectedCar.setCarName(name);
-                    } else {
-                        selectedCar.setCarName("Car " + (shopSelectedCarIndex + 1));
-                    }
-                }, () -> {
-                    selectedCar.setCarName("Car " + (shopSelectedCarIndex + 1));
-                });
+                nameDialog.showAndWait().ifPresentOrElse(
+                name -> selectedCar.setCarName(name.isBlank() ? "Car " + (shopSelectedCarIndex + 1) : name),
+                        () -> selectedCar.setCarName("Car " + (shopSelectedCarIndex + 1))
+                );
                 availableCars.set(shopSelectedCarIndex, null);
                 updateMoneyLabel();
                 updatePlayerCarButtons();
@@ -228,15 +207,13 @@ public class ShopScreenController extends ScreenController {
             return;
         }
 
-        if (selectedCar != null) {
-            boolean sold = shopService.sellCar(selectedCar, getGameManager());
-            if (sold) {
-                updateMoneyLabel();
-                updatePlayerCarButtons();
-                updateCarStats(null);
-            } else {
-                showAlert("Sale failed", "Car not found in your garage.");
-            }
+        boolean sold = shopService.sellCar(selectedCar, getGameManager());
+        if (sold) {
+            updateMoneyLabel();
+            updatePlayerCarButtons();
+            updateCarStats(null);
+        } else {
+            showAlert("Sale failed", "Car not found in your garage.");
         }
     }
 
@@ -247,7 +224,7 @@ public class ShopScreenController extends ScreenController {
             return;
         }
         if (selectedUpgrade.getUpgradeCost() > getGameManager().getMoney()) {
-            showAlert("Error", "Insifficient funds to buy this upgrade.");
+            showAlert("Error", "Insufficient funds to buy this upgrade.");
             return;
         }
         if (playerUpgrades.size() >= 3) {
@@ -276,15 +253,13 @@ public class ShopScreenController extends ScreenController {
             return;
         }
 
-        if (selectedUpgrade != null) {
-            boolean sold = shopService.sellUpgrade(selectedUpgrade, getGameManager());
-            if (sold) {
-                updateMoneyLabel();
-                updatePlayerUpgradeButtons();
-                updateUpgradeStats(null);
-            } else {
-                showAlert("Sale failed", "Upgrade not found in your garage.");
-            }
+        boolean sold = shopService.sellUpgrade(selectedUpgrade, getGameManager());
+        if (sold) {
+            updateMoneyLabel();
+            updatePlayerUpgradeButtons();
+            updateUpgradeStats(null);
+        } else {
+            showAlert("Sale failed", "Upgrade not found in your garage.");
         }
     }
 

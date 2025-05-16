@@ -31,7 +31,7 @@ public abstract class ScreenController {
     protected abstract String getTitle();
 
     /**
-     * Gets the rocket manager associated with this screen controller
+     * Gets the game manager associated with this screen controller
      * @return the game manager for this controller
      */
     protected GameManager getGameManager(){

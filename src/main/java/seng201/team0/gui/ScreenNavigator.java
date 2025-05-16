@@ -4,29 +4,28 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import seng201.team0.GameManager;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that handles navigation between various {@link ScreenController}s. This navigator uses
  * a {@link BorderPane} layout for the root pane. The launched screen is placed in the center
- * area of the border bane, replacing the previous screen.
+ * area of the border bane, replacing the previous screen. Code from the labs and/or tutorials has been used in this class.
  */
 public class ScreenNavigator {
-
+    private static final Logger logger = Logger.getLogger(ScreenNavigator.class.getName());
     private final Stage stage;
-
     private final BorderPane rootPane;
 
     /**
      * Creates a ScreenNavigator with the given stage.
      * @param stage The JavaFX stage
      */
-
     public ScreenNavigator(Stage stage) {
         this.stage = stage;
 
@@ -73,11 +72,19 @@ public class ScreenNavigator {
         launchScreen(controller);
     }
 
+    /**
+     * Launches the race screen
+     * @param gameManager The game manager used by the shop screen controller
+     */
     public void launchRaceScreen(GameManager gameManager) {
         ScreenController controller = new RaceScreenController(gameManager);
         launchScreen(controller);
     }
 
+    /**
+     * Launches the finish screen
+     * @param gameManager The game manager used by the shop screen controller
+     */
     public void launchFinishScreen(GameManager gameManager) {
         ScreenController controller = new FinishScreenController(gameManager);
         launchScreen(controller);
@@ -97,7 +104,7 @@ public class ScreenNavigator {
             rootPane.setCenter(setupParent);
             stage.setTitle(controller.getTitle());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to load FXML for " + controller.getFxmlFile(), e);
         }
     }
 }

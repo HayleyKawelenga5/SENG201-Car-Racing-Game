@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import seng201.team0.models.Car;
 import seng201.team0.models.Race;
+import seng201.team0.models.Route;
 import seng201.team0.models.Upgrade;
 
 import java.util.List;
@@ -56,6 +57,30 @@ public class ScreenUpdater {
         moneyLabel.setText("Money: $" + money);
         racesRemainingLabel.setText("Races Remaining: " + racesRemaining);
         seasonLengthLabel.setText("Season Length: " + seasonLength);
+    }
+
+    public static void updateRouteStats(Route route, Label routeDescriptionLabel, Label routeDistanceLabel, Label routeFuelStopsLabel, Label routeDifficultyLabel) {
+        if (route == null) {
+            routeDescriptionLabel.setText("Description: ");
+            routeDistanceLabel.setText("Distance: ");
+            routeFuelStopsLabel.setText("Fuel Stops: ");
+            routeDifficultyLabel.setText("Difficulty: ");
+        } else {
+            routeDescriptionLabel.setText("Description: " + route.getRouteDescription());
+            routeDistanceLabel.setText("Distance: " + route.getRouteDistance() + "km");
+            routeFuelStopsLabel.setText("Fuel Stops: " + route.getRouteFuelStops());
+            routeDifficultyLabel.setText("Difficulty: " + String.format("%.2f", route.getRouteDifficultyMultiplier()));
+        }
+    }
+
+    public static void updateRouteButtons(List<Button> availableRouteButtons, List<Route> availableRoutes) {
+        for (int i = 0; i < availableRouteButtons.size(); i++) {
+            if (i < availableRoutes.size()) {
+                availableRouteButtons.get(i).setText(availableRoutes.get(i).getRouteDescription().toString());
+            } else {
+                availableRouteButtons.get(i).setText("");
+            }
+        }
     }
 
     public static void updateUpgradeButtons(List<Button> buttons, List<Upgrade> upgrades){
