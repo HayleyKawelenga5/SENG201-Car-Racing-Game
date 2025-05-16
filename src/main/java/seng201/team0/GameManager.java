@@ -60,6 +60,52 @@ public class GameManager {
         navigator.launchFinishScreen(this);
     }
 
+    public void goToShop() {
+        this.money = money;
+        this.playerCars = playerCars;
+        this.currentCar = currentCar;
+        this.playerUpgrades = playerUpgrades;
+        navigator.launchShopScreen(this);
+    }
+
+    public void goToGarage() {
+        this.money = money;
+        this.playerCars = playerCars;
+        this.currentCar = currentCar;
+        this.playerUpgrades = playerUpgrades;
+        navigator.launchGarageScreen(this);
+    }
+
+    public void goBack() {
+        this.money = money;
+        this.playerCars = playerCars;
+        this.currentCar = currentCar;
+        this.playerUpgrades = playerUpgrades;
+        navigator.launchMainScreen(this);
+    }
+
+    public void startRace(Race race) {
+        this.money = money;
+        this.playerCars = playerCars;
+        this.currentCar = currentCar;
+        this.playerUpgrades = playerUpgrades;
+        this.selectedRace = race;
+        navigator.launchRaceScreen(this);
+    }
+
+    public void onQuitRequested(){
+        System.exit(0);
+    }
+
+    public void initializePlayerCar(){
+        if (playerCars == null || playerCars.isEmpty()) {
+            throw new IllegalStateException("No cars available to initialize");
+        }
+        if (!playerCars.contains(currentCar)) {
+            currentCar = playerCars.getFirst();
+        }
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -114,40 +160,5 @@ public class GameManager {
 
     public void setSelectedRoute(Route selectedRoute) { this.selectedRoute = selectedRoute; }
 
-    public void goToShop() {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
-        navigator.launchShopScreen(this);
-    }
 
-    public void goToGarage() {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
-        navigator.launchGarageScreen(this);
-    }
-
-    public void goBack() {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
-        navigator.launchMainScreen(this);
-    }
-
-    public void startRace(Race race) {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
-        this.selectedRace = race;
-        navigator.launchRaceScreen(this);
-    }
-
-    public void onQuitRequested(){
-        System.exit(0);
-    }
 }

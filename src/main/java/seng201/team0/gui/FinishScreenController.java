@@ -74,6 +74,6 @@ public class FinishScreenController extends ScreenController {
      */
     @FXML
     public void onQuitButtonClicked() {
-        System.exit(0);
+        getGameManager().onQuitRequested();
     }
 }

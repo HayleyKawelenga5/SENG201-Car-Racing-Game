@@ -3,6 +3,7 @@ package seng201.team0.utils;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import seng201.team0.models.Car;
+import seng201.team0.models.Race;
 import seng201.team0.models.Upgrade;
 
 import java.util.List;
@@ -34,6 +35,20 @@ public class ScreenUpdater {
             upgradeHandlingLabel.setText("Handling: " + upgrade.getUpgradeHandling());
             upgradeReliabilityLabel.setText("Reliability: " + upgrade.getUpgradeReliability());
             upgradeFuelEconomyLabel.setText("Fuel Economy: " + upgrade.getUpgradeFuelEconomy());
+        }
+    }
+
+    public static void updateRaceStats(Race race, Label raceHoursLabel, Label raceRoutesLabel, Label raceEntriesLabel, Label racePrizeMoneyLabel){
+        if (race == null) {
+            raceHoursLabel.setText("Hours: ");
+            raceRoutesLabel.setText("Routes: ");
+            raceEntriesLabel.setText("Entries: ");
+            racePrizeMoneyLabel.setText("Prize Money: ");
+        } else {
+            raceHoursLabel.setText("Hours: " + race.getRaceHours());
+            raceRoutesLabel.setText("Routes: " + race.getRouteList());
+            raceEntriesLabel.setText("Entries: " + race.getRaceEntries());
+            racePrizeMoneyLabel.setText("Prize Money: $" + race.getRacePrizeMoney());
         }
     }
 

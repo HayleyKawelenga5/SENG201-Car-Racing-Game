@@ -10,6 +10,7 @@ import seng201.team0.services.RaceService;
 import seng201.team0.models.Car;
 
 import javafx.fxml.FXML;
+import seng201.team0.utils.ScreenUpdater;
 
 import java.util.List;
 
@@ -56,20 +57,17 @@ public class MainScreenController extends ScreenController {
     @FXML
     public void initialize() {
         GameManager mainScreen = getGameManager();
+        mainScreen.initializePlayerCar();
 
+        Car currentCar = mainScreen.getCurrentCar();
         int seasonLength = mainScreen.getSeasonLength();
         String difficulty = mainScreen.getDifficulty();
         int money = mainScreen.getMoney();
-        List<Car> playerCars = mainScreen.getPlayerCars();
         int racesRemaining = mainScreen.getRacesRemaining();
         RaceService raceService = new RaceService();
         availableRaces = raceService.generateRaces(3, difficulty);
 
-        Car currentCar = mainScreen.getCurrentCar();
-        if (!playerCars.contains(currentCar)) {
-            currentCar = playerCars.getFirst();
-        }
-        mainScreen.setCurrentCar(currentCar); //sets the player's current car to be the first car in the list of cars they own
+
 
         List<Button> availableRaceButtons = List.of(race1Button, race2Button, race3Button);
         for (int i = 0; i < availableRaceButtons.size(); i++) {
@@ -99,14 +97,14 @@ public class MainScreenController extends ScreenController {
             chosenRace = null;
             selectRaceButton.setStyle("");
             selectedRace = availableRaces.get(index);
-            updateRaceStats(selectedRace);
+            ScreenUpdater.updateRaceStats(selectedRace, raceHoursLabel, raceRoutesLabel, raceEntriesLabel, racePrizeMoneyLabel);
         }
     }
 
     @FXML
     private void onSelectRaceButtonClicked() {
         if (selectedRace == null) {
-            showAlert("No race selected", "Please select a race.");
+            showNoRacesSelectedAlert();
         } else {
             selectRaceButton.setStyle("-fx-background-color: LightGreen");
             chosenRace = selectedRace;
@@ -117,24 +115,10 @@ public class MainScreenController extends ScreenController {
     @FXML
     private void onToStartLineButtonClicked() {
         if (chosenRace == null) {
-            showAlert("No race selected", "Please select a race.");
+            showNoRacesSelectedAlert();
         }
         getGameManager().setSelectedRace(chosenRace);
         getGameManager().startRace(chosenRace);
-    }
-
-    private void updateRaceStats(Race race) {
-        if (race == null) {
-            raceHoursLabel.setText("Hours: ");
-            raceRoutesLabel.setText("Routes: ");
-            raceEntriesLabel.setText("Entries: ");
-            racePrizeMoneyLabel.setText("Prize Money: ");
-        } else {
-            raceHoursLabel.setText("Hours: " + race.getRaceHours());
-            raceRoutesLabel.setText("Routes: " + race.getRouteList());
-            raceEntriesLabel.setText("Entries: " + race.getRaceEntries());
-            racePrizeMoneyLabel.setText("Prize Money: $" + race.getRacePrizeMoney());
-        }
     }
 
     @FXML
@@ -153,6 +137,10 @@ public class MainScreenController extends ScreenController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void showNoRacesSelectedAlert() {
+        showAlert("No races selected", "Please select a race.");
     }
 
 }
