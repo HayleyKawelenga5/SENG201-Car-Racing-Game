@@ -11,6 +11,8 @@ import seng201.team0.models.Car;
 
 import javafx.fxml.FXML;
 
+import java.util.Optional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -266,12 +268,30 @@ public class RaceScreenController extends ScreenController {
     }
 
     public void onPlayerBreakdown() {
-        showAlert("Breakdown!", "Car retired from race!\nTip: Upgrade car reliability");
-        positionLabel.setText("Place: DNF. Breakdown!");
-        prizeMoneyLabel.setText("Prize Money: $0");
-        backButton.setDisable(false);
-        continueButton.setDisable(true);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        showAlert("Breakdown!", "Retire from race or continue?\nClicking proceed costs you time and money!");
+        ButtonType retiredButton = new ButtonType("Retire", ButtonBar.ButtonData.YES);
+        ButtonType continuedButton = new ButtonType("Continue", ButtonBar.ButtonData.NO);
+
+        alert.getButtonTypes().setAll(retiredButton, continuedButton);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent()) {
+            if (result.get() == retiredButton) {
+                raceEngine.playerDNF();
+                showAlert("Retired!", "Car retired from race!\nTip: Upgrade car reliability");
+                positionLabel.setText("Place: DNF. Breakdown!");
+                prizeMoneyLabel.setText("Prize Money: $0");
+                backButton.setDisable(false);
+                continueButton.setDisable(true);
+            } else {
+                showInfo("Continued!", "You continued the race at a cost!\nTip: Upgrade car reliability");
+                raceEngine.updatePlayerCar();
+            }
+        }
     }
+
+
 
     public void onPlayerMalfunction() {
         showInfo("Malfunction!", "Challenging route conditions are impacting car performance.\nTip: Upgrade car handling");

@@ -167,7 +167,7 @@ public class RaceEngine {
         return false;
     }
 
-    private boolean updatePlayerCar() {
+    public boolean updatePlayerCar() {
 
         int currentDistance = carDistances.get(playerCar);
         int nextDistance = currentDistance + playerCar.getCarSpeed();
@@ -230,7 +230,7 @@ public class RaceEngine {
 
     public void triggerCarPerformanceIssue() {
         Random random = new Random();
-        int value = new Random().nextInt(1, 3);
+        int value = new Random().nextInt(1, 2);
         switch (value) {
             case 1:
                 triggerCarBreakdown();
@@ -244,7 +244,7 @@ public class RaceEngine {
     public void triggerCarBreakdown() {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarReliability() + 20)) {
-            carStatus.put(playerCar, RaceStatus.DNF);
+            //carStatus.put(playerCar, RaceStatus.DNF);
             Platform.runLater(() -> {
                 raceScreenController.onPlayerBreakdown();
             });
@@ -321,7 +321,7 @@ public class RaceEngine {
         }
     }
 
-    private void playerDNF() {
+    public void playerDNF() {
         Platform.runLater(() -> {
             raceScreenController.onPlayerDNF();
         });
