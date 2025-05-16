@@ -73,10 +73,27 @@ public class RaceEngine {
     public void applyRouteMultipliers() {
         double difficultyMultiplier = selectedRoute.getRouteDifficultyMultiplier();
         for (Car car : carDistances.keySet()) {
-            car.setCarSpeed((int) (car.getCarSpeed() / difficultyMultiplier));
-            car.setCarHandling((int) (car.getCarHandling() / difficultyMultiplier));
-            car.setCarReliability((int) (car.getCarReliability() / difficultyMultiplier));
-            car.setCarFuelEconomy((int) (car.getCarFuelEconomy() / difficultyMultiplier));
+            switch (selectedRoute.getRouteDescription()){
+                case FLAT:
+                case BEACH:
+                    car.setCarSpeed((int) (car.getCarSpeed() / difficultyMultiplier));
+                    car.setCarHandling((int) (car.getCarHandling() / difficultyMultiplier));
+                    car.setCarReliability((int) (car.getCarReliability() / difficultyMultiplier));
+                    car.setCarFuelEconomy((int) (car.getCarFuelEconomy() / difficultyMultiplier));
+                    break;
+                case HILLY:
+                    car.setCarSpeed((int) (car.getCarSpeed() / difficultyMultiplier));
+                    car.setCarFuelEconomy((int) (car.getCarFuelEconomy() / difficultyMultiplier));
+                    break;
+                case OFFROAD:
+                    car.setCarHandling((int) (car.getCarHandling() / difficultyMultiplier));
+                    car.setCarReliability((int) (car.getCarReliability() / difficultyMultiplier));
+                    break;
+                case WINDY:
+                    car.setCarSpeed((int) (car.getCarSpeed() / difficultyMultiplier));
+                    car.setCarHandling((int) (car.getCarHandling() / difficultyMultiplier));
+                    break;
+            }
         }
     }
 

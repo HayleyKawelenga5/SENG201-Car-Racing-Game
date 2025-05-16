@@ -7,7 +7,7 @@ import seng201.team0.GameManager;
 
 /**
  * Controller for the Finish Screen of the game.
- * his screen is shown when the game ends and displays the final player statistics,
+ * this screen is shown when the game ends and displays the final player statistics,
  * including name, season length, races completed, average placing, and total prize money.
  */
 public class FinishScreenController extends ScreenController {
@@ -51,7 +51,8 @@ public class FinishScreenController extends ScreenController {
      *Initializes the finish screen with data from the GameManager.
      *Populates all GUI labels with final player statistics.
      */
-    public void initialize() {
+    @FXML
+    private void initialize() {
         GameManager finishScreen = getGameManager();
 
         String playerName = finishScreen.getPlayerName();
@@ -73,7 +74,7 @@ public class FinishScreenController extends ScreenController {
      * Handles the event when the "Quit" button is clicked on the finish screen.
      */
     @FXML
-    public void onQuitButtonClicked() {
+    private void onQuitButtonClicked() {
         getGameManager().onQuitRequested();
     }
 }

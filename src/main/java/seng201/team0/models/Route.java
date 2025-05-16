@@ -35,7 +35,7 @@ public class Route {
     /**
      * Returns the type or description of the route.
      *
-     * @return the {@code RouteType} of the route (e.g., FLAT, HILLY, OFFROAD)
+     * @return the {@code RouteType} of the route (e.g. FLAT, HILLY, OFFROAD)
      */
     public RouteType getRouteDescription() {
         return description;

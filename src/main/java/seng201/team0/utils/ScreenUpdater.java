@@ -52,6 +52,12 @@ public class ScreenUpdater {
         }
     }
 
+    public static void updateGameInfo(int money, int racesRemaining, int seasonLength, Label moneyLabel, Label racesRemainingLabel, Label seasonLengthLabel){
+        moneyLabel.setText("Money: $" + money);
+        racesRemainingLabel.setText("Races Remaining: " + racesRemaining);
+        seasonLengthLabel.setText("Season Length: " + seasonLength);
+    }
+
     public static void updateUpgradeButtons(List<Button> buttons, List<Upgrade> upgrades){
         for (int i = 0; i < buttons.size(); i++){
             if (i < upgrades.size()){

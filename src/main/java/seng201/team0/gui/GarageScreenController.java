@@ -93,7 +93,7 @@ public class GarageScreenController extends ScreenController {
      * This method is immediately called by the JavaFX framework after FXML loading.
      */
     @FXML
-    public void initialize() {
+    private void initialize() {
         GameManager garageScreen = getGameManager();
         playerCars = garageScreen.getPlayerCars();
         playerUpgrades = garageScreen.getPlayerUpgrades();
@@ -235,7 +235,7 @@ public class GarageScreenController extends ScreenController {
      * message if the user has not selected a car to swap.
      */
     @FXML
-    public void onMakeCurrentCarButtonClicked() {
+    private void onMakeCurrentCarButtonClicked() {
         if (selectedCar != null) {
             currentCar = selectedCar;
             currentCarLabel.setText("Current car: " + currentCar.getCarName());
@@ -249,7 +249,7 @@ public class GarageScreenController extends ScreenController {
      * Saves the current car selection in the GameManager and navigates back to the previous screen.
      */
     @FXML
-    public void onBackButtonClicked() {
+    private void onBackButtonClicked() {
         getGameManager().setCurrentCar(currentCar);
         getGameManager().goBack();
     }
@@ -259,6 +259,7 @@ public class GarageScreenController extends ScreenController {
      * @param title the title of the alert dialog
      * @param message the content message of the alert dialog
      */
+    @FXML
     private void showAlert(String title, String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
