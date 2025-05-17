@@ -115,7 +115,7 @@ public class GarageScreenController extends ScreenController {
             playerCarButtons.get(i).setOnAction(event -> onPlayerCarButtonClicked(index));
         }
 
-        // Setup buttons to select upgrades// Setup buttons to select upgrades
+        // Setup buttons to select upgrades
         for (int i = 0; i < playerUpgradeButtons.size(); i++) {
             int index = i;
             playerUpgradeButtons.get(i).setOnAction(event -> onPlayerUpgradeButtonClicked(index));
@@ -261,7 +261,7 @@ public class GarageScreenController extends ScreenController {
      * @param message the content message of the alert dialog
      */
     @FXML
-    private void showAlert(String title, String message){
+    private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);

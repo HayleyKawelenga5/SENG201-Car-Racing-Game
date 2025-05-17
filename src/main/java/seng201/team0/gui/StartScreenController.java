@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Controller class for the Start Screen GUI.
- *<p></p>
+ *
  * This controller handles user interaction for setting up a new game, including selecting player name, difficulty, cars
  * and season length.
  */

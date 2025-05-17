@@ -17,13 +17,12 @@ public class GarageService {
      * @param currentCar
      * @param upgrade
      * @param playerUpgrades
-     * @return
+     * @return true if the upgrade was successfully installed, false otherwise
      */
     public boolean installUpgrade(Car currentCar, Upgrade upgrade, List<Upgrade> playerUpgrades) {
         if (currentCar == null || upgrade == null || !playerUpgrades.contains(upgrade)) {
             return false;
         }
-
         currentCar.setCarSpeed(Math.min(100, currentCar.getCarSpeed() + upgrade.getUpgradeSpeed()));
         currentCar.setCarHandling(Math.min(100, currentCar.getCarHandling() + upgrade.getUpgradeHandling()));
         currentCar.setCarReliability(Math.min(100, currentCar.getCarReliability() + upgrade.getUpgradeReliability()));

@@ -1,8 +1,6 @@
 package seng201.team0.services;
 
 import seng201.team0.models.Car;
-//import seng201.team0.models.Shop;
-//import seng201.team0.models.Garage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +24,11 @@ public class MainScreen {
      *
      * @param playerName      The name of the player.
      * @param seasonLength    The total number of races in the season.
-     * @param difficulty      The difficulty level.
-     * @param playerMoney     The current amount of money.
-     * @param selectedCars    The current car for the next race.
-     * @param racesRemaining  The number of races remaining.
+     * @param difficulty      The difficulty level of the game.
+     * @param money           The current amount of money the player has.
+     * @param playerCars      A list of cars owned by the player.
+     * @param racesRemaining  The number of races remaining in the season.
+     * @param currentCar      The car selected for the next race.
      */
     public MainScreen(String playerName, int seasonLength, String difficulty, int money, ArrayList<Car> playerCars, int racesRemaining, Car currentCar) {
         this.playerName = playerName;
@@ -41,14 +40,29 @@ public class MainScreen {
         this.currentCar = currentCar;
     }
 
+    /**
+     * Returns the amount of money the player currently has.
+     *
+     * @return The current money balance.
+     */
     public int getMoney(){
         return this.money;
     }
 
+    /**
+     * Returns the total number of races in the season.
+     *
+     * @return The length of the season.
+     */
     public int getSeasonLength(){
         return this.seasonLength;
     }
 
+    /**
+     * Returns the number of races remaining in the current season.
+     *
+     * @return The number of races left.
+     */
     public int getRacesRemaining(){
         return this.racesRemaining;
     }

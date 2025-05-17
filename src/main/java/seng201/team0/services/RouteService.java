@@ -8,7 +8,7 @@ import java.util.Random;
 public class RouteService {
 
     /**
-     * Returns a randomly selected RouteType}.
+     * Returns a randomly selected RouteType.
      *
      * @return a random RouteType from the available enum.
      */

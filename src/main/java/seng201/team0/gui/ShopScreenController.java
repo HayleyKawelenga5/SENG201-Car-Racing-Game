@@ -158,6 +158,7 @@ public class ShopScreenController extends ScreenController {
         for (int i = 0; i < availableUpgrades.size(); i++) {
             shopUpgradeButtons.get(i).setText(availableUpgrades.get(i).getUpgradeName());
         }
+
         updateMoneyLabel();
         updatePlayerCarButtons();
         updateShopCarButtons();

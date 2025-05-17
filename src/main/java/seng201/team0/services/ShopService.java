@@ -79,18 +79,39 @@ public class ShopService {
         return false;
     }
 
+    /**
+     * Returns the amount of money the player currently has.
+     *
+     * @return The current money balance.
+     */
     public int getMoney() {
         return money;
     }
 
+
+    /**
+     * Returns the maximum number of cars a player can own.
+     *
+     * @return The maximum allowed number of cars.
+     */
     public int getMaxMoney() {
         return MAX_CARS;
     }
 
+    /**
+     * Returns the minimum number of cars required.
+     *
+     * @return The minimum number of cars.
+     */
     public int getMinCars(){
         return MIN_CARS;
     }
 
+    /**
+     * Returns the maximum number of upgrades that can be applied to a car.
+     *
+     * @return The maximum allowed upgrades per car.
+     */
     public int getMaxUpgrades() {
         return MAX_UPGRADES;
     }

@@ -12,18 +12,12 @@ import seng201.team0.GameManager;
  */
 public class FinishScreenController extends ScreenController {
 
-    @FXML
-    private Label playerNameLabel;
-    @FXML
-    private Label seasonLengthLabel;
-    @FXML
-    private Label playerRacesCompetedLabel;
-    @FXML
-    private Label playerAveragePlacingLabel;
-    @FXML
-    private Label playerPrizeMoneyLabel;
-    @FXML
-    private Button quitButton;
+    @FXML private Label playerNameLabel;
+    @FXML private Label seasonLengthLabel;
+    @FXML private Label playerRacesCompetedLabel;
+    @FXML private Label playerAveragePlacingLabel;
+    @FXML private Label playerPrizeMoneyLabel;
+    @FXML private Button quitButton;
 
     /**
      * Constructs a FinishScreenController with the given {@link GameManager}.

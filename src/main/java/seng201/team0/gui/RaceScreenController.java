@@ -19,11 +19,11 @@ import java.util.List;
 
 /**
  * Controller class for the Race Screen GUI.
- *<p></p>
+ *
  * This screen allows the user to select a race route based on its stats, start the race and make decision in the race
  * including refuelling and handling random events. Player race position, amount of prize money won or reason for not
  * finishing race are displayed on this screen.
- *<p></p>
+ *
  * The controller handles user interactions during race setup and simulation and update GUI elements accordingly
  */
 public class RaceScreenController extends ScreenController {
@@ -166,7 +166,6 @@ public class RaceScreenController extends ScreenController {
         }
     }
 
-
     /**
      * Handles refueling during the race and update GUI elements (progress bar, label) accordingly.
      */
@@ -182,14 +181,14 @@ public class RaceScreenController extends ScreenController {
     /**
      * Called when the player reaches a fuel stop during the race
      * @param currentDistance the player's current distance at the time they reach the fuel stop
-     * @param nextFuelStopDistance the distance point of the next fuel stop
-     * @param fuelAmount the amount of car in the player's car
+     * @param fuelStopDistance the distance point of the current fuel stop
+     * @param fuelAmount the amount of fuel in the player's car
      */
-    public void onFuelStop(int currentDistance, int nextFuelStopDistance, int fuelAmount) {
-        currentDistanceLabel.setText("Current distance: " + nextFuelStopDistance + "km");
-        currentFuelLabel.setText("Current fuel: " + Math.max(0, (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2))));
-        distanceProgressBar.setProgress(nextFuelStopDistance / (double) chosenRoute.getRouteDistance());
-        fuelProgressBar.setProgress(Math.max(0, (double) (fuelAmount - ((nextFuelStopDistance - currentDistance) / 2)) / currentCarCopy.getCarFuelEconomy()));
+    public void onFuelStop(int currentDistance, int fuelStopDistance, int fuelAmount) {
+        currentDistanceLabel.setText("Current distance: " + fuelStopDistance + "km");
+        currentFuelLabel.setText("Current fuel: " + Math.max(0, (fuelAmount - ((fuelStopDistance - currentDistance) / 2))));
+        distanceProgressBar.setProgress(fuelStopDistance / (double) chosenRoute.getRouteDistance());
+        fuelProgressBar.setProgress(Math.max(0, (double) (fuelAmount - ((fuelStopDistance - currentDistance) / 2)) / currentCarCopy.getCarFuelEconomy()));
         showInfo("Fuel Stop", "You are at a fuel stop!");
         refuelButton.setDisable(false);
     }
@@ -228,7 +227,7 @@ public class RaceScreenController extends ScreenController {
     @FXML
     private void onBackButtonClicked() {
         int racesRemaining = getGameManager().getRacesRemaining();
-        if (racesRemaining <= 1){ //player has completed remaining race
+        if (racesRemaining <= 1) {
             getGameManager().toFinishScreen(raceEngine.getPlayerAveragePlacing(), raceEngine.getPlayerTotalPrizeMoney());
             return;
         }
@@ -241,15 +240,25 @@ public class RaceScreenController extends ScreenController {
         getGameManager().setMoney(getGameManager().getMoney() + prizeMoney);
         getGameManager().setRacesRemaining(getGameManager().getRacesRemaining() - 1);
 
-        //Reduce car performance
+        reduceCurrentCarStats();
+
+        getGameManager().setCurrentCar(currentCar);
+        getGameManager().toMainScreenFromRace(totalPlayerMoney, currentCar, getGameManager().getSeasonLength());
+    }
+
+
+    /**
+     * Lowers the current car's stats by fixed amounts.
+     *
+     * Reduces speed, handling, reliability, and fuel economy by 10 each,
+     * and reduces the car's cost by 40. Values will not go below 0.
+     */
+    public void reduceCurrentCarStats() {
         currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
         currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
         currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
         currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
         currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
-
-        getGameManager().setCurrentCar(currentCar);
-        getGameManager().toMainScreenFromRace(totalPlayerMoney, currentCar, getGameManager().getSeasonLength());
     }
 
     /**
@@ -270,7 +279,7 @@ public class RaceScreenController extends ScreenController {
     }
 
     /**
-     * Called if the player runs out of time to complete the race.
+     * Called if the player runs out of time to finish the race.
      */
     public void onPlayerOutOfTime() {
         handleRaceEnd("Place: DNF. Out of time!", "Prize Money: $0", "Out of time!", "Position: DNF | Prize money: $0");
@@ -278,7 +287,7 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Called when the player's car breaks down and the player is given the option to retire from the race or pay for
-     * repairs and lose race time.
+     * repairs and lose race time and money.
      */
     public void onPlayerBreakdown() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -333,8 +342,8 @@ public class RaceScreenController extends ScreenController {
      * @param alertTitle title of the dialog box shown to the user.
      * @param alertMessage message displayed to the user
      */
-    private void handleRaceEnd(String positionText, String prizeMoneyText, String alertTitle, String alertMessage){
-        showAlert(alertTitle, alertMessage);
+    private void handleRaceEnd(String positionText, String prizeMoneyText, String alertTitle, String alertMessage) {
+        showInfo(alertTitle, alertMessage);
         positionLabel.setText(positionText);
         prizeMoneyLabel.setText(prizeMoneyText);
         backButton.setDisable(false);
