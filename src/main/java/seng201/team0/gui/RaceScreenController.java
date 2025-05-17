@@ -279,6 +279,12 @@ public class RaceScreenController extends ScreenController {
     }
 
     /**
+     * Called if the player retires from the race after a breakdown event.
+     */
+    public void onPlayerRetired(){
+        handleRaceEnd("Place: DNF. Breakdown!","Prize Money: $0","Retired!", "Car retired from race!\nTip: Upgrade car reliability");
+    }
+    /**
      * Called if the player runs out of time to finish the race.
      */
     public void onPlayerOutOfTime() {
@@ -300,8 +306,7 @@ public class RaceScreenController extends ScreenController {
 
         if (result.isPresent()) {
             if (result.get() == retiredButton) {
-                raceEngine.playerDNF();
-                handleRaceEnd("Place: DNF. Breakdown!","Prize Money: $0","Retired!", "Car retired from race!\nTip: Upgrade car reliability");
+                raceEngine.playerRetired();
             } else {
                 showInfo("Continued!", "You continued the race at a cost!\nTip: Upgrade car reliability");
                 getGameManager().setMoney(getGameManager().getMoney() - 50);
@@ -399,7 +404,6 @@ public class RaceScreenController extends ScreenController {
                 chosenRoute,
                 currentCarCopy,
                 getGameManager().getDifficulty(),
-                getGameManager().getMoney(),
                 this
         );
         raceEngine.startRace();
