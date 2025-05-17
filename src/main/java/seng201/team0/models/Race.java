@@ -9,13 +9,13 @@ import java.util.*;
  */
 public class Race {
 
-    private int hours;
-    private List<Route> availableRoutes;
-    private int entries;
-    private int prizeMoney;
+    private final int hours;
+    private final List<Route> availableRoutes;
+    private final int entries;
+    private final int prizeMoney;
 
     /**
-     * Contructs a new {@code Race} with the specified duration, routes,
+     * Constructs a new {@link Race} with the specified duration, routes,
      * number of entries and prize money.
      * @param hours the duration of the race
      * @param availableRoutes one to three routes that can be taken to complete the race

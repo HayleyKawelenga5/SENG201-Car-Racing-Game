@@ -12,10 +12,10 @@ public class Route {
      */
     public enum RouteType { FLAT, HILLY, OFFROAD, WINDY, BEACH }
 
-    private RouteType description;
-    private int distance;
-    private int fuelStops;
-    private double difficultyMultiplier;
+    private final RouteType description;
+    private final int distance;
+    private final int fuelStops;
+    private final double difficultyMultiplier;
 
     /**
      * Constructs a new Route object with the given parameters.
@@ -67,40 +67,4 @@ public class Route {
     public double getRouteDifficultyMultiplier() {
         return difficultyMultiplier;
     }
-
-    /**
-     * Sets the type or description of the route.
-     *
-     * @param description the new type of the route (e.g., FLAT, HILLY, OFFROAD)
-     */
-    public void setRouteDescription(RouteType description) {
-        this.description = description;
-    }
-
-    /**
-     * Sets the distance of the route in kilometers.
-     *
-     * @param distance the new distance for the route
-     */
-    public void setRouteDistance(int distance) {
-        this.distance = distance;
-    }
-
-
-    /**
-     * Sets the number of fuel stops along the route.
-     *
-     * @param fuelStops the new number of fuel stops
-     */
-    public void setRouteFuelStops(int fuelStops) {
-        this.fuelStops = fuelStops;
-    }
-
-    /**
-     * Sets the difficulty multiplier of the route.
-     *
-     * @param difficultyMultiplier the new difficulty multiplier
-     */
-    public void setRouteDifficultyMultiplier(double difficultyMultiplier) { this.difficultyMultiplier = difficultyMultiplier; }
-
 }

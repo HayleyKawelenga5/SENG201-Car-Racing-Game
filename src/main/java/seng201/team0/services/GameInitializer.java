@@ -11,28 +11,27 @@ import seng201.team0.models.Car;
  */
 public class GameInitializer {
 
-    private String playerName;
-    private int seasonLength;
-    private String difficulty;
     private int money;
     private List<Car> playerCars = new ArrayList<>();
-    private Car currentCar;
-    private CarService carService = new CarService();
+    private final CarService carService = new CarService();
+
     private static final int MAX_CARS = 3;
-    private static final int MIN_SEASON_LENGTH = 3;
+    private static final int MIN_SEASON_LENGTH = 5;
     private static final int MAX_SEASON_LENGTH = 15;
+    private static final int MIN_NAME_LENGTH = 3;
+    private static final int MAX_NAME_LENGTH = 15;
 
     /**
-     * Validates and sets the player's name.
+     * Validates and sets the player's name. For a name to be valid the length of the name must be between 3 and 15
+     * characters inclusive and the name must not include any special characters.
      *
      * @param name The player's name.
      * @throws InvalidNameException if the name is invalid.
      */
     public void selectName(String name) throws InvalidNameException {
-        if (name.length() < 3 || name.length() > 15 || !name.matches("[a-zA-Z0-9 ]+")){
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH || !name.matches("[a-zA-Z0-9 ]+")){
             throw new InvalidNameException("Player name must be between 3 and 15 characters and contain no special characters.");
         }
-        this.playerName = name;
     }
 
     /**
@@ -42,10 +41,9 @@ public class GameInitializer {
      * @throws IllegalArgumentException if length is outside 5–15.
      */
     public void selectSeasonLength(int length) throws IllegalArgumentException {
-        if (length < 5 || length > 15) {
+        if (length < MIN_SEASON_LENGTH || length > MAX_SEASON_LENGTH) {
             throw new IllegalArgumentException("Season length must be between 5 and 15 races");
         }
-        this.seasonLength = length;
     }
 
     /**
@@ -65,11 +63,18 @@ public class GameInitializer {
             default:
                 throw new IllegalArgumentException("Invalid difficulty. Please select either EASY or HARD.");
         }
-        this.difficulty = difficulty;
     }
 
+    /**
+     * Gets the amount of player money.
+     * @return the amount of money for the player.
+     */
     public int getMoney() { return money; }
 
+    /**
+     * Sets the player's money to the given value.
+     * @param money amount for the player's money to be set to
+     */
     public void setMoney(int money) { this.money = money; }
 
     /**
@@ -85,20 +90,28 @@ public class GameInitializer {
         return carService.getAvailableCars();
     }
 
+    /**
+     * Gets the list of cars owned by the player.
+     * @return a list of cars owned by the player
+     */
     public List<Car> getPlayerCars() { return playerCars; }
 
+    /**
+     * Sets the player's cars to the given list.
+     * @param playerCars list of cars for the player's cars to be set to.
+     */
     public void setPlayerCars(List<Car> playerCars) { this.playerCars = playerCars; }
 
     /**
      * Attempts to add a car to the player's selection.
      * A car can only be added if the player does not already have it,
-     * has fewer than 3 selected cars, and has enough money to purchase it.
+     * has fewer than the maximum amount of cars allowed (3) selected cars, and has enough money to purchase it.
      *
      * @param car The Car to add to the selection.
      * @return true if the car was successfully added, false otherwise.
      */
     public boolean addCar(Car car) {
-        if (!playerCars.contains(car) && playerCars.size() < 3) {
+        if (!playerCars.contains(car) && playerCars.size() < MAX_CARS) {
             if (money >= car.getCarCost()) {
                 playerCars.add(car);
                 money -= car.getCarCost();
@@ -125,14 +138,26 @@ public class GameInitializer {
         return false;
     }
 
+    /**
+     * Gets the maximum number of cars a player can have at the start of the game.
+     * @return the maximum number of cars
+     */
     public int getMaxCars() {
         return MAX_CARS;
     }
 
+    /**
+     * Gets the minimum season length.
+     * @return the minimum season length.
+     */
     public int getMinSeasonLength() {
         return MIN_SEASON_LENGTH;
     }
 
+    /**
+     * Gets the maximum season length
+     * @return the maximum season length
+     */
     public int getMaxSeasonLength() {
         return MAX_SEASON_LENGTH;
     }

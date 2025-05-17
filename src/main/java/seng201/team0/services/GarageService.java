@@ -3,34 +3,21 @@ package seng201.team0.services;
 import seng201.team0.models.Car;
 import seng201.team0.models.Upgrade;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code GarageService} class provides functionality for managing and upgrading cars
+ * in the player's garage. It handles the installation of upgrades which modify car stats,
+ * ensuring that upgrades are only applied if they are owned by the player.
+ */
 public class GarageService {
 
-    private Car currentCar;
-    private List<Car> playerCars;
-    private List<Upgrade> playerUpgrades;
-
     /**
-     * Swaps the current car with one from the reserve.
-     *
-     * @param car The reserve car to make current.
-     * @return True if successful, false otherwise.
-     */
-    public boolean swapCurrentCar(Car car) {
-        if (playerCars.contains(car)) {
-            currentCar = car;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Installs an upgrade to the current car, improving its stats.
-     *
-     * @param upgrade The upgrade to install.
-     * @return True if installed, false if not in list.
+     * Installs an upgrade to a car to improve its stats
+     * @param currentCar
+     * @param upgrade
+     * @param playerUpgrades
+     * @return
      */
     public boolean installUpgrade(Car currentCar, Upgrade upgrade, List<Upgrade> playerUpgrades) {
         if (currentCar == null || upgrade == null || !playerUpgrades.contains(upgrade)) {

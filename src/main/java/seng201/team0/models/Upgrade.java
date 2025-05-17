@@ -1,21 +1,19 @@
 package seng201.team0.models;
 
-import java.util.Random;
-
 /**
  * Represents an upgrade that can be applied to a car to improve its stats.
  */
 public class Upgrade {
 
-    private String upgradeName;
-    private int upgradeSpeed;
-    private int upgradeHandling;
-    private int upgradeReliability;
-    private int upgradeFuelEconomy;
-    private int upgradeCost;
+    private final String upgradeName;
+    private final int upgradeSpeed;
+    private final int upgradeHandling;
+    private final int upgradeReliability;
+    private final int upgradeFuelEconomy;
+    private final int upgradeCost;
 
     /**
-     * Constructs a new {@code Upgrade} instance
+     * Constructs a new {@link Upgrade} instance
      *
      * @param upgradeName the name of the upgrade
      * @param upgradeSpeed the speed enhancement value
@@ -74,5 +72,4 @@ public class Upgrade {
      * @return the cost of the upgrade
      */
     public int getUpgradeCost() { return upgradeCost; }
-
 }
