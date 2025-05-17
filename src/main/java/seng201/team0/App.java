@@ -3,7 +3,7 @@ package seng201.team0;
 import seng201.team0.gui.MainWindow;
 
 /**
- * Default entry point class
+ * Default entry point class. This contains code from the labs and/or tutorials.
  * @author seng201 teaching team
  */
 public class App {

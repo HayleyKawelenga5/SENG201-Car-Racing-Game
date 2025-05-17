@@ -10,15 +10,14 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Provides services for generating races, applying multipliers to cars,
+ * Provides services for generating races
  * and managing car performance changes.
  */
 public class RaceService {
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
-    private RouteService routeService = new RouteService();
-    private String gameDifficulty;
+    private final RouteService routeService;
     private int maxPrizeMoney;
 
     /**
@@ -70,21 +69,6 @@ public class RaceService {
     }
 
     /**
-     * Applies a performance multiplier to the given car's stats (speed, handling, reliability, fuel economy).
-     *
-     * @param car        The car to modify.
-     * @param multiplier The performance multiplier.
-     * @return The modified {@link Car} with updated stats.
-     */
-    public Car applyMultipliers(Car car, double multiplier) {
-        car.setCarSpeed((int)(car.getCarSpeed() / multiplier));
-        car.setCarHandling((int)(car.getCarHandling() / multiplier));
-        car.setCarReliability((int)(car.getCarReliability() / multiplier));
-        car.setCarFuelEconomy((int)(car.getCarFuelEconomy() / multiplier));
-        return car;
-    }
-
-    /**
      * Creates a preview version of the car with performance stats affected by a multiplier,
      * without modifying the original car.
      *
@@ -99,8 +83,7 @@ public class RaceService {
         int previewFuelEconomy = (int) (car.getCarFuelEconomy() / multiplier);
         int previewCost = car.getCarCost();
         List<Upgrade> upgrades = car.getCarUpgrades();
-        Car previewCar = new Car(previewSpeed, previewHandling, previewReliability, previewFuelEconomy, previewCost, upgrades);
-        return previewCar;
+        return new Car(previewSpeed, previewHandling, previewReliability, previewFuelEconomy, previewCost, upgrades);
     }
 
     /**

@@ -14,9 +14,9 @@ public class GarageService {
 
     /**
      * Installs an upgrade to a car to improve its stats
-     * @param currentCar
-     * @param upgrade
-     * @param playerUpgrades
+     * @param currentCar the currently selected car
+     * @param upgrade the upgrade to be installed
+     * @param playerUpgrades the list of upgrades owned by the player
      * @return true if the upgrade was successfully installed, false otherwise
      */
     public boolean installUpgrade(Car currentCar, Upgrade upgrade, List<Upgrade> playerUpgrades) {

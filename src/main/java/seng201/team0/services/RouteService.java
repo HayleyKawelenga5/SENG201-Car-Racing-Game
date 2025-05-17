@@ -5,6 +5,10 @@ import seng201.team0.models.Route.RouteType;
 
 import java.util.Random;
 
+/**
+ * Handles the generation of random routes for the race, as well as their difficulty multipliers to be applied to
+ * different stats of the player's car depending on the RouteType.
+ */
 public class RouteService {
 
     /**
@@ -25,33 +29,33 @@ public class RouteService {
     public Route generateRandomRoute() {
         Random random = new Random();
 
-        int distance = 0;
-        double difficultyMultiplier = 0.0;
+        int distance;
+        double difficultyMultiplier;
 
         RouteType description = getRandomRouteType();
 
-        switch (description) {
-            case FLAT:
+        difficultyMultiplier = switch (description) {
+            case FLAT -> {
                 distance = random.nextInt(60, 151);
-                difficultyMultiplier = random.nextDouble(1.0, 1.41);
-                break;
-            case HILLY:
+                yield random.nextDouble(1.0, 1.41);
+            }
+            case HILLY -> {
                 distance = random.nextInt(60, 151);
-                difficultyMultiplier = random.nextDouble(1.2, 1.61);
-                break;
-            case OFFROAD:
+                yield random.nextDouble(1.2, 1.61);
+            }
+            case OFFROAD -> {
                 distance = random.nextInt(60, 151);
-                difficultyMultiplier = random.nextDouble(1.2, 1.61);
-                break;
-            case WINDY:
+                yield random.nextDouble(1.2, 1.61);
+            }
+            case WINDY -> {
                 distance = random.nextInt(60, 151);
-                difficultyMultiplier = random.nextDouble(1.2, 1.61);
-                break;
-            case BEACH:
+                yield random.nextDouble(1.2, 1.61);
+            }
+            case BEACH -> {
                 distance = random.nextInt(60, 151);
-                difficultyMultiplier = random.nextDouble(1.4, 1.81);
-                break;
-        }
+                yield random.nextDouble(1.4, 1.81);
+            }
+        };
 
         int fuelStops = random.nextInt(1, 5);
 

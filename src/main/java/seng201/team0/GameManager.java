@@ -4,10 +4,8 @@ import seng201.team0.gui.ScreenNavigator;
 
 import seng201.team0.models.Car;
 import seng201.team0.models.Race;
-import seng201.team0.models.Route;
 import seng201.team0.models.Upgrade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager {
@@ -28,7 +26,6 @@ public class GameManager {
     private List<Upgrade> playerUpgrades;
 
     private Race selectedRace;
-    private Route selectedRoute;
 
     public GameManager() {
         this.navigator = null;
@@ -65,34 +62,18 @@ public class GameManager {
     }
 
     public void goToShop() {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
         navigator.launchShopScreen(this);
     }
 
     public void goToGarage() {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
         navigator.launchGarageScreen(this);
     }
 
     public void goBack() {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
         navigator.launchMainScreen(this);
     }
 
     public void startRace(Race race) {
-        this.money = money;
-        this.playerCars = playerCars;
-        this.currentCar = currentCar;
-        this.playerUpgrades = playerUpgrades;
         this.selectedRace = race;
         navigator.launchRaceScreen(this);
     }
@@ -121,8 +102,6 @@ public class GameManager {
     public int getRacesRemaining() {
         return racesRemaining;
     }
-
-    public void setSeasonLength(int seasonLength) {this.seasonLength = seasonLength;}
 
     public void setRacesRemaining(int racesRemaining) { this.racesRemaining = racesRemaining; }
 
@@ -160,9 +139,6 @@ public class GameManager {
         this.selectedRace = selectedRace;
     }
 
-    public Route getSelectedRoute() { return selectedRoute; }
-
-    public void setSelectedRoute(Route selectedRoute) { this.selectedRoute = selectedRoute; }
 
 
 }
