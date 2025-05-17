@@ -30,6 +30,10 @@ public class GameManager {
     private Race selectedRace;
     private Route selectedRoute;
 
+    public GameManager() {
+        this.navigator = null;
+    }
+
     public GameManager(ScreenNavigator navigator) {
         this.navigator = navigator;
         navigator.launchStartScreen(this);
