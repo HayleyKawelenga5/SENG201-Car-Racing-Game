@@ -400,6 +400,7 @@ public class RaceScreenController extends ScreenController {
         continueButton.setDisable(false);
 
         raceEngine = new RaceEngine(
+                getGameManager(),
                 getGameManager().getSelectedRace(),
                 chosenRoute,
                 currentCarCopy,

@@ -6,6 +6,7 @@ import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Upgrade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class GameManager {
     private int racesRemaining;
     private double averagePlayerFinishPosition;
     private int playerTotalPrizeMoney;
-    //private final List<Integer> playerFinishPositions = new ArrayList<>();
+    private final List<Integer> playerFinishPositions = new ArrayList<>();
 
     private List<Upgrade> playerUpgrades;
 
@@ -190,12 +191,12 @@ public class GameManager {
      */
     public int getMoney() { return money; }
 
-//    /**
-//     * @return a list containing the player's finish positions throughout the race
-//     */
-//    public List<Integer> getPlayerFinishPositions() {
-//        return playerFinishPositions;
-//    }
+    /**
+     * @return a list containing the player's finish positions throughout the race
+     */
+    public List<Integer> getPlayerFinishPositions() {
+        return playerFinishPositions;
+    }
 
     /**
      * @return The player's average finish position.
@@ -209,8 +210,15 @@ public class GameManager {
      * @return The total prize money earned by the player.
      */
     public int getPlayerTotalPrizeMoney(){
-        System.out.println("game mana" + playerTotalPrizeMoney);
         return playerTotalPrizeMoney;
+    }
+
+    /**
+     * Adds the given amount to the total prize money
+     * @param amount the amount to be added to the total prize money
+     */
+    public void addToTotalPrizeMoney(int amount){
+        this.playerTotalPrizeMoney += amount;
     }
 
     /**

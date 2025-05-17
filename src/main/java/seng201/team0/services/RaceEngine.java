@@ -1,6 +1,7 @@
 package seng201.team0.services;
 
 import javafx.application.Platform;
+import seng201.team0.GameManager;
 import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
@@ -31,13 +32,14 @@ public class RaceEngine {
     private final Map<Car, Integer> racePenalties = new HashMap<>();
 
     private final List<Car> finishPositions = new ArrayList<>();
-    private final List<Integer> playerFinishPositions = new ArrayList<>();
+    //private final List<Integer> playerFinishPositions = new ArrayList<>();
     private int playerTotalPrizeMoney;
 
     private final Map<Car, Integer> carHours = new HashMap<>();
 
     private final RaceScreenController raceScreenController;
     private static final Logger logger = Logger.getLogger(RaceEngine.class.getName());
+    private final GameManager gameManager;
 
     /**
      * Enum to represent the current status of a car in the race. Running if the player is still in the race, finished
@@ -58,7 +60,8 @@ public class RaceEngine {
      * @param difficulty           Game difficulty.
      * @param raceScreenController UI controller to update race progress.
      */
-    public RaceEngine(Race race, Route selectedRoute, Car playerCar, String difficulty, RaceScreenController raceScreenController) {
+    public RaceEngine(GameManager gameManager, Race race, Route selectedRoute, Car playerCar, String difficulty, RaceScreenController raceScreenController) {
+        this.gameManager = gameManager;
         this.race = race;
         this.selectedRoute = selectedRoute;
         this.playerCar = playerCar;
@@ -425,9 +428,9 @@ public class RaceEngine {
         updateFinishPositions();
 
         int playerPosition = finishPositions.indexOf(playerCar) + 1;
-        playerFinishPositions.add(playerPosition); //list to keep track of player positions throughout race
+        gameManager.getPlayerFinishPositions().add(playerPosition);
         int prizeMoney = calculatePrizeMoney(playerPosition);
-        playerTotalPrizeMoney += prizeMoney;
+        gameManager.addToTotalPrizeMoney(prizeMoney);
         Platform.runLater(() -> raceScreenController.onPlayerFinished(playerPosition, prizeMoney));
     }
 
@@ -437,6 +440,7 @@ public class RaceEngine {
      * @return Average placing value.
      */
     public double getPlayerAveragePlacing() {
+        List<Integer> playerFinishPositions = gameManager.getPlayerFinishPositions();
         if (playerFinishPositions.isEmpty()) {
             return 0;
         }
@@ -454,7 +458,7 @@ public class RaceEngine {
      * @return Total prize money.
      */
     public int getPlayerTotalPrizeMoney() {
-        return playerTotalPrizeMoney;
+        return gameManager.getPlayerTotalPrizeMoney();
     }
 
     /**
