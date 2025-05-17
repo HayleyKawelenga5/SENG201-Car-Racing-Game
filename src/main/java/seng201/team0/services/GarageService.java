@@ -29,6 +29,7 @@ public class GarageService {
         currentCar.setCarReliability(Math.min(100, currentCar.getCarReliability() + upgrade.getUpgradeReliability()));
         currentCar.setCarFuelEconomy(Math.min(100, currentCar.getCarFuelEconomy() + upgrade.getUpgradeFuelEconomy()));
         currentCar.setCarCost(currentCar.getCarCost() + upgrade.getUpgradeCost());
+        currentCar.addToCarUpgrades(upgrade);
         playerUpgrades.remove(upgrade);
         return true;
     }

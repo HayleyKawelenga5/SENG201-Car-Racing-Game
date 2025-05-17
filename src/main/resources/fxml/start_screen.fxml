@@ -16,8 +16,8 @@
     <RowConstraints maxHeight="282.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="297.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="297.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="297.0" minHeight="10.0" prefHeight="144.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="297.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="297.0" minHeight="10.0" prefHeight="155.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="297.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="Please enter your racer name: " GridPane.rowIndex="1">
@@ -209,6 +209,19 @@
       <Label text="Race endurance" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets right="10.0" top="63.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="carUpgradesLabel" text="Upgrades:" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="10.0" top="128.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Upgrades installed on car" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="197.0" top="128.0" />
          </GridPane.margin>
          <font>
             <Font size="9.0" />

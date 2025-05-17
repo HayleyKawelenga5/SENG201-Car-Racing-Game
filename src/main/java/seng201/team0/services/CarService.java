@@ -1,6 +1,7 @@
 package seng201.team0.services;
 
 import seng201.team0.models.Car;
+import seng201.team0.models.Upgrade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,8 @@ public class CarService {
             int reliability = random.nextInt(20, 101);
             int fuelEconomy = random.nextInt(20, 101);
             int cost = speed + handling + reliability + fuelEconomy;
-            availableCars.add(new Car(speed, handling, reliability, fuelEconomy, cost));
+            List<Upgrade> upgrades = new ArrayList<>();
+            availableCars.add(new Car(speed, handling, reliability, fuelEconomy, cost, upgrades));
         }
         return availableCars;
     }

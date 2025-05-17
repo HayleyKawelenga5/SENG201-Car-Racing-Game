@@ -51,6 +51,7 @@ public class GarageScreenController extends ScreenController {
     @FXML private Label carHandlingLabel;
     @FXML private Label carReliabilityLabel;
     @FXML private Label carFuelEconomyLabel;
+    @FXML private Label carUpgradesLabel;
 
     @FXML private Label currentCarLabel;
 
@@ -146,7 +147,7 @@ public class GarageScreenController extends ScreenController {
         if (index >= 0 && index < playerCars.size()) {
             selectCarButton.setStyle("");
             selectedCar = playerCars.get(index);
-            ScreenUpdater.updateCarStats(selectedCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+            ScreenUpdater.updateCarStats(selectedCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
         }
     }
 
@@ -193,7 +194,7 @@ public class GarageScreenController extends ScreenController {
         } else {
             chosenCar = selectedCar;
             selectCarButton.setStyle("-fx-background-color: LightGreen");
-            ScreenUpdater.updateCarStats(chosenCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+            ScreenUpdater.updateCarStats(chosenCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
         }
     }
 
@@ -218,7 +219,7 @@ public class GarageScreenController extends ScreenController {
         if (garageService.installUpgrade(chosenCar, chosenUpgrade, playerUpgrades)) {
             List<Button> playerUpgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);
             ScreenUpdater.updateUpgradeButtons(playerUpgradeButtons, playerUpgrades);
-            ScreenUpdater.updateCarStats(chosenCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+            ScreenUpdater.updateCarStats(chosenCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
             selectUpgradeButton.setStyle("");
             selectCarButton.setStyle("");
             chosenUpgrade = null;

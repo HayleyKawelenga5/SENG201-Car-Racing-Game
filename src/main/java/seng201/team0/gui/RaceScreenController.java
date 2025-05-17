@@ -50,6 +50,7 @@ public class RaceScreenController extends ScreenController {
     @FXML private Label carHandlingLabel;
     @FXML private Label carReliabilityLabel;
     @FXML private Label carFuelEconomyLabel;
+    @FXML private Label carUpgradesLabel;
 
     @FXML private ProgressBar distanceProgressBar;
     @FXML private ProgressBar fuelProgressBar;
@@ -129,7 +130,7 @@ public class RaceScreenController extends ScreenController {
 
         currentCar = getGameManager().getCurrentCar();
         carNameLabel.setText("Current car: " + currentCar.getCarName());
-        ScreenUpdater.updateCarStats(currentCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+        ScreenUpdater.updateCarStats(currentCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
         currentCarCopy = raceService.copyCar(currentCar);
         ScreenUpdater.updateRouteButtons(availableRouteButtons, availableRoutes);
     }
@@ -158,7 +159,7 @@ public class RaceScreenController extends ScreenController {
     private void onRouteButtonClicked(int index) {
         if (index >= 0 && index < availableRoutes.size()) {
             Car previewCurrentCar = raceService.previewMultiplier(currentCarCopy, availableRoutes.get(index).getRouteDifficultyMultiplier());
-            ScreenUpdater.updateCarStats(previewCurrentCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+            ScreenUpdater.updateCarStats(previewCurrentCar, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
             selectRouteButton.setStyle("");
             selectedRoute = availableRoutes.get(index);
             ScreenUpdater.updateRouteStats(selectedRoute, routeDescriptionLabel, routeDistanceLabel, routeFuelStopsLabel, routeDifficultyLabel);

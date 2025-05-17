@@ -1,5 +1,8 @@
 package seng201.team0.models;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Represents a car in the game with the attributes speed, handling,
  * reliability, fuel economy, cost, name and fuel amount.
@@ -11,6 +14,7 @@ public class Car {
     private int reliability;
     private int fuelEconomy;
     private int cost;
+    List<Upgrade> upgrades;
     private String name;
     private int fuelAmount;
 
@@ -22,13 +26,15 @@ public class Car {
      * @param reliability The reliability measure of the car (20-100).
      * @param fuelEconomy The fuel economy of the car (20-100).
      * @param cost        The cost of the car.
+     * @param upgrades    A list of the tuning parts installed on the car (if any)
      */
-    public Car(int speed, int handling, int reliability, int fuelEconomy, int cost) {
+    public Car(int speed, int handling, int reliability, int fuelEconomy, int cost, List<Upgrade> upgrades) {
         this.speed = speed;
         this.handling = handling;
         this.reliability = reliability;
         this.fuelEconomy = fuelEconomy;
         this.cost = cost;
+        this.upgrades = upgrades;
         this.fuelAmount = fuelEconomy;
     }
 
@@ -66,6 +72,24 @@ public class Car {
      */
     public int getCarCost() { return cost; }
 
+    /**
+     * Gets the upgrades installed on the car.
+     * @return the list of upgrades installed on the car
+     */
+    public List<Upgrade> getUpgrades() { return upgrades; }
+
+    /**
+     * Gets a comma-separated string describing the upgrades installed on the car.
+     * @return a comma-separated list of upgrade names, or "None" if no upgrades installed
+     */
+    public String getUpgradeDescription(){
+        if (upgrades == null || upgrades.isEmpty()) {
+            return "None";
+        }
+        return upgrades.stream()
+                .map(Upgrade::getUpgradeName)
+                .collect(Collectors.joining(", "));
+    }
     /**
      * Gets the name of the car.
      * If the name is not set or is blank, returns "Unnamed Car".
@@ -111,6 +135,12 @@ public class Car {
     public void setCarCost(int cost) { this.cost = cost; }
 
     /**
+     * Sets the car's upgrades
+     * @param upgrade the list of upgrade installed on the car
+     */
+    public void addToCarUpgrades(Upgrade upgrade) { this.upgrades.add(upgrade);}
+
+    /**
      * Sets the name of the user's car.
      * @param name name to be set
      */
@@ -146,6 +176,7 @@ public class Car {
                 handling == car.handling &&
                 reliability == car.reliability &&
                 fuelEconomy == car.fuelEconomy &&
-                cost == car.cost;
+                cost == car.cost &&
+                upgrades == car.upgrades;
     }
 }

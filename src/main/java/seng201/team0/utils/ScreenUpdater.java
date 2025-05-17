@@ -11,17 +11,19 @@ import java.util.List;
 
 public class ScreenUpdater {
 
-    public static void updateCarStats(Car car, Label carSpeedLabel, Label carHandlingLabel, Label carReliabilityLabel, Label carFuelEconomyLabel) {
+    public static void updateCarStats(Car car, Label carSpeedLabel, Label carHandlingLabel, Label carReliabilityLabel, Label carFuelEconomyLabel, Label carUpgradesLabel) {
         if (car == null) {
             carSpeedLabel.setText("Speed: ");
             carHandlingLabel.setText("Handling: ");
             carReliabilityLabel.setText("Reliability: ");
             carFuelEconomyLabel.setText("Fuel Economy: ");
+            carUpgradesLabel.setText("Upgrades: ");
         } else {
             carSpeedLabel.setText("Speed: " + car.getCarSpeed());
             carHandlingLabel.setText("Handling: " + car.getCarHandling());
             carReliabilityLabel.setText("Reliability: " + car.getCarReliability());
             carFuelEconomyLabel.setText("Fuel Economy: " + car.getCarFuelEconomy());
+            carUpgradesLabel.setText("Upgrades: " + car.getUpgradeDescription());
         }
     }
 

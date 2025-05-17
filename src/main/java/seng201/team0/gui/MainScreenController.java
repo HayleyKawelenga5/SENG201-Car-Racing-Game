@@ -39,6 +39,7 @@ public class MainScreenController extends ScreenController {
     @FXML private Label currentCarHandlingLabel;
     @FXML private Label currentCarReliabilityLabel;
     @FXML private Label currentCarFuelEconomyLabel;
+    @FXML private Label currentCarUpgradesLabel;
 
     @FXML private Label seasonLengthLabel;
     @FXML private Label racesRemainingLabel;
@@ -131,7 +132,7 @@ public class MainScreenController extends ScreenController {
         int racesRemaining = mainScreen.getRacesRemaining();
         int seasonLength = mainScreen.getSeasonLength();
         currentCarNameLabel.setText(currentCar.getCarName());
-        ScreenUpdater.updateCarStats(currentCar, currentCarSpeedLabel, currentCarHandlingLabel, currentCarReliabilityLabel, currentCarFuelEconomyLabel);
+        ScreenUpdater.updateCarStats(currentCar, currentCarSpeedLabel, currentCarHandlingLabel, currentCarReliabilityLabel, currentCarFuelEconomyLabel, currentCarUpgradesLabel);
         ScreenUpdater.updateGameInfo(money, racesRemaining, seasonLength, moneyLabel, racesRemainingLabel, seasonLengthLabel);
     }
 

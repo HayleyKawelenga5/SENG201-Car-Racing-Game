@@ -14,8 +14,8 @@
       <RowConstraints maxHeight="125.0" minHeight="0.0" prefHeight="51.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="96.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="302.0" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="112.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="302.0" minHeight="10.0" prefHeight="88.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
       <Label text="My upgrades:">
@@ -150,5 +150,10 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
+      <Label fx:id="carUpgradesLabel" text="Upgrades:" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="10.0" top="85.0" />
+         </GridPane.margin>
+      </Label>
    </children>
 </GridPane>

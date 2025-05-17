@@ -47,6 +47,7 @@ public class StartScreenController extends ScreenController {
     @FXML private Label carReliabilityLabel;
     @FXML private Label carFuelEconomyLabel;
     @FXML private Label carCostLabel;
+    @FXML private Label carUpgradesLabel;
 
     private final GameInitializer gameInitializer = new GameInitializer();
 
@@ -141,7 +142,7 @@ public class StartScreenController extends ScreenController {
      * @param car the car to display stats for, or null to clear display
      */
     private void updateCarStats(Car car) {
-        ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+        ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
         if (car == null) {
             carCostLabel.setText("Cost: ");
         } else {

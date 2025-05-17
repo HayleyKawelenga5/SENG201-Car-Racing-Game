@@ -3,6 +3,7 @@ package seng201.team0.services;
 import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
+import seng201.team0.models.Upgrade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,8 @@ public class RaceService {
         int previewReliability = (int) (car.getCarReliability() / multiplier);
         int previewFuelEconomy = (int) (car.getCarFuelEconomy() / multiplier);
         int previewCost = car.getCarCost();
-        Car previewCar = new Car(previewSpeed, previewHandling, previewReliability, previewFuelEconomy, previewCost);
+        List<Upgrade> upgrades = car.getUpgrades();
+        Car previewCar = new Car(previewSpeed, previewHandling, previewReliability, previewFuelEconomy, previewCost, upgrades);
         return previewCar;
     }
 
@@ -71,7 +73,8 @@ public class RaceService {
         int copyReliability = car.getCarReliability();
         int copyFuelEconomy = car.getCarFuelEconomy();
         int copyCost = car.getCarCost();
-        Car copyCar = new Car(copySpeed, copyHandling, copyReliability, copyFuelEconomy, copyCost);
+        List<Upgrade> copyUpgrades = car.getUpgrades();
+        Car copyCar = new Car(copySpeed, copyHandling, copyReliability, copyFuelEconomy, copyCost, copyUpgrades);
         copyCar.setCarName(car.getCarName());
         return copyCar;
     }

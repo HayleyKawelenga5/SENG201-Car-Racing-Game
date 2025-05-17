@@ -60,6 +60,7 @@ public class ShopScreenController extends ScreenController {
     @FXML private Label carReliabilityLabel;
     @FXML private Label carFuelEconomyLabel;
     @FXML private Label carCostLabel;
+    @FXML private Label carUpgradesLabel;
 
     @FXML private Button backButton;
 
@@ -344,7 +345,7 @@ public class ShopScreenController extends ScreenController {
      * @param car the car whose stats should be displayed, or null to clear the display
      */
     private void updateCarStats(Car car) {
-        ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+        ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
         if (car == null){
             carCostLabel.setText("Cost: ");
         } else if (playerCars.contains(car)) {
