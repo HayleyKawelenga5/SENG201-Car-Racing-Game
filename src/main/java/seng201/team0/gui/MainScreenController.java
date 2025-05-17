@@ -92,9 +92,9 @@ public class MainScreenController extends ScreenController {
      * the player's current currently selected car.
      */
     private void setupGameData(){
-        GameManager mainScreen = getGameManager();
-        mainScreen.initializePlayerCar();
-        String difficulty = mainScreen.getDifficulty();
+        GameManager gameManager = getGameManager();
+        gameManager.initializePlayerCar();
+        String difficulty = gameManager.getDifficulty();
         RaceService raceService = new RaceService();
         availableRaces = raceService.generateRaces(3, difficulty);
     }

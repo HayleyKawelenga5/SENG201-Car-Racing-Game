@@ -2,17 +2,24 @@ package seng201.team0.gui;
 
 import javafx.scene.control.*;
 import seng201.team0.GameManager;
-import seng201.team0.services.StartScreen;
+import seng201.team0.services.GameInitializer;
 
 import seng201.team0.models.Car;
 import seng201.team0.models.Upgrade;
 
 import javafx.fxml.FXML;
+import seng201.team0.utils.ScreenUpdater;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller class for the Start Screen GUI.
+ *<p></p>
+ * This controller handles user interaction for setting up a new game, including selecting player name, difficulty, cars
+ * and season length.
+ */
 public class StartScreenController extends ScreenController {
 
     @FXML private TextField playerNameTextField;
@@ -41,106 +48,112 @@ public class StartScreenController extends ScreenController {
     @FXML private Label carFuelEconomyLabel;
     @FXML private Label carCostLabel;
 
-
-
-
-    private StartScreen startScreen = new StartScreen();
+    private final GameInitializer gameInitializer = new GameInitializer();
 
     private List<Car> availableCars;
     private List<Car> playerCars = new ArrayList<>();
-    private List<Upgrade> playerUpgrades = new ArrayList<>();
+    private final List<Upgrade> playerUpgrades = new ArrayList<>();
+    private List<Button> playerCarButtons;
 
     private Car selectedCar;
-    private Car currentCar;
-
     private int selectedCarIndex = -1;
 
-
-
-
-    private GameManager gameManager;
-
+    /**
+     * Constructs a StartScreenController with the given {@link GameManager}
+     * @param manager The GameManager managing game state.
+     */
     public StartScreenController(GameManager manager) {
         super(manager);
     }
 
+    /**
+     * Returns the path to the FXML file for this screen.
+     * @return Path to FXML file.
+     */
     @Override
     protected String getFxmlFile() {return "/fxml/start_screen.fxml";}
 
+    /**
+     * Returns the window title for this screen.
+     * @return Title of the start screen.
+     */
     @Override
     protected String getTitle() {return "Start Screen";}
 
-
+    /**
+     * Initializes the Start screen controller.
+     * Sets up button actions and listeners.
+     * This method is immediately called by the JavaFX framework after FXML loading.
+     */
     @FXML
-    public void initialize() {
+    private void initialize() {
         difficultyChoiceBox.getItems().clear();
         difficultyChoiceBox.getItems().addAll("EASY", "HARD");
-
         difficultyChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
-                    startScreen.selectDifficulty(newValue);
+                    gameInitializer.selectDifficulty(newValue);
                     playerCars.clear();
-                    startScreen.setPlayerCars(playerCars);
+                    gameInitializer.setPlayerCars(playerCars);
                     updatePlayerCarButtons();
-                    moneyLabel.setText("Money: $" + startScreen.getMoney());
+                    moneyLabel.setText("Money: $" + gameInitializer.getMoney());
                 } catch (IllegalArgumentException e) {
                     showAlert("Difficulty Error", e.getMessage());
                 }
             }
         });
 
-        seasonLengthSlider.setMin(5);
-        seasonLengthSlider.setMax(15);
+        seasonLengthSlider.setMin(gameInitializer.getMinSeasonLength());
+        seasonLengthSlider.setMax(gameInitializer.getMaxSeasonLength());
         seasonLengthSlider.setMajorTickUnit(1);
         seasonLengthSlider.setSnapToTicks(true);
         seasonLengthSlider.setShowTickLabels(true);
         seasonLengthSlider.setShowTickMarks(true);
-        seasonLengthSlider.setValue(5);
-        seasonLengthSlider.valueProperty().addListener((observable, oldValue, newValue) -> {seasonLengthSlider.setValue(newValue.intValue());});
+        seasonLengthSlider.setValue(gameInitializer.getMinSeasonLength());
+        seasonLengthSlider.valueProperty().addListener((observable, oldValue, newValue) -> seasonLengthSlider.setValue(newValue.intValue()));
 
         List<Button> availableCarButtons = List.of(car1Button, car2Button, car3Button, car4Button, car5Button);
-        List<Button> playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button);
+        playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button);
 
         selectCarButton.setOnAction(event -> onSelectCarButtonClicked());
         deleteCarButton.setOnAction(event -> onDeleteCarButtonClicked());
         startGameButton.setOnAction(event -> onStartGameButtonClicked());
 
-        availableCars = startScreen.getAvailableCars();
+        availableCars = gameInitializer.getAvailableCars();
 
         for (int i = 0; i < availableCarButtons.size(); i++) {
             int index = i;
             availableCarButtons.get(i).setOnAction(event -> onAvailableCarButtonClicked(index));
         }
-
         for (int i = 0; i < playerCarButtons.size(); i++) {
             int index = i;
             playerCarButtons.get(i).setOnAction(event -> onPlayerCarButtonClicked(index));
         }
 
         updatePlayerCarButtons();
-        moneyLabel.setText("Money: $" + startScreen.getMoney());
+        moneyLabel.setText("Money: $" + gameInitializer.getMoney());
 
     }
 
-    private void updateStats(Car car) {
+    /**
+     * Updates the car stats section of the screen with the selected car's details.
+     *
+     * @param car the car to display stats for, or null to clear display
+     */
+    private void updateCarStats(Car car) {
+        ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
         if (car == null) {
-            carSpeedLabel.setText("Speed: ");
-            carHandlingLabel.setText("Handling: ");
-            carReliabilityLabel.setText("Reliability: ");
-            carFuelEconomyLabel.setText("Fuel Economy: ");
             carCostLabel.setText("Cost: ");
         } else {
-            carSpeedLabel.setText("Speed: " + car.getCarSpeed());
-            carHandlingLabel.setText("Handling: " + car.getCarHandling());
-            carReliabilityLabel.setText("Reliability: " + car.getCarReliability());
-            carFuelEconomyLabel.setText("Fuel Economy: " + car.getCarFuelEconomy());
             carCostLabel.setText("Cost: $" + car.getCarCost());
         }
     }
 
+    /**
+     * Updates the player car buttons to reflect the current cars selected by the player.
+     */
     private void updatePlayerCarButtons() {
-        List<Button> playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button);
+        playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button);
         for (int i = 0; i < playerCarButtons.size(); i++) {
             if (i < playerCars.size()) {
                 Car car = playerCars.get(i);
@@ -151,24 +164,41 @@ public class StartScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Handles the event when an available car button is clicked. Updates the stats on the screen for that car.
+     *
+     * @param index index of the selected available car
+     */
     @FXML
     private void onAvailableCarButtonClicked(int index) {
         if (index >= 0 && index < availableCars.size()) {
             selectedCar = availableCars.get(index);
             selectedCarIndex = index;
-            updateStats(selectedCar);
+            updateCarStats(selectedCar);
         }
     }
 
+    /**
+     * Handles the event when a player car button is clicked. Updates the stats on the screen for that car.
+     *
+     * @param index index of the player's selected car
+     */
     @FXML
     private void onPlayerCarButtonClicked(int index) {
         if (index >= 0 && index < playerCars.size()) {
             selectedCar = playerCars.get(index);
             selectedCarIndex = index;
-            updateStats(selectedCar);
+            updateCarStats(selectedCar);
         }
     }
 
+    /**
+     * Handles the event when the "Select Car" button is clicked.
+     * Adds the selected car to the player's collection if valid i.e. the player has selected a difficulty (so the player
+     * has been assigned a certain amount of starting money), the player has not already selected the chosen car, the
+     * player has enough money and the player does not have the maximum number of cars. The player is given the option to
+     * (optionally) name their car.
+     */
     @FXML
     private void onSelectCarButtonClicked() {
         boolean difficultySelected = false;
@@ -189,11 +219,11 @@ public class StartScreenController extends ScreenController {
             return;
         }
 
-        if (playerCars.size() >= 3){
+        if (playerCars.size() >= gameInitializer.getMaxCars()){
             showAlert("Selection limit reached", "You can only select up to a maximum of three cars.");
             return;
         }
-        if (startScreen.getMoney() < selectedCar.getCarCost()) {
+        if (gameInitializer.getMoney() < selectedCar.getCarCost()) {
             showAlert("Not enough money", "You don't have enough money to buy this car.");
             return;
         }
@@ -210,18 +240,23 @@ public class StartScreenController extends ScreenController {
                 } else {
                     selectedCar.setCarName("Car " + (selectedCarIndex + 1));
                 }
-            }, () -> {
-                selectedCar.setCarName("Car " + (selectedCarIndex + 1));
-            });
+            }, () -> selectedCar.setCarName("Car " + (selectedCarIndex + 1)));
 
-            if (selectedCar != null && startScreen.addCar(selectedCar)) {
-                playerCars = startScreen.getPlayerCars();
+            if (gameInitializer.addCar(selectedCar)) {
+                playerCars = gameInitializer.getPlayerCars();
                 updatePlayerCarButtons();
-                moneyLabel.setText("Money: $" + startScreen.getMoney());
+                moneyLabel.setText("Money: $" + gameInitializer.getMoney());
+                selectedCar = null;
+                updateCarStats(null);
             }
         }
     }
 
+
+    /**
+     * Handles the event when the "Delete Car" button is clicked.
+     * Removes the selected car from the player's collection if valid.
+     */
     @FXML
     private void onDeleteCarButtonClicked() {
         if (selectedCar == null) {
@@ -229,40 +264,43 @@ public class StartScreenController extends ScreenController {
             return;
         }
 
-        if (!playerCars.contains(selectedCar)) {
+        boolean canDeleteCar = gameInitializer.deleteCar(selectedCar);
+        if (!canDeleteCar) {
             showAlert("Invalid selection", "You haven't selected this car.");
             return;
         }
 
-        if (selectedCar != null) {
-            startScreen.deleteCar(selectedCar);
-            playerCars.remove(selectedCar);
-            updatePlayerCarButtons();
-            updateStats(null);
-            moneyLabel.setText("Money: $" + startScreen.getMoney());
-        }
+        playerCars = gameInitializer.getPlayerCars();
+        updatePlayerCarButtons();
+        updateCarStats(null);
+        moneyLabel.setText("Money: $" + gameInitializer.getMoney());
+        selectedCar = null;
     }
 
+    /**
+     * Handles the event when the "Start Game" button is clicked.
+     * Validates all inputs and transitions to the main game screen.
+     */
     @FXML
     private void onStartGameButtonClicked() {
         String playerName = playerNameTextField.getText();
         int seasonLength = (int) seasonLengthSlider.getValue();
         String difficulty = difficultyChoiceBox.getValue();
-        int money = startScreen.getMoney();
+        int money = gameInitializer.getMoney();
 
-        if (startScreen.getPlayerCars().size() <= 0) {
-            showAlert("Not cars selected", "Please select at least one car.");
+        if (gameInitializer.getPlayerCars().isEmpty()) {
+            showAlert("No cars selected", "Please select at least one car.");
             return;
         }
 
         try {
-            startScreen.selectName(playerName);
-            startScreen.selectSeasonLength(seasonLength);
-            startScreen.selectDifficulty(difficulty);
-            currentCar = playerCars.get(0);
+            gameInitializer.selectName(playerName);
+            gameInitializer.selectSeasonLength(seasonLength);
+            gameInitializer.selectDifficulty(difficulty);
+            Car currentCar = playerCars.getFirst();
 
             getGameManager().setRacesRemaining(seasonLength);
-            startScreen.setPlayerCars(playerCars);
+            gameInitializer.setPlayerCars(playerCars);
             getGameManager().toMainScreen(playerName, seasonLength, difficulty, playerCars, money, currentCar, playerUpgrades);
         } catch (InvalidNameException e) {
             showAlert("Name Error", e.getMessage());
@@ -274,6 +312,12 @@ public class StartScreenController extends ScreenController {
 
     }
 
+    /**
+     * Displays an alert dialog with the specified title and message.
+     *
+     * @param title   the title of the alert
+     * @param message the message to display
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -281,5 +325,4 @@ public class StartScreenController extends ScreenController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 }

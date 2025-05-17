@@ -94,10 +94,10 @@ public class GarageScreenController extends ScreenController {
      */
     @FXML
     private void initialize() {
-        GameManager garageScreen = getGameManager();
-        playerCars = garageScreen.getPlayerCars();
-        playerUpgrades = garageScreen.getPlayerUpgrades();
-        currentCar = garageScreen.getCurrentCar();
+        GameManager gameManager = getGameManager();
+        playerCars = gameManager.getPlayerCars();
+        playerUpgrades = gameManager.getPlayerUpgrades();
+        currentCar = gameManager.getCurrentCar();
 
         List<Button> playerCarButtons = List.of(car1Button, car2Button, car3Button, car4Button, car5Button);
         List<Button> playerUpgradeButtons = List.of(upgrade1Button, upgrade2Button, upgrade3Button);

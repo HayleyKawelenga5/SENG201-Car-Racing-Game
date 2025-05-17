@@ -182,7 +182,7 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </Button>
-      <Label text="Top speed (km/h)" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
+      <Label text="Average speed (km/h)" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets right="10.0" top="13.0" />
          </GridPane.margin>
@@ -190,7 +190,7 @@
             <Font size="9.0" />
          </font>
       </Label>
-      <Label text="Maximum distance (km) of a full tank" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
+      <Label text="Maximum distance (km) with a full tank" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP">
          <font>
             <Font size="9.0" />
          </font>

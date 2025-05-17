@@ -13,6 +13,9 @@ public class ShopService {
     private List<Car> playerCars = new ArrayList<>();
     private List<Upgrade> playerUpgrades = new ArrayList<>();
     private int money;
+    private static final int MAX_CARS = 5;
+    private static final int MAX_UPGRADES = 3;
+    private static final int MIN_CARS = 1;
 
     private CarService carService;
 
@@ -78,6 +81,18 @@ public class ShopService {
 
     public int getMoney() {
         return money;
+    }
+
+    public int getMaxMoney() {
+        return MAX_CARS;
+    }
+
+    public int getMinCars(){
+        return MIN_CARS;
+    }
+
+    public int getMaxUpgrades() {
+        return MAX_UPGRADES;
     }
 
 }

@@ -1,7 +1,5 @@
 package seng201.team0.models;
 
-import java.util.UUID;
-
 /**
  * Represents a car in the game with the attributes speed, handling,
  * reliability, fuel economy, cost, name and fuel amount.
@@ -122,7 +120,7 @@ public class Car {
 
     /**
      * Sets the fuel amount for the car.
-     * @param fuel fuel amount to be set
+     * @param fuelAmount fuel amount to be set
      */
     public void setCarFuelAmount(int fuelAmount){
         this.fuelAmount = fuelAmount;

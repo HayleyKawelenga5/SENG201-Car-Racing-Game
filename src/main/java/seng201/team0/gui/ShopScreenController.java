@@ -10,9 +10,18 @@ import seng201.team0.services.CarService;
 import seng201.team0.services.ShopService;
 import seng201.team0.models.Upgrade;
 import seng201.team0.services.UpgradeService;
+import seng201.team0.utils.ScreenUpdater;
 
 import java.util.List;
 
+/**
+ * Controller class for the Shop Screen GUI.
+ *<p></p>
+ * This controller handles user interactions for buying and selling cars and upgrades, viewing the amount of money the
+ * user has and viewing cars and upgrades/tuning parts available for purchase. It updates the GUI components based on the
+ * player's selections and game state, and communicated with the {@link ShopService} and {@link GameManager} to manage
+ * the logic for transactions and display updates
+ */
 public class ShopScreenController extends ScreenController {
 
     @FXML private Label moneyLabel;
@@ -70,21 +79,44 @@ public class ShopScreenController extends ScreenController {
     private Car selectedCar;
     private Upgrade selectedUpgrade;
 
+    private List<Button> playerCarButtons;
+    private List<Button> playerUpgradeButtons;
+    private List<Button> shopCarButtons;
+    private List<Button> shopUpgradeButtons;
+
+    /**
+     * Constructs a ShopScreenController with the given {@link GameManager}
+     * @param manager The GameManager managing game state.
+     */
     public ShopScreenController(GameManager manager) {
         super(manager);
     }
 
+    /**
+     * Returns the path to the FXML file for this screen.
+     * @return Path to FXML file.
+     */
     @Override
     protected String getFxmlFile() {return "/fxml/shop.fxml";}
 
+    /**
+     * Returns the window title for this screen.
+     * @return Title of the shop screen.
+     */
     @Override
     protected String getTitle() {return "Shop Screen";}
 
-    public void initialize() {
-        GameManager shopScreen = getGameManager();
+    /**
+     * Initializes the Shop screen controller.
+     * Sets up button listeners, loads available cars and upgrades and update UI elements.
+     * This method is immediately called by the JavaFX framework after FXML loading.
+     */
+    @FXML
+    private void initialize() {
+        GameManager gameManager = getGameManager();
 
-        playerCars = shopScreen.getPlayerCars();
-        playerUpgrades = shopScreen.getPlayerUpgrades();
+        playerCars = gameManager.getPlayerCars();
+        playerUpgrades = gameManager.getPlayerUpgrades();
 
         buyCarButton.setOnAction(event -> onBuyCarButtonClicked());
         sellCarButton.setOnAction(event -> onSellCarButtonClicked());
@@ -92,10 +124,10 @@ public class ShopScreenController extends ScreenController {
         sellUpgradeButton.setOnAction(event -> onSellUpgradeButtonClicked());
         backButton.setOnAction(event -> onBackButtonClicked());
 
-        List<Button> playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button, playerCar4Button, playerCar5Button);
-        List<Button> shopCarButtons = List.of(shopCar1Button, shopCar2Button, shopCar3Button);
-        List<Button> playerUpgradeButtons = List.of(playerUpgrade1Button, playerUpgrade2Button, playerUpgrade3Button);
-        List<Button> shopUpgradeButtons = List.of(shopUpgrade1Button, shopUpgrade2Button, shopUpgrade3Button);
+        playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button, playerCar4Button, playerCar5Button);
+        shopCarButtons = List.of(shopCar1Button, shopCar2Button, shopCar3Button);
+        playerUpgradeButtons = List.of(playerUpgrade1Button, playerUpgrade2Button, playerUpgrade3Button);
+        shopUpgradeButtons = List.of(shopUpgrade1Button, shopUpgrade2Button, shopUpgrade3Button);
 
         for (int i = 0; i < playerCarButtons.size(); i++) {
             int index = i;
@@ -132,34 +164,63 @@ public class ShopScreenController extends ScreenController {
         updateShopUpgradeButtons();
     }
 
+    /**
+     * Called when a shop car button is clicked i.e a car available for purchase
+     * Selects the car at the given index and updates the car stats display.
+     *
+     * @param index the index of the selected shop car
+     */
     @FXML
-    public void onShopCarButtonClicked(int index) {
+    private void onShopCarButtonClicked(int index) {
         shopSelectedCarIndex = index;
         selectedCar = availableCars.get(index);
         updateCarStats(selectedCar);
     }
 
+    /**
+     * Called when a player car button is clicked i.e a car owned by the player.
+     * Selects the player's car at the given index and updates the car stats display.
+     *
+     * @param index the index of the selected player car
+     */
     @FXML
-    public void onPlayerCarButtonClicked(int index) {
+    private void onPlayerCarButtonClicked(int index) {
         selectedCar = playerCars.get(index);
         updateCarStats(selectedCar);
     }
 
+    /**
+     * Called when a shop upgrade button is clicked i.e. an upgrade available for purchase
+     * Selects the upgrade at the given index and updates the upgrade stats display.
+     *
+     * @param index the index of the selected shop upgrade
+     */
     @FXML
-    public void onShopUpgradeButtonClicked(int index) {
+    private void onShopUpgradeButtonClicked(int index) {
         shopSelectedUpgradeIndex = index;
         selectedUpgrade = availableUpgrades.get(index);
         updateUpgradeStats(selectedUpgrade);
     }
 
+    /**
+     * Called when a player upgrade button is clicked i.e. an upgrade owned by the player.
+     * Selects the player's upgrade at the given index and updates the upgrade stats display.
+     *
+     * @param index the index of the selected player upgrade
+     */
     @FXML
-    public void onPlayerUpgradeButtonClicked(int index) {
+    private void onPlayerUpgradeButtonClicked(int index) {
         selectedUpgrade = playerUpgrades.get(index);
         updateUpgradeStats(selectedUpgrade);
     }
 
+    /**
+     * Handles the event when the buy car button is clicked.
+     * Validates selection, cost, and capacity before purchasing a car. Ensures the user does not exceed the maximum
+     * number of cars and the user has enough money before buying a car.
+     */
     @FXML
-    public void onBuyCarButtonClicked() {
+    private void onBuyCarButtonClicked() {
         if (selectedCar == null) {
             showAlert("Error", "Please select a car to buy.");
             return;
@@ -168,7 +229,7 @@ public class ShopScreenController extends ScreenController {
             showAlert("Error", "Insufficient funds to buy this car.");
             return;
         }
-        if (playerCars.size() >= 5) {
+        if (playerCars.size() >= shopService.getMaxMoney()) {
             showAlert("Error", "Too many cars, please sell a car before buying this car.");
             return;
         }
@@ -196,13 +257,17 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Handles the event when the sell car button is clicked.
+     * Validates selection and ensures the player keeps at least one car before selling.
+     */
     @FXML
-    public void onSellCarButtonClicked() {
+    private void onSellCarButtonClicked() {
         if (selectedCar == null) {
             showAlert("Error", "Please select a car to sell.");
             return;
         }
-        if (playerCars.size() <= 1) {
+        if (playerCars.size() <= shopService.getMinCars()) {
             showAlert("Error", "You must have at least one car.");
             return;
         }
@@ -217,8 +282,13 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Handles the event when the buy upgrade button is clicked.
+     * Validates selection, cost, and capacity before purchasing an upgrade. Ensures the user has enough money to buy
+     * the selected upgrade.
+     */
     @FXML
-    public void onBuyUpgradeButtonClicked() {
+    private void onBuyUpgradeButtonClicked() {
         if (selectedUpgrade == null) {
             showAlert("Error", "Please select an upgrade to buy.");
             return;
@@ -227,7 +297,7 @@ public class ShopScreenController extends ScreenController {
             showAlert("Error", "Insufficient funds to buy this upgrade.");
             return;
         }
-        if (playerUpgrades.size() >= 3) {
+        if (playerUpgrades.size() >= shopService.getMaxUpgrades()) {
             showAlert("Error", "Too many upgrades, please sell an upgrade before buying this upgrade.");
             return;
         }
@@ -246,8 +316,12 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Handles the event when the sell upgrade button is clicked.
+     * Validates selection before removing the upgrade from the player's collection.
+     */
     @FXML
-    public void onSellUpgradeButtonClicked() {
+    private void onSellUpgradeButtonClicked() {
         if (selectedUpgrade == null) {
             showAlert("Error", "Please select an upgrade to sell.");
             return;
@@ -263,48 +337,46 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
-    public void updateCarStats(Car car) {
-        if (car == null) {
-            carSpeedLabel.setText("Speed: ");
-            carHandlingLabel.setText("Handling: ");
-            carReliabilityLabel.setText("Reliability: ");
-            carFuelEconomyLabel.setText("Fuel Economy: ");
+    /**
+     * Updates the car stats labels with the stats of the selected car.
+     * Also updates the cost label depending on whether the car is owned by the player or not.
+     *
+     * @param car the car whose stats should be displayed, or null to clear the display
+     */
+    private void updateCarStats(Car car) {
+        ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel);
+        if (car == null){
             carCostLabel.setText("Cost: ");
-        } else {
-            carSpeedLabel.setText("Speed: " + car.getCarSpeed());
-            carHandlingLabel.setText("Handling: " + car.getCarHandling());
-            carReliabilityLabel.setText("Reliability: " + car.getCarReliability());
-            carFuelEconomyLabel.setText("Fuel Economy: " + car.getCarFuelEconomy());
-            if (playerCars.contains(car)) {
-                carCostLabel.setText("Cost: $" + car.getCarCost() / 2);
-            } else {
-                carCostLabel.setText("Cost: $" + car.getCarCost());
-            }
+        } else if (playerCars.contains(car)) {
+            carCostLabel.setText("Cost: $" + car.getCarCost() / 2);
+        } else{
+            carCostLabel.setText("Cost: $" + car.getCarCost());
         }
     }
 
+    /**
+     * Updates the upgrade stats panel with the stats of the selected upgrade.
+     * Also updates the cost label depending on whether the upgrade is owned by the player or not.
+     *
+     * @param upgrade the upgrade whose stats should be displayed, or null to clear the display
+     */
     private void updateUpgradeStats(Upgrade upgrade) {
-        if (upgrade == null) {
-            upgradeSpeedLabel.setText("Speed: ");
-            upgradeHandlingLabel.setText("Handling: ");
-            upgradeReliabilityLabel.setText("Reliability: ");
-            upgradeFuelEconomyLabel.setText("Fuel Economy: ");
+        ScreenUpdater.updateUpgradeStats(upgrade, upgradeSpeedLabel, upgradeHandlingLabel, upgradeReliabilityLabel, upgradeFuelEconomyLabel);
+        if (upgrade == null){
             upgradeCostLabel.setText("Cost: ");
+        } else if (playerUpgrades.contains(upgrade)) {
+            upgradeCostLabel.setText("Cost: $" + upgrade.getUpgradeCost() / 2);
         } else {
-            upgradeSpeedLabel.setText("Speed: " + upgrade.getUpgradeSpeed());
-            upgradeHandlingLabel.setText("Handling: " + upgrade.getUpgradeHandling());
-            upgradeReliabilityLabel.setText("Reliability: " + upgrade.getUpgradeReliability());
-            upgradeFuelEconomyLabel.setText("Fuel Economy: " + upgrade.getUpgradeFuelEconomy());
-            if (playerUpgrades.contains(upgrade)) {
-                upgradeCostLabel.setText("Cost: $" + upgrade.getUpgradeCost() / 2);
-            } else {
-                upgradeCostLabel.setText("Cost: $" + upgrade.getUpgradeCost());
-            }
+            upgradeCostLabel.setText("Cost: $" + upgrade.getUpgradeCost());
         }
     }
 
+    /**
+     * Updates the player's car button labels based on current owned cars.
+     * Clears buttons that are not in use.
+     */
     private void updatePlayerCarButtons() {
-        List<Button> playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button, playerCar4Button, playerCar5Button);
+        playerCarButtons = List.of(playerCar1Button, playerCar2Button, playerCar3Button, playerCar4Button, playerCar5Button);
         for (int i = 0; i < playerCarButtons.size(); i++) {
             if (i < playerCars.size()) {
                 playerCarButtons.get(i).setText(playerCars.get(i).getCarName());
@@ -314,8 +386,12 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Updates the shop car button labels based on currently available cars.
+     * Clears buttons that are not in use.
+     */
     private void updateShopCarButtons() {
-        List<Button> shopCarButtons = List.of(shopCar1Button, shopCar2Button, shopCar3Button);
+        shopCarButtons = List.of(shopCar1Button, shopCar2Button, shopCar3Button);
         for (int i = 0; i < shopCarButtons.size(); i++) {
             if (i < availableCars.size() && availableCars.get(i) != null) {
                 shopCarButtons.get(i).setText("Car " + (i + 1));
@@ -325,8 +401,12 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Updates the player's upgrade button labels based on current owned upgrades.
+     * Clears buttons that are not in use.
+     */
     private void updatePlayerUpgradeButtons() {
-        List<Button> playerUpgradeButtons = List.of(playerUpgrade1Button, playerUpgrade2Button, playerUpgrade3Button);
+        playerUpgradeButtons = List.of(playerUpgrade1Button, playerUpgrade2Button, playerUpgrade3Button);
         for (int i = 0; i < playerUpgradeButtons.size(); i++) {
             if (i < playerUpgrades.size()) {
                 playerUpgradeButtons.get(i).setText(playerUpgrades.get(i).getUpgradeName());
@@ -336,8 +416,12 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Updates the shop upgrade button labels based on available upgrades.
+     * Clears buttons that are not in use.
+     */
     private void updateShopUpgradeButtons() {
-        List<Button> shopUpgradeButtons = List.of(shopUpgrade1Button, shopUpgrade2Button, shopUpgrade3Button);
+        shopUpgradeButtons = List.of(shopUpgrade1Button, shopUpgrade2Button, shopUpgrade3Button);
         for (int i = 0; i < shopUpgradeButtons.size(); i++) {
             if (i < availableUpgrades.size() && availableUpgrades.get(i) != null) {
                 shopUpgradeButtons.get(i).setText(availableUpgrades.get(i).getUpgradeName());
@@ -347,17 +431,30 @@ public class ShopScreenController extends ScreenController {
         }
     }
 
+    /**
+     * Returns to the previous screen, saving the player's cars and upgrades back to the game manager.
+     */
     @FXML
-    public void onBackButtonClicked() {
+    private void onBackButtonClicked() {
         getGameManager().setPlayerCars(playerCars);
         getGameManager().setPlayerUpgrades(playerUpgrades);
         getGameManager().goBack();
     }
 
-    public void updateMoneyLabel(){
+
+    /**
+     * Updates the label showing the player's current money.
+     */
+    private void updateMoneyLabel(){
         moneyLabel.setText("Money: $" + getGameManager().getMoney());
     }
 
+    /**
+     * Displays an alert dialog with a given title and message.
+     *
+     * @param title   the title of the alert window
+     * @param message the message content of the alert
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -365,6 +462,5 @@ public class ShopScreenController extends ScreenController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 }
 

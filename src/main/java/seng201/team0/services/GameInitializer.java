@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import seng201.team0.models.Car;
-import seng201.team0.services.CarService;
 
 /**
  * Handles game initialisation, including player name, difficulty, money, car selection, and season length.
  */
-public class StartScreen {
+public class GameInitializer {
 
     private String playerName;
     private int seasonLength;
@@ -19,6 +18,9 @@ public class StartScreen {
     private List<Car> playerCars = new ArrayList<>();
     private Car currentCar;
     private CarService carService = new CarService();
+    private static final int MAX_CARS = 3;
+    private static final int MIN_SEASON_LENGTH = 3;
+    private static final int MAX_SEASON_LENGTH = 15;
 
     /**
      * Validates and sets the player's name.
@@ -114,11 +116,25 @@ public class StartScreen {
      *
      * @param car The Car to remove from the selection.
      */
-    public void deleteCar(Car car) {
+    public boolean deleteCar(Car car) {
         if (playerCars.contains(car)) {
             playerCars.remove(car);
             money += car.getCarCost();
+            return true;
         }
+        return false;
+    }
+
+    public int getMaxCars() {
+        return MAX_CARS;
+    }
+
+    public int getMinSeasonLength() {
+        return MIN_SEASON_LENGTH;
+    }
+
+    public int getMaxSeasonLength() {
+        return MAX_SEASON_LENGTH;
     }
 
 }
