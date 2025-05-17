@@ -13,11 +13,12 @@ import java.util.List;
 public class GarageService {
 
     /**
-     * Installs an upgrade to a car to improve its stats
-     * @param currentCar
-     * @param upgrade
-     * @param playerUpgrades
-     * @return
+     * Installs an upgrade to a car to improve its stats. This method ensures that the car's speed, handling, reliability
+     * and fuel economy do not go above 100 as this is the max value for these attributes.
+     * @param currentCar the car that the upgrade is being installed on
+     * @param upgrade the upgrade to be installed
+     * @param playerUpgrades the list of upgrades owned by the player
+     * @return returns true if the upgrade was installed successfully and false otherwise
      */
     public boolean installUpgrade(Car currentCar, Upgrade upgrade, List<Upgrade> playerUpgrades) {
         if (currentCar == null || upgrade == null || !playerUpgrades.contains(upgrade)) {

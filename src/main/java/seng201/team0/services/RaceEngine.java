@@ -10,51 +10,49 @@ import seng201.team0.gui.RaceScreenController;
 import java.util.*;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class RaceEngine {
 
-    private Race race;
-    private Route selectedRoute;
-    private Car playerCar;
-    private String gameDifficulty;
-    private int playerMoney;
+    private final Race race;
+    private final Route selectedRoute;
+    private final Car playerCar;
+    private final String gameDifficulty;
 
-    private List<Car> opponents;
-    private Map<Car, Integer> carDistances;
+    private final List<Car> opponents;
+    private final Map<Car, Integer> carDistances;
 
-    private List<Integer> fuelStops = new ArrayList<>();
-    private Map<Car, Set<Integer>> triggeredFuelStops = new HashMap<>();
-    private Map<Car, Integer> racePenalties = new HashMap<>();
+    private final List<Integer> fuelStops = new ArrayList<>();
+    private final Map<Car, Set<Integer>> triggeredFuelStops = new HashMap<>();
+    private final Map<Car, Integer> racePenalties = new HashMap<>();
 
-    private List<Car> finishPositions = new ArrayList<>();
-    private List<Integer> playerFinishPositions = new ArrayList<>();
+    private final List<Car> finishPositions = new ArrayList<>();
+    private final List<Integer> playerFinishPositions = new ArrayList<>();
     private int playerTotalPrizeMoney;
 
-    private Map<Car, Integer> carHours = new HashMap<>();
+    private final Map<Car, Integer> carHours = new HashMap<>();
 
-    private CarService carService = new CarService();
 
-    private int currentHour;
-
-    private RaceScreenController raceScreenController;
+    private final RaceScreenController raceScreenController;
 
     public enum RaceStatus {
         RUNNING, FINISHED, DNF
     }
 
-    private Map<Car, RaceStatus> carStatus = new HashMap<>();
+    private final Map<Car, RaceStatus> carStatus = new HashMap<>();
 
-    public RaceEngine(Race race, Route selectedRoute, Car playerCar, String difficulty, int playerMoney, RaceScreenController raceScreenController) {
+    private static final Logger logger = Logger.getLogger(RaceEngine.class.getName());
+
+    public RaceEngine(Race race, Route selectedRoute, Car playerCar, String difficulty, RaceScreenController raceScreenController) {
         this.race = race;
         this.selectedRoute = selectedRoute;
         this.playerCar = playerCar;
         this.gameDifficulty = difficulty;
-        this.playerMoney = playerMoney;
         this.raceScreenController = raceScreenController;
 
+        CarService carService = new CarService();
         this.opponents = carService.generateRandomCars(race.getRaceEntries());
         this.carDistances = new HashMap<>();
-        this.fuelStops = new ArrayList<>();
 
         for (Car car : opponents) {
             carDistances.put(car, 0);
@@ -121,7 +119,6 @@ public class RaceEngine {
 
     public void startRace() {
         new Thread(() -> {
-            currentHour = 0;
             applyRouteMultipliers();
             generateFuelStops();
             playerCar.setCarFuelAmount(playerCar.getCarFuelEconomy());
@@ -241,7 +238,8 @@ public class RaceEngine {
         try {
             wait();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.warning("Thread was interrupted while waiting: " + e.getMessage());
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -250,7 +248,6 @@ public class RaceEngine {
     }
 
     public void triggerCarPerformanceIssue() {
-        Random random = new Random();
         int value = new Random().nextInt(1, 3);
         switch (value) {
             case 1:
@@ -265,9 +262,7 @@ public class RaceEngine {
     public void triggerCarBreakdown() {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarReliability() + 20)) {
-            Platform.runLater(() -> {
-                raceScreenController.onPlayerBreakdown();
-            });
+            Platform.runLater(raceScreenController::onPlayerBreakdown);
         }
     }
 
@@ -276,9 +271,7 @@ public class RaceEngine {
         if (random.nextInt(1, 101) > (playerCar.getCarHandling() + 20)) {
             System.out.println("Malfunction penalty: " + 10);
             racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 10);
-            Platform.runLater(() -> {
-                raceScreenController.onPlayerMalfunction();
-            });
+            Platform.runLater(raceScreenController::onPlayerMalfunction);
         }
     }
 
@@ -302,19 +295,13 @@ public class RaceEngine {
         String infoText = "Pick up a hitchhiker. This costs you time, but they pay you $50!";
         racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 20);
         System.out.println("Hitchhiker penalty: 20");
-        Platform.runLater(() -> {
-            raceScreenController.onHitchhikerEvent(infoText);
-        });
+        Platform.runLater(() -> raceScreenController.onHitchhikerEvent(infoText));
     }
 
     public void handleSevereWeatherEvent() {
-        String alertText = "Severe weather! All cars forecd to retire from the race!";
-        for (Car car : carStatus.keySet()) {
-            carStatus.put(car, RaceStatus.DNF);
-        }
-        Platform.runLater(() -> {
-            raceScreenController.onSevereWeatherEvent(alertText);
-        });
+        String alertText = "Severe weather! All cars forced to retire from the race!";
+        carStatus.replaceAll((c, v) -> RaceStatus.DNF);
+        Platform.runLater(() -> raceScreenController.onSevereWeatherEvent(alertText));
     }
 
     private void updateFinishPositions() {
@@ -341,15 +328,15 @@ public class RaceEngine {
     }
 
     public void playerDNF() {
-        Platform.runLater(() -> {
-            raceScreenController.onPlayerDNF();
-        });
+        Platform.runLater(raceScreenController::onPlayerDNF);
+    }
+
+    public void playerBreakdown(){
+        Platform.runLater(raceScreenController::onPlayerRetired);
     }
 
     private void playerOutOfTime() {
-        Platform.runLater(() -> {
-            raceScreenController.onPlayerOutOfTime();
-        });
+        Platform.runLater(raceScreenController::onPlayerOutOfTime);
     }
 
     private void playerFinished() {
@@ -359,18 +346,16 @@ public class RaceEngine {
         playerFinishPositions.add(playerPosition); //list to keep track of player positions throughout race
         int prizeMoney = calculatePrizeMoney(playerPosition);
         playerTotalPrizeMoney += prizeMoney;
-        Platform.runLater(() -> {
-            raceScreenController.onPlayerFinished(playerPosition, prizeMoney);
-        });
+        Platform.runLater(() -> raceScreenController.onPlayerFinished(playerPosition, prizeMoney));
     }
 
     public double getPlayerAveragePlacing() {
-        if (playerFinishPositions.size() == 0) {
+        if (playerFinishPositions.isEmpty()) {
             return 0; //player did not place in any races, could change this to display DNF
         }
         int playerAveragePlacing = 0;
-        for (int i = 0; i < playerFinishPositions.size(); i++) {
-            playerAveragePlacing += playerFinishPositions.get(i);
+        for (Integer playerFinishPosition : playerFinishPositions) {
+            playerAveragePlacing += playerFinishPosition;
         }
         playerAveragePlacing /= playerFinishPositions.size();
         return playerAveragePlacing;
@@ -393,20 +378,18 @@ public class RaceEngine {
         int prizeMoney = race.getRacePrizeMoney();
         switch (position) {
             case 1:
-                prizeMoney = prizeMoney;
-                ;
-                break;
+                break; //full amount
             case 2:
-                prizeMoney *= .8;
+                prizeMoney = (int) (prizeMoney * 0.8);
                 break;
             case 3:
-                prizeMoney *= .6;
+                prizeMoney = (int) (prizeMoney * 0.6);
                 break;
             case 4:
-                prizeMoney *= .4;
+                prizeMoney = (int) (prizeMoney * 0.4);
                 break;
             case 5:
-                prizeMoney *= .2;
+                prizeMoney = (int) (prizeMoney * 0.2);
                 break;
             default:
                 prizeMoney = 0;
