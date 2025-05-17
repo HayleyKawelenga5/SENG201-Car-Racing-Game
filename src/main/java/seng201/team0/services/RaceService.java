@@ -98,7 +98,7 @@ public class RaceService {
         int previewReliability = (int) (car.getCarReliability() / multiplier);
         int previewFuelEconomy = (int) (car.getCarFuelEconomy() / multiplier);
         int previewCost = car.getCarCost();
-        List<Upgrade> upgrades = car.getUpgrades();
+        List<Upgrade> upgrades = car.getCarUpgrades();
         Car previewCar = new Car(previewSpeed, previewHandling, previewReliability, previewFuelEconomy, previewCost, upgrades);
         return previewCar;
     }
@@ -115,7 +115,7 @@ public class RaceService {
         int copyReliability = car.getCarReliability();
         int copyFuelEconomy = car.getCarFuelEconomy();
         int copyCost = car.getCarCost();
-        List<Upgrade> copyUpgrades = car.getUpgrades();
+        List<Upgrade> copyUpgrades = car.getCarUpgrades();
         Car copyCar = new Car(copySpeed, copyHandling, copyReliability, copyFuelEconomy, copyCost, copyUpgrades);
         copyCar.setCarName(car.getCarName());
         return copyCar;

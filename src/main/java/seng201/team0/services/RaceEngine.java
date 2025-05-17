@@ -38,6 +38,10 @@ public class RaceEngine {
 
     private RaceScreenController raceScreenController;
 
+    /**
+     * Enum to represent the current status of a car in the race. Running if the player is still in the race, finished
+     * if the player has finished the race and DNF if the player was not able to complete the race.
+     */
     public enum RaceStatus {
         RUNNING, FINISHED, DNF
     }

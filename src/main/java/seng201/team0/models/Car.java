@@ -76,7 +76,7 @@ public class Car {
      * Gets the upgrades installed on the car.
      * @return the list of upgrades installed on the car
      */
-    public List<Upgrade> getUpgrades() { return upgrades; }
+    public List<Upgrade> getCarUpgrades() { return upgrades; }
 
     /**
      * Gets a comma-separated string describing the upgrades installed on the car.
