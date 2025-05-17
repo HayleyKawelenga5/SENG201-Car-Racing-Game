@@ -12,6 +12,11 @@ import java.util.*;
 import java.util.Random;
 import java.util.logging.Logger;
 
+/**
+ * The RaceEngine class handles the simulation and logic of a car race event,
+ * including tracking progress of player and opponent cars, fuel consumption,
+ * random events, penalties, race status, and updating the GUI via the race screen controller.
+ */
 public class RaceEngine {
 
     private final Race race;
@@ -35,6 +40,10 @@ public class RaceEngine {
 
     private final RaceScreenController raceScreenController;
 
+    /**
+     * Enum to represent the current status of a car in the race. Running if the player is still in the race, finished
+     * if the player has finished the race and DNF if the player was not able to complete the race.
+     */
     public enum RaceStatus {
         RUNNING, FINISHED, DNF
     }
@@ -43,6 +52,19 @@ public class RaceEngine {
 
     private static final Logger logger = Logger.getLogger(RaceEngine.class.getName());
 
+    /**
+     * Constructs a new RaceEngine instance with the specified race, route, player car, difficulty and GUI controller.
+     * <p></p>
+     * This method generates a list of opponent cars based on the number of race entries using the CarService, initializes
+     * tracking maps to keep track of each car's distance travelled, hours raced, race status, and fuel stops triggered
+     * and sets the initial values for all opponents and the player's car
+     * <p></p>
+     * @param race The Race object representing the race event with attributes including Hours, Routes, Entries and Prize money
+     * @param selectedRoute The Route object representing the route for the race with attributes including Description, Distance, Fuel Stops and Difficulty
+     * @param playerCar The player's Car object.
+     * @param difficulty The difficulty setting of the game (e.g., "EASY", "HARD").
+     * @param raceScreenController The GUI controller to update race screen events.
+     */
     public RaceEngine(Race race, Route selectedRoute, Car playerCar, String difficulty, RaceScreenController raceScreenController) {
         this.race = race;
         this.selectedRoute = selectedRoute;
@@ -64,9 +86,12 @@ public class RaceEngine {
         carHours.put(playerCar, 0);
         carStatus.put(playerCar, RaceStatus.RUNNING);
         triggeredFuelStops.put(playerCar, new HashSet<>());
-
     }
 
+    /**
+     * Applies route difficulty multipliers to each car's stats
+     * (speed, handling, reliability, fuel economy) based on route type.
+     */
     public void applyRouteMultipliers() {
         double difficultyMultiplier = selectedRoute.getRouteDifficultyMultiplier();
         for (Car car : carDistances.keySet()) {
