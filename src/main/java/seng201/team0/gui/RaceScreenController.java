@@ -240,25 +240,10 @@ public class RaceScreenController extends ScreenController {
         getGameManager().setMoney(getGameManager().getMoney() + prizeMoney);
         getGameManager().setRacesRemaining(getGameManager().getRacesRemaining() - 1);
 
-        reduceCurrentCarStats();
+        raceEngine.reduceCurrentCarStats(currentCar);
 
         getGameManager().setCurrentCar(currentCar);
         getGameManager().toMainScreenFromRace(totalPlayerMoney, currentCar, getGameManager().getSeasonLength());
-    }
-
-
-    /**
-     * Lowers the current car's stats by fixed amounts.
-     *
-     * Reduces speed, handling, reliability, and fuel economy by 10 each,
-     * and reduces the car's cost by 40. Values will not go below 0.
-     */
-    public void reduceCurrentCarStats() {
-        currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
-        currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
-        currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
-        currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
-        currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
     }
 
     /**

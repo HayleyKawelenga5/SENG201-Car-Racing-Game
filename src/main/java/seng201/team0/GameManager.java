@@ -202,7 +202,6 @@ public class GameManager {
      * @return The player's average finish position.
      */
     public double getAveragePlayerFinishPositions(){
-        System.out.print("game manager" + averagePlayerFinishPosition); //DEBUG
         return averagePlayerFinishPosition;
     }
 

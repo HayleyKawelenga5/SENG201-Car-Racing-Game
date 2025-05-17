@@ -32,8 +32,6 @@ public class RaceEngine {
     private final Map<Car, Integer> racePenalties = new HashMap<>();
 
     private final List<Car> finishPositions = new ArrayList<>();
-    //private final List<Integer> playerFinishPositions = new ArrayList<>();
-    private int playerTotalPrizeMoney;
 
     private final Map<Car, Integer> carHours = new HashMap<>();
 
@@ -433,6 +431,20 @@ public class RaceEngine {
         gameManager.addToTotalPrizeMoney(prizeMoney);
         Platform.runLater(() -> raceScreenController.onPlayerFinished(playerPosition, prizeMoney));
     }
+    /**
+     * Lowers the current car's stats by fixed amounts.
+     *
+     * Reduces speed, handling, reliability, and fuel economy by 10 each,
+     * and reduces the car's cost by 40. Values will not go below 0. This is to encourage the player to buy more cars
+     * or purchase upgrades after a race.
+     */
+    public void reduceCurrentCarStats(Car currentCar) {
+        currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
+        currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
+        currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
+        currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
+        currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
+    }
 
     /**
      * Calculates the average placing of the player over all races.
@@ -469,11 +481,11 @@ public class RaceEngine {
      */
     public boolean noCarsFunctioning(List<Car> cars) {
         for (Car car : cars) {
-            if (car.getCarSpeed() == 0 || car.getCarReliability() == 0 || car.getCarFuelEconomy()==0) {
-                return true;
+            if (car.getCarSpeed() > 0 && car.getCarReliability() > 0 && car.getCarFuelEconomy()>0) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
