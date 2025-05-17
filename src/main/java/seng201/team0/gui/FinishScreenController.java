@@ -17,6 +17,7 @@ public class FinishScreenController extends ScreenController {
     @FXML private Label playerRacesCompetedLabel;
     @FXML private Label playerAveragePlacingLabel;
     @FXML private Label playerPrizeMoneyLabel;
+    @FXML private Label playerTotalMoneyLabel;
     @FXML private Button quitButton;
 
     /**
@@ -47,19 +48,21 @@ public class FinishScreenController extends ScreenController {
      */
     @FXML
     private void initialize() {
-        GameManager finishScreen = getGameManager();
+        //GameManager finishScreen = getGameManager();
 
-        String playerName = finishScreen.getPlayerName();
-        int seasonLength = finishScreen.getSeasonLength();
-        int playerRacesCompeted = finishScreen.getSeasonLength() - (finishScreen.getRacesRemaining()-1);
-        double playerAveragePlacing = finishScreen.getAveragePlayerFinishPositions();
-        int playerPrizeMoney = finishScreen.getPlayerTotalPrizeMoney();
+        String playerName = getGameManager().getPlayerName();
+        int seasonLength = getGameManager().getSeasonLength();
+        int playerRacesCompeted = getGameManager().getSeasonLength() - (getGameManager().getRacesRemaining()-1);
+        double playerAveragePlacing = getGameManager().getAveragePlayerFinishPositions();
+        int playerPrizeMoney = getGameManager().getPlayerTotalPrizeMoney();
+        int playerTotalMoney = getGameManager().getMoney() + playerPrizeMoney;
 
         playerNameLabel.setText("Player Name : " + playerName);
         seasonLengthLabel.setText("Season Length : " + seasonLength);
         playerRacesCompetedLabel.setText("Races Competed : " + playerRacesCompeted);
         playerAveragePlacingLabel.setText("Average Placing : " + playerAveragePlacing);
         playerPrizeMoneyLabel.setText("Total Prize Money : $" + playerPrizeMoney);
+        playerTotalMoneyLabel.setText("Total Money : $" + playerTotalMoney);
 
         quitButton.setOnAction(event -> onQuitButtonClicked());
     }
