@@ -423,7 +423,7 @@ public class RaceEngine {
     /**
      * Handles end-of-race logic when the player finishes.
      */
-    private void playerFinished() {
+    public void playerFinished() {
         updateFinishPositions();
 
         int playerPosition = finishPositions.indexOf(playerCar) + 1;
@@ -476,14 +476,15 @@ public class RaceEngine {
     }
 
     /**
-     * Checks if any cars are completely non-functional.
+     * Checks if all cars are non-functional.
+     * A car is non-functional if any of speed, reliability, or fuel economy is 0.
      *
      * @param cars The list of cars to check.
-     * @return true if any car has 0 in speed, reliability, or fuel economy.
+     * @return true if all cars are non-functional, false otherwise.
      */
     public boolean noCarsFunctioning(List<Car> cars) {
         for (Car car : cars) {
-            if (car.getCarSpeed() > 0 && car.getCarReliability() > 0 && car.getCarFuelEconomy()>0) {
+            if (car.getCarSpeed() > 0 && car.getCarReliability() > 0 && car.getCarFuelEconomy() > 0) {
                 return false;
             }
         }
@@ -519,11 +520,25 @@ public class RaceEngine {
         }
         return prizeMoney;
     }
+
+    public Map<Car, Integer> getRacePenalties() {
+        return racePenalties;
+    }
+
+    public List<Integer> getFuelStops() {
+        return fuelStops;
+    }
+
+    public Map<Car, Integer> getCarHours() {
+        return carHours;
+    }
+
+    public Map<Car, Integer> getCarDistances() {
+        return carDistances;
+    }
+
+    public List<Car> getFinishPositions() {
+        return finishPositions;
+    }
+
 }
-
-
-
-
-
-
-
