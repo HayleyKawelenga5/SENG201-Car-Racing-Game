@@ -22,7 +22,7 @@ import java.util.List;
  * The controller manages button clicks, updates the car and upgrade stats on the GUI and communicates with the
  * {@link GarageService} for installing upgrades.
  */
-public class GarageScreenController extends ScreenController {
+public class GarageScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private Button selectUpgradeButton;
     @FXML private Button selectCarButton;
@@ -92,7 +92,7 @@ public class GarageScreenController extends ScreenController {
      * This method is immediately called by the JavaFX framework after FXML loading.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         GameManager gameManager = getGameManager();
         playerCars = gameManager.getPlayerCars();
         playerUpgrades = gameManager.getPlayerUpgrades();

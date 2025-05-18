@@ -20,7 +20,7 @@ import java.util.List;
  * This controller handles user interaction for setting up a new game, including selecting player name, difficulty, cars
  * and season length.
  */
-public class StartScreenController extends ScreenController {
+public class StartScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private TextField playerNameTextField;
     @FXML private Slider seasonLengthSlider;
@@ -112,7 +112,7 @@ public class StartScreenController extends ScreenController {
      * This method is immediately called by the JavaFX framework after FXML loading.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         difficultyChoiceBox.getItems().clear();
         difficultyChoiceBox.getItems().addAll("EASY", "HARD");
         difficultyChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

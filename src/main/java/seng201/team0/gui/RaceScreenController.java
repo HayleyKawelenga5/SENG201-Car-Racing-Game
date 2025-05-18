@@ -26,7 +26,7 @@ import java.util.List;
  *
  * The controller handles user interactions during race setup and simulation and update GUI elements accordingly
  */
-public class RaceScreenController extends ScreenController {
+public class RaceScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private Label informationLabel;
 
@@ -140,7 +140,7 @@ public class RaceScreenController extends ScreenController {
      * Initializes the controller, sets up button handlers and populates GUI with initial data.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         Race selectedRace = getGameManager().getSelectedRace();
         availableRoutes = selectedRace.getAvailableRoutes();
 

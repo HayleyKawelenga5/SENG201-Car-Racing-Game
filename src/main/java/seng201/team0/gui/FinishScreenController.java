@@ -10,7 +10,7 @@ import seng201.team0.GameManager;
  * this screen is shown when the game ends and displays the final player statistics,
  * including name, season length, races completed, average placing, and total prize money.
  */
-public class FinishScreenController extends ScreenController {
+public class FinishScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private Label playerNameLabel;
     @FXML private Label seasonLengthLabel;
@@ -47,7 +47,7 @@ public class FinishScreenController extends ScreenController {
      *Populates all GUI labels with final player statistics.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         GameManager finishScreen = getGameManager();
 
         String playerName = finishScreen.getPlayerName();

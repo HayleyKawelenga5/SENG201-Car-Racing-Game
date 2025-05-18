@@ -22,7 +22,7 @@ import java.util.List;
  * The controller uses {@link GameManager} to access game data and operations and {@link ScreenUpdater} utility methods
  * to update GUI labels efficiently
  */
-public class MainScreenController extends ScreenController {
+public class MainScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private Button race1Button;
     @FXML private Button race2Button;
@@ -91,7 +91,7 @@ public class MainScreenController extends ScreenController {
      * This method is called automatically by the JavaFX framework after the FXML is loaded.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         setupGameData();
         setupRaceButtons();
         setupNavigationButtons();

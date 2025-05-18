@@ -21,7 +21,7 @@ import java.util.List;
  * player's selections and game state, and communicated with the {@link ShopService} and {@link GameManager} to manage
  * the logic for transactions and display updates
  */
-public class ShopScreenController extends ScreenController {
+public class ShopScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private Label moneyLabel;
 
@@ -167,7 +167,7 @@ public class ShopScreenController extends ScreenController {
      * This method is immediately called by the JavaFX framework after FXML loading.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         GameManager gameManager = getGameManager();
 
         playerCars = gameManager.getPlayerCars();
