@@ -13,7 +13,7 @@ public class MainWindow extends Application {
     /**
      * Creates the {@link GameManager} with a {@link ScreenNavigator} for the given {@link Stage}
      * This method includes code from labs/tutorials.
-     * @param primaryStage The current fxml stage, handled by this JavaFX Application class
+     * @param primaryStage The current fxml stage, handled by this JavaFX Application class (Stage)
      */
     @Override
     public void start(Stage primaryStage){

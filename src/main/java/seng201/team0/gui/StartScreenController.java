@@ -49,19 +49,44 @@ public class StartScreenController extends ScreenController {
     @FXML private Label carCostLabel;
     @FXML private Label carUpgradesLabel;
 
+    /**
+     * The {@link GameInitializer} instance used to initialize player stats, cars, and game configuration.
+     */
     private final GameInitializer gameInitializer = new GameInitializer();
 
+    /**
+     * A list of cars available for the player to purchase during the game setup phase.
+     */
     private List<Car> availableCars;
+
+    /**
+     * The list of cars currently owned by the player.
+     */
     private List<Car> playerCars = new ArrayList<>();
+
+    /**
+     * The list of upgrades currently owned by the player.
+     */
     private final List<Upgrade> playerUpgrades = new ArrayList<>();
+
+    /**
+     * A list of buttons in the UI that represent the player's cars, used to display and interact with car selections.
+     */
     private List<Button> playerCarButtons;
 
+    /**
+     * The currently selected car in the garage or shop interface.
+     */
     private Car selectedCar;
+
+    /**
+     * The index of the currently selected car within the player's car list.
+     */
     private int selectedCarIndex = -1;
 
     /**
      * Constructs a StartScreenController with the given {@link GameManager}
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public StartScreenController(GameManager manager) {
         super(manager);
@@ -139,7 +164,7 @@ public class StartScreenController extends ScreenController {
     /**
      * Updates the car stats section of the screen with the selected car's details.
      *
-     * @param car the car to display stats for, or null to clear display
+     * @param car the car to display stats for, or null to clear display (Car)
      */
     private void updateCarStats(Car car) {
         ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
@@ -168,7 +193,7 @@ public class StartScreenController extends ScreenController {
     /**
      * Handles the event when an available car button is clicked. Updates the stats on the screen for that car.
      *
-     * @param index index of the selected available car
+     * @param index index of the selected available car (int)
      */
     @FXML
     private void onAvailableCarButtonClicked(int index) {
@@ -182,7 +207,7 @@ public class StartScreenController extends ScreenController {
     /**
      * Handles the event when a player car button is clicked. Updates the stats on the screen for that car.
      *
-     * @param index index of the player's selected car
+     * @param index index of the player's selected car (int)
      */
     @FXML
     private void onPlayerCarButtonClicked(int index) {
@@ -316,8 +341,8 @@ public class StartScreenController extends ScreenController {
     /**
      * Displays an alert dialog with the specified title and message.
      *
-     * @param title   the title of the alert
-     * @param message the message to display
+     * @param title   the title of the alert (String)
+     * @param message the message to display (String)
      */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

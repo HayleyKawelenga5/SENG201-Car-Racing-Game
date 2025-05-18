@@ -55,7 +55,7 @@ public class GarageScreenController extends ScreenController {
 
     /**
      * Constructs a GarageScreenController with the given {@link GameManager}
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public GarageScreenController(GameManager manager) {super(manager); }
 
@@ -138,7 +138,7 @@ public class GarageScreenController extends ScreenController {
      * Handles the event when a player car button is clicked.
      * Updates the selected car and refreshes the displayed car stats.
      *
-     * @param index the index of the clicked car button in the player's car list
+     * @param index the index of the clicked car button in the player's car list (int)
      */
     @FXML
     private void onPlayerCarButtonClicked(int index) {
@@ -153,7 +153,7 @@ public class GarageScreenController extends ScreenController {
      * Handles the event when a player upgrade button is clicked.
      * Updates the selected upgrade and refreshes the displayed upgrade stats.
      *
-     * @param index the index of the clicked upgrade button in the player's upgrade list
+     * @param index the index of the clicked upgrade button in the player's upgrade list (int)
      */
     @FXML
     private void onPlayerUpgradeButtonClicked(int index) {
@@ -255,8 +255,8 @@ public class GarageScreenController extends ScreenController {
 
     /**
      * Shows an alert dialog with the specified title and message.
-     * @param title the title of the alert dialog
-     * @param message the content message of the alert dialog
+     * @param title the title of the alert dialog (String)
+     * @param message the content message of the alert dialog (String)
      */
     @FXML
     private void showAlert(String title, String message) {

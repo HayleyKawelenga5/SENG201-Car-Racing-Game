@@ -8,19 +8,33 @@ import java.util.*;
  * prize money awarded to the winner.
  */
 public class Race {
-
+    /**
+     * The duration of the race.
+     */
     private final int hours;
+
+    /**
+     * The list of possible {@link Route} options for this race.
+     */
     private final List<Route> availableRoutes;
+
+    /**
+     * The number of competitors (excluding the player) participating in the race.
+     */
     private final int entries;
+
+    /**
+     * The amount of prize money awarded to the winner of the race.
+     */
     private final int prizeMoney;
 
     /**
      * Constructs a new {@link Race} with the specified duration, routes,
      * number of entries and prize money.
-     * @param hours the duration of the race
-     * @param availableRoutes one to three routes that can be taken to complete the race
-     * @param entries the number of cars in the race excluding the player
-     * @param prizeMoney the amount of money awarded for coming in first place
+     * @param hours the duration of the race (int)
+     * @param availableRoutes one to three routes that can be taken to complete the race (int)
+     * @param entries the number of cars in the race excluding the player (int)
+     * @param prizeMoney the amount of money awarded for coming in first place (int)
      */
     public Race(int hours, List<Route> availableRoutes, int entries, int prizeMoney) {
         this.hours = hours;

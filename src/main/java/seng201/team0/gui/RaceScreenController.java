@@ -65,19 +65,54 @@ public class RaceScreenController extends ScreenController {
 
     @FXML private Button backButton;
 
+    /**
+     * Service responsible for handling race-related logic and operations.
+     */
     private final RaceService raceService = new RaceService();
+
+    /**
+     * The route chosen by the player for the current race.
+     */
     private Route chosenRoute;
+
+    /**
+     * The route currently selected.
+     */
     private Route selectedRoute;
+
+    /**
+     * List of routes available for selection in the current race context.
+     */
     private List<Route> availableRoutes;
+
+    /**
+     * A copy of the current player's car used during race simulation to preserve original state.
+     */
     private Car currentCarCopy;
+
+    /**
+     * The current player's car participating in the race.
+     */
     private Car currentCar;
+
+    /**
+     * The engine managing the race simulation logic.
+     */
     private RaceEngine raceEngine;
+
+    /**
+     * The total prize money available for the current race.
+     */
     private int prizeMoney;
+
+    /**
+     * List of cars owned by the player.
+     */
     private List<Car> playerCars = new ArrayList<>();
 
     /**
      * Constructs a RaceScreenController with the given {@link GameManager}
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public RaceScreenController(GameManager manager) {
         super(manager);
@@ -153,7 +188,7 @@ public class RaceScreenController extends ScreenController {
      * Handles user clicking one of the route option buttons and displays player car stats showing how the selected
      * route affects certain attributes of their car.
      *
-     * @param index The index of the selected route.
+     * @param index The index of the selected route. (int)
      */
     @FXML
     private void onRouteButtonClicked(int index) {
@@ -180,9 +215,9 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Called when the player reaches a fuel stop during the race
-     * @param currentDistance the player's current distance at the time they reach the fuel stop
-     * @param fuelStopDistance the distance point of the current fuel stop
-     * @param fuelAmount the amount of fuel in the player's car
+     * @param currentDistance the player's current distance at the time they reach the fuel stop (int)
+     * @param fuelStopDistance the distance point of the current fuel stop (int)
+     * @param fuelAmount the amount of fuel in the player's car (int)
      */
     public void onFuelStop(int currentDistance, int fuelStopDistance, int fuelAmount) {
         currentDistanceLabel.setText("Current distance: " + fuelStopDistance + "km");
@@ -195,8 +230,8 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Shows an alert dialog with the specified title and message.
-     * @param title the title of the alert dialog
-     * @param message the content message of the alert dialog
+     * @param title the title of the alert dialog (String)
+     * @param message the content message of the alert dialog (String)
      */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -208,8 +243,8 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Shows an information dialog with the specified title and message.
-     * @param title the title of the information dialog
-     * @param message the content message of the information dialog
+     * @param title the title of the information dialog (String)
+     * @param message the content message of the information dialog (String)
      */
     private void showInfo(String title, String message) {
         Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -248,8 +283,8 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Called when player finishes the race successfully.
-     * @param playerPosition the player's final position at the end of the race.
-     * @param prizeMoney the amount of money the player won based on their position in the race.
+     * @param playerPosition the player's final position at the end of the race. (int)
+     * @param prizeMoney the amount of money the player won based on their position in the race. (int)
      */
     public void onPlayerFinished(int playerPosition, int prizeMoney) {
         this.prizeMoney = prizeMoney;
@@ -310,7 +345,7 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Called when a severe weather event causes race termination
-     * @param alertText message indicating to the user that a random event has occurred including details of the event.
+     * @param alertText message indicating to the user that a random event has occurred including details of the event. (string)
      */
     public void onSevereWeatherEvent(String alertText) {
         handleRaceEnd("Place: DNF. Severe Weather!", "Prize Money: $0", "Severe Weather", alertText);
@@ -318,7 +353,7 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Called when a player picks up a hitchhiker
-     * @param infoText message indicating to the user that a random event has occurred including details of the event.
+     * @param infoText message indicating to the user that a random event has occurred including details of the event. (String)
      */
     public void onHitchhikerEvent(String infoText) {
         showInfo("Hitchhiker", infoText);
@@ -327,10 +362,10 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Handles the common logic to display race results at the end of the race.
-     * @param positionText tells the user what position they came in the race
-     * @param prizeMoneyText tells the user the amount of prize money won or the reason they didn't finish the race
-     * @param alertTitle title of the dialog box shown to the user.
-     * @param alertMessage message displayed to the user
+     * @param positionText tells the user what position they came in the race (String)
+     * @param prizeMoneyText tells the user the amount of prize money won or the reason they didn't finish the race (String)
+     * @param alertTitle title of the dialog box shown to the user. (String)
+     * @param alertMessage message displayed to the user (String)
      */
     private void handleRaceEnd(String positionText, String prizeMoneyText, String alertTitle, String alertMessage) {
         showInfo(alertTitle, alertMessage);
@@ -342,9 +377,9 @@ public class RaceScreenController extends ScreenController {
 
     /**
      * Called once every hour of simulated race time to update the GUI.
-     * @param currentDistance the distance the player has travelled at the given simulated hour.
-     * @param carFuelAmount the amount of fuel in the player's car.
-     * @param currentHour the amount of simulated hours that have passed in the race.
+     * @param currentDistance the distance the player has travelled at the given simulated hour. (int)
+     * @param carFuelAmount the amount of fuel in the player's car. (int)
+     * @param currentHour the amount of simulated hours that have passed in the race. (int)
      */
     public void onHourUpdate(int currentDistance, int carFuelAmount, int currentHour) {
         hoursLabel.setText("Hour: " + currentHour);
