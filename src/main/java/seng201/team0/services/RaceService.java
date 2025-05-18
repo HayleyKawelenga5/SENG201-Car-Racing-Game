@@ -15,9 +15,19 @@ import java.util.Random;
  */
 public class RaceService {
 
+    /**
+     * Random number generator used for generating values during the race simulation.
+     */
     private final Random random = new Random();
 
+    /**
+     * Service responsible for generating race routes.
+     */
     private final RouteService routeService;
+
+    /**
+     * The maximum prize money that can be awarded for winning a race.
+     */
     private int maxPrizeMoney;
 
     /**
@@ -31,7 +41,7 @@ public class RaceService {
      * Generates a single random race based on the game difficulty.
      * Difficulty affects the prize money.
      *
-     * @param gameDifficulty The difficulty level of the game ("EASY" or "HARD").
+     * @param gameDifficulty The difficulty level of the game ("EASY" or "HARD") (String)
      * @return A randomly generated {@link Race} instance.
      */
     public Race generateRandomRace(String gameDifficulty) {
@@ -56,8 +66,8 @@ public class RaceService {
     /**
      * Generates a list of random races based on the number of races and game difficulty.
      *
-     * @param numberOfRaces  The number of races to generate.
-     * @param gameDifficulty The difficulty level of the game.
+     * @param numberOfRaces  The number of races to generate (int).
+     * @param gameDifficulty The difficulty level of the game (String)
      * @return A list of randomly generated {@link Race} instances.
      */
     public List<Race> generateRaces(int numberOfRaces, String gameDifficulty) {
@@ -72,8 +82,8 @@ public class RaceService {
      * Creates a preview version of the car with performance stats affected by a multiplier,
      * without modifying the original car.
      *
-     * @param car        The original car to preview changes for.
-     * @param multiplier The performance multiplier.
+     * @param car        The original car to preview changes for (Car).
+     * @param multiplier The performance multiplier (double).
      * @return A new {@link Car} instance with adjusted stats for preview.
      */
     public Car previewMultiplier(Car car, double multiplier) {
@@ -89,7 +99,7 @@ public class RaceService {
     /**
      * Creates a deep copy of the given car, including all performance stats and upgrades.
      *
-     * @param car The original car to copy.
+     * @param car The original car to copy (Car).
      * @return A new {@link Car} instance that is a copy of the original.
      */
     public Car copyCar(Car car) {

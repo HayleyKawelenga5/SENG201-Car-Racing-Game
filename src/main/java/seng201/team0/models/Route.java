@@ -12,18 +12,33 @@ public class Route {
      */
     public enum RouteType { FLAT, HILLY, OFFROAD, WINDY, BEACH }
 
+    /**
+     * The type of the route, indicating the terrain or environment.
+     */
     private final RouteType description;
+
+    /**
+     * The total distance of the route in kilometers.
+     */
     private final int distance;
+
+    /**
+     * The number of designated fuel stops available along the route.
+     */
     private final int fuelStops;
+
+    /**
+     * A multiplier that affects the race difficulty on this route.
+     */
     private final double difficultyMultiplier;
 
     /**
      * Constructs a new Route object with the given parameters.
      *
-     * @param description           a textual description of the route
-     * @param distance              the distance of the route in kilometers
-     * @param fuelStops             the number of fuel stops available along the route
-     * @param difficultyMultiplier  a multiplier that adjusts the race difficulty
+     * @param description           a textual description of the route (RouteType)
+     * @param distance              the distance of the route in kilometers (int)
+     * @param fuelStops             the number of fuel stops available along the route (int)
+     * @param difficultyMultiplier  a multiplier that adjusts the race difficulty (double)
      */
     public Route(RouteType description, int distance, int fuelStops, double difficultyMultiplier) {
         this.description = description;

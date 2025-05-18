@@ -20,7 +20,7 @@ public class ScreenUpdater {
      * Updates the car statistics labels with the values from the given {@link Car} object.
      * If the car is {@code null}, clears the labels.
      *
-     * @param car                 The car to display stats for.
+     * @param car                 The car to display stats for. (Type Car)
      * @param carSpeedLabel       Label to display car speed.
      * @param carHandlingLabel    Label to display car handling.
      * @param carReliabilityLabel Label to display car reliability.
@@ -47,7 +47,7 @@ public class ScreenUpdater {
      * Updates the upgrade statistics labels with values from the given {@link Upgrade} object.
      * If the upgrade is {@code null}, clears the labels.
      *
-     * @param upgrade                 The upgrade to display stats for.
+     * @param upgrade                 The upgrade to display stats for. (Type Upgrade)
      * @param upgradeSpeedLabel       Label to display upgrade speed.
      * @param upgradeHandlingLabel    Label to display upgrade handling.
      * @param upgradeReliabilityLabel Label to display upgrade reliability.
@@ -71,7 +71,7 @@ public class ScreenUpdater {
      * Updates the race statistics labels with values from the given {@link Race} object.
      * If the race is {@code null}, clears the labels.
      *
-     * @param race                 The race to display stats for.
+     * @param race                 The race to display stats for. (Type Race)
      * @param raceHoursLabel       Label to display race duration in hours.
      * @param raceRoutesLabel      Label to display associated routes.
      * @param raceEntriesLabel     Label to display number of race entries.
@@ -94,9 +94,9 @@ public class ScreenUpdater {
     /**
      * Updates the general game info such as money, remaining races, and season length.
      *
-     * @param money              The current amount of player money.
-     * @param racesRemaining     The number of races remaining in the season.
-     * @param seasonLength       The total length of the season.
+     * @param money              The current amount of player money. (int)
+     * @param racesRemaining     The number of races remaining in the season. (int)
+     * @param seasonLength       The total length of the season. (int)
      * @param moneyLabel         Label to display money.
      * @param racesRemainingLabel Label to display races remaining.
      * @param seasonLengthLabel   Label to display season length.
@@ -111,7 +111,7 @@ public class ScreenUpdater {
      * Updates the route statistics labels with values from the given {@link Route} object.
      * If the route is {@code null}, clears the labels.
      *
-     * @param route                   The route to display stats for.
+     * @param route                   The route to display stats for. (Type Route)
      * @param routeDescriptionLabel   Label to display route description.
      * @param routeDistanceLabel      Label to display route distance.
      * @param routeFuelStopsLabel     Label to display number of fuel stops.
@@ -135,8 +135,8 @@ public class ScreenUpdater {
      * Updates a list of route selection buttons with descriptions of the available {@link Route} objects.
      * If fewer routes are available than buttons, the extra buttons are cleared.
      *
-     * @param availableRouteButtons The list of buttons to update.
-     * @param availableRoutes       The list of available routes.
+     * @param availableRouteButtons The list of buttons to update. (List<Button>)
+     * @param availableRoutes       The list of available routes. (List<Route>)
      */
     public static void updateRouteButtons(List<Button> availableRouteButtons, List<Route> availableRoutes) {
         for (int i = 0; i < availableRouteButtons.size(); i++) {
@@ -152,8 +152,8 @@ public class ScreenUpdater {
      * Updates a list of upgrade selection buttons with the names of the available {@link Upgrade} objects.
      * If fewer upgrades are available than buttons, the extra buttons are cleared.
      *
-     * @param buttons  The list of buttons to update.
-     * @param upgrades The list of available upgrades.
+     * @param buttons  The list of buttons to update. (List<Button>)
+     * @param upgrades The list of available upgrades. (List<Upgrade>)
      */
     public static void updateUpgradeButtons(List<Button> buttons, List<Upgrade> upgrades){
         for (int i = 0; i < buttons.size(); i++){

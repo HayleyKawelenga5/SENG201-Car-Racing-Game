@@ -22,7 +22,7 @@ public class FinishScreenController extends ScreenController {
 
     /**
      * Constructs a FinishScreenController with the given {@link GameManager}.
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public FinishScreenController(GameManager manager) {
         super(manager);

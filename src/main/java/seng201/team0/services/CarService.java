@@ -14,12 +14,15 @@ import java.util.Random;
  */
 public class CarService {
 
+    /**
+     * List of cars to be generated that will be available to the player.
+     */
     private final List<Car> availableCars = new ArrayList<>();
 
     /**
      * Generates a random car with random stats within the given range.
      * The cost is calculated based on the sum of the car's attributes.
-     * @param maxValue the number of cars to be generated
+     * @param maxValue the number of cars to be generated (int)
      *
      * @return A list of Car objects with randomly generated stats.
      */

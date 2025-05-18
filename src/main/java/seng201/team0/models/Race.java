@@ -62,9 +62,9 @@ public class Race {
     }
 
     /**
-     * Sets the maximum prize money for the race.
+     * Sets the prize money for the race.
      *
-     * @param prizeMoney the total prize money for first place (must be non-negative)
+     * @param prizeMoney The amount of money to be awarded as the race prize.
      */
     public void setRacePrizeMoney(int prizeMoney) {
         this.prizeMoney = prizeMoney;

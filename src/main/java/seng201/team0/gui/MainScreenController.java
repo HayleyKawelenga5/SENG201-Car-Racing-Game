@@ -49,13 +49,24 @@ public class MainScreenController extends ScreenController {
     @FXML private Label raceEntriesLabel;
     @FXML private Label racePrizeMoneyLabel;
 
+    /**
+     * List of races available for the player to choose from.
+     */
     private List<Race> availableRaces;
+
+    /**
+     * The race currently selected by the player, typically for display or confirmation.
+     */
     private Race selectedRace;
+
+    /**
+     * The race officially chosen to be played next.
+     */
     private Race chosenRace;
 
     /**
      * Constructs a MainScreenController with the given {@link GameManager}
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public MainScreenController(GameManager manager) {
         super(manager);
@@ -139,7 +150,7 @@ public class MainScreenController extends ScreenController {
      * Event handler for when a race button is clicked.
      * Updates the selected race and refreshes race stats in the GUI.
      *
-     * @param index the index of the race selected
+     * @param index the index of the race selected (int)
      */
     @FXML
     private void onAvailableRaceButtonClicked (int index) {
@@ -199,8 +210,8 @@ public class MainScreenController extends ScreenController {
 
     /**
      * Shows an alert dialog with the specified title and message.
-     * @param title the title of the alert dialog
-     * @param message the content message of the alert dialog
+     * @param title the title of the alert dialog (String)
+     * @param message the content message of the alert dialog (String)
      */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

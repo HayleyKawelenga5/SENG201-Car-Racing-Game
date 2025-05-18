@@ -18,13 +18,24 @@ import java.util.logging.Logger;
  * area of the border bane, replacing the previous screen. Code from the labs and/or tutorials has been used in this class.
  */
 public class ScreenNavigator {
+    /**
+     * Logger instance for logging messages related to the ScreenNavigator class.
+     */
     private static final Logger logger = Logger.getLogger(ScreenNavigator.class.getName());
+
+    /**
+     * The primary JavaFX Stage (window) used for displaying scenes.
+     */
     private final Stage stage;
+
+    /**
+     * The root BorderPane layout that holds the main UI components for the current scene.
+     */
     private final BorderPane rootPane;
 
     /**
      * Creates a ScreenNavigator with the given stage.
-     * @param stage The JavaFX stage
+     * @param stage The JavaFX stage (Stagr)
      */
     public ScreenNavigator(Stage stage) {
         this.stage = stage;
@@ -38,7 +49,7 @@ public class ScreenNavigator {
 
     /**
      * Launches the start screen
-     * @param gameManager The game manager used by the start screen controller
+     * @param gameManager The game manager used by the start screen controller (GameManager)
      */
     public void launchStartScreen(GameManager gameManager) {
         ScreenController controller = new StartScreenController(gameManager);
@@ -47,7 +58,7 @@ public class ScreenNavigator {
 
     /**
      * Launches the main screen
-     * @param gameManager The game manager used by the main screen controller
+     * @param gameManager The game manager used by the main screen controller (GameManager)
      */
     public void launchMainScreen(GameManager gameManager) {
         ScreenController controller = new MainScreenController(gameManager);
@@ -56,7 +67,7 @@ public class ScreenNavigator {
 
     /**
      * Launches the garage screen
-     * @param gameManager The game manager used by the garage screen controller
+     * @param gameManager The game manager used by the garage screen controller (GameManager)
      */
     public void launchGarageScreen(GameManager gameManager) {
         ScreenController controller = new GarageScreenController(gameManager);
@@ -65,7 +76,7 @@ public class ScreenNavigator {
 
     /**
      * Launches the shop screen
-     * @param gameManager The game manager used by the shop screen controller
+     * @param gameManager The game manager used by the shop screen controller (GameManager)
      */
     public void launchShopScreen(GameManager gameManager) {
         ScreenController controller = new ShopScreenController(gameManager);
@@ -74,7 +85,7 @@ public class ScreenNavigator {
 
     /**
      * Launches the race screen
-     * @param gameManager The game manager used by the shop screen controller
+     * @param gameManager The game manager used by the shop screen controller (GameManager)
      */
     public void launchRaceScreen(GameManager gameManager) {
         ScreenController controller = new RaceScreenController(gameManager);
@@ -83,7 +94,7 @@ public class ScreenNavigator {
 
     /**
      * Launches the finish screen
-     * @param gameManager The game manager used by the shop screen controller
+     * @param gameManager The game manager used by the shop screen controller (GameManager)
      */
     public void launchFinishScreen(GameManager gameManager) {
         ScreenController controller = new FinishScreenController(gameManager);
@@ -92,7 +103,7 @@ public class ScreenNavigator {
 
     /**
      * Replaces the root border pane's center component with the screen defined by the given {@link ScreenController}
-     * @param controller The JavaFX screen controller for the screen to be launched
+     * @param controller The JavaFX screen controller for the screen to be launched (ScreenController)
      */
     private void launchScreen(ScreenController controller) {
         try {
