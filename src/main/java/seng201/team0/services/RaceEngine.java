@@ -521,22 +521,47 @@ public class RaceEngine {
         return prizeMoney;
     }
 
+    /**
+     * Returns a map of race penalties assigned to each car.
+     *
+     * @return a map where the key is a {@link Car} and the value is the penalty in seconds.
+     */
     public Map<Car, Integer> getRacePenalties() {
         return racePenalties;
     }
 
+    /**
+     * Returns the list of lap numbers where fuel stops occurred.
+     *
+     * @return a list of integers representing the fuel stop lap numbers.
+     */
     public List<Integer> getFuelStops() {
         return fuelStops;
     }
 
+    /**
+     * Returns a map of total hours each car has been active.
+     *
+     * @return a map where the key is a {@link Car} and the value is the total hours raced.
+     */
     public Map<Car, Integer> getCarHours() {
         return carHours;
     }
 
+    /**
+     * Returns a map of distances covered by each car.
+     *
+     * @return a map where the key is a {@link Car} and the value is the total distance covered.
+     */
     public Map<Car, Integer> getCarDistances() {
         return carDistances;
     }
 
+    /**
+     * Returns the list of cars in their finish order.
+     *
+     * @return a list of {@link Car} objects ordered by their race finishing position.
+     */
     public List<Car> getFinishPositions() {
         return finishPositions;
     }

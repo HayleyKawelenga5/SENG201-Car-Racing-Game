@@ -61,4 +61,19 @@ public class GarageServiceTest {
         assertFalse(result);
     }
 
+    @Test
+    public void testUpgradeCappedStats() {
+        Car cappedCar = new Car(95, 95, 95, 95, 380, new ArrayList<>());
+        Upgrade strongUpgrade = new Upgrade("Boost", 10, 10, 10, 10, 400);
+        playerUpgrades.clear();
+        playerUpgrades.add(strongUpgrade);
+
+        boolean result = garageService.installUpgrade(cappedCar, strongUpgrade, playerUpgrades);
+        assertTrue(result);
+        assertEquals(100, cappedCar.getCarSpeed());
+        assertEquals(100, cappedCar.getCarHandling());
+        assertEquals(100, cappedCar.getCarReliability());
+        assertEquals(100, cappedCar.getCarFuelEconomy());
+    }
+
 }

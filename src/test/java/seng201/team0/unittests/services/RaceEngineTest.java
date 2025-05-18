@@ -78,6 +78,30 @@ public class RaceEngineTest {
     }
 
     @Test
+    public void testApplyRouteMultipliersHilly() {
+        Car car = new Car(90, 80, 70, 60, 300, new ArrayList<>());
+        Route route = new Route(RouteType.HILLY, 100, 2, 1.4);
+        RaceEngine engine = new RaceEngine(gameManager, race, route, car, "EASY", raceScreenController);
+        engine.applyRouteMultipliers();
+        assertEquals(64, car.getCarSpeed());
+        assertEquals(80, car.getCarHandling());
+        assertEquals(70, car.getCarReliability());
+        assertEquals(42, car.getCarFuelEconomy());
+    }
+
+    @Test
+    public void testApplyRouteMultipliersOffroad() {
+        Car car = new Car(90, 80, 70, 60, 300, new ArrayList<>());
+        Route route = new Route(RouteType.OFFROAD, 100, 2, 1.4);
+        RaceEngine engine = new RaceEngine(gameManager, race, route, car, "EASY", raceScreenController);
+        engine.applyRouteMultipliers();
+        assertEquals(90, car.getCarSpeed());
+        assertEquals(57, car.getCarHandling());
+        assertEquals(50, car.getCarReliability());
+        assertEquals(60, car.getCarFuelEconomy());
+    }
+
+    @Test
     public void testConsumeFuel() {
         playerCar.setCarFuelAmount(50);
         playerCar.setCarSpeed(20);
@@ -118,9 +142,9 @@ public class RaceEngineTest {
 
     @Test
     public void testNoCarsFunctioningTrue() {
-        Car car1 = new Car(0, 50, 0, 0, 50, new ArrayList<>());
-        Car car2 = new Car(0, 60, 0, 0, 60, new ArrayList<>());
-        Car car3 = new Car(0, 70, 0, 0, 70, new ArrayList<>());
+        Car car1 = new Car(0, 50, 0, 50, 50, new ArrayList<>());
+        Car car2 = new Car(60, 60, 60, 0, 60, new ArrayList<>());
+        Car car3 = new Car(0, 70, 70, 0, 70, new ArrayList<>());
         assertTrue(raceEngine.noCarsFunctioning(List.of(car1, car2, car3)));
     }
 

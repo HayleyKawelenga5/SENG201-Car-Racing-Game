@@ -22,17 +22,17 @@ public class GameInitializerTest {
 
     @Test
     public void testValidName() {
-        assertDoesNotThrow(() -> gameInitializer.selectName("Player"));
+        assertDoesNotThrow(() -> gameInitializer.selectName("ABCDE"));
     }
 
     @Test
     public void testInvalidNameTooShort() {
-        assertThrows(InvalidNameException.class, () -> gameInitializer.selectName("Pl"));
+        assertThrows(InvalidNameException.class, () -> gameInitializer.selectName("AB"));
     }
 
     @Test
     public void testInvalidNameTooLong() {
-        assertThrows(InvalidNameException.class, () -> gameInitializer.selectName("PlayerPlayerPlayer"));
+        assertThrows(InvalidNameException.class, () -> gameInitializer.selectName("ABCDEFGHIJKLMNOPQ"));
     }
 
     @Test
@@ -135,6 +135,13 @@ public class GameInitializerTest {
         assertFalse(gameInitializer.deleteCar(car));
         assertEquals(0, gameInitializer.getPlayerCars().size());
         assertEquals(600, gameInitializer.getMoney());
+    }
+
+    @Test
+    public void testGetAvailableCarsGeneratesIfEmpty() {
+        List<Car> availableCars = gameInitializer.getAvailableCars();
+        assertFalse(availableCars.isEmpty());
+        assertEquals(5, availableCars.size());
     }
 
 }

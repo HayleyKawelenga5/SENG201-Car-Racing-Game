@@ -19,6 +19,7 @@ public class UpgradeService {
      * @return A randomly generated Upgrade.
      */
     public List<Upgrade> generateRandomUpgrades() {
+        availableUpgrades.clear();
         Random random = new Random();
         for (int i = 0; i < 3; i++) {
             String[] upgradeNames = {

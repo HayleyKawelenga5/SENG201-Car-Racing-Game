@@ -49,11 +49,13 @@ public class RouteServiceTest {
                 case HILLY:
                     assertTrue(distance >= 60 && distance <= 150);
                     assertTrue(difficulty >= 1.2 && difficulty <= 1.6);
+                    break;
                 case OFFROAD:
                     assertTrue(distance >= 60 && distance <= 150);
                     assertTrue(difficulty >= 1.2 && difficulty <= 1.6);
+                    break;
                 case WINDY:
-                    assertTrue(distance >= 40 && distance <= 150);
+                    assertTrue(distance >= 60 && distance <= 150);
                     assertTrue(difficulty >= 1.2 && difficulty <= 1.6);
                     break;
                 case BEACH:
