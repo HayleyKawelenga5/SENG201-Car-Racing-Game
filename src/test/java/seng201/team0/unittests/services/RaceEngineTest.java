@@ -14,6 +14,8 @@ import seng201.team0.GameManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -156,10 +158,67 @@ public class RaceEngineTest {
         assertFalse(raceEngine.noCarsFunctioning(List.of(car1, car2, car3)));
     }
 
+    @Test
+    void testUpdateFinishPositions() {
+
+        Car car1 = new Car(50, 50, 50, 50, 200, new ArrayList<>());
+        Car car2 = new Car(50, 50, 50, 50, 200, new ArrayList<>());
+        Car car3 = new Car(50, 50, 50, 50, 200, new ArrayList<>());
+
+        raceEngine.setFinishPositions(new ArrayList<>(List.of(car1, car2, car3)));
+
+        raceEngine.setCarDistances(new HashMap<>(Map.of(
+                car1, 100,
+                car2, 110,
+                car3, 105
+        )));
+
+        raceEngine.setCarHours(new HashMap<>(Map.of(
+                car1, 3,
+                car2, 2,
+                car3, 3
+        )));
+
+        raceEngine.setRacePenalties(new HashMap<>(Map.of(
+                car1, 5,
+                car2, 0,
+                car3, 10
+        )));
+
+        raceEngine.updateFinishPositions();
+
+        assertEquals(95, raceEngine.getCarDistances().get(car1));
+        assertEquals(110, raceEngine.getCarDistances().get(car2));
+        assertEquals(95, raceEngine.getCarDistances().get(car3));
+
+        List<Car> expectedOrder = List.of(car2, car1, car3);
+        assertEquals(expectedOrder, raceEngine.getFinishPositions());
+    }
+
+    @Test
+    void testReduceCurrentCarStats() {
+        Car car = new Car(50, 60, 70, 80, 260, new ArrayList<>());
+
+        raceEngine.reduceCurrentCarStats(car);
+
+        assertEquals(40, car.getCarSpeed());
+        assertEquals(50, car.getCarHandling());
+        assertEquals(60, car.getCarReliability());
+        assertEquals(70, car.getCarFuelEconomy());
+        assertEquals(220, car.getCarCost());
+    }
+
+    @Test
+    void testCalculatePrizeMoney() {
+        race.setRacePrizeMoney(1000);
+
+        assertEquals(1000, raceEngine.calculatePrizeMoney(1));
+        assertEquals(800, raceEngine.calculatePrizeMoney(2));
+        assertEquals(600, raceEngine.calculatePrizeMoney(3));
+        assertEquals(400, raceEngine.calculatePrizeMoney(4));
+        assertEquals(200, raceEngine.calculatePrizeMoney(5));
+        assertEquals(0, raceEngine.calculatePrizeMoney(6));
+    }
+
 }
-
-
-
-
-
 

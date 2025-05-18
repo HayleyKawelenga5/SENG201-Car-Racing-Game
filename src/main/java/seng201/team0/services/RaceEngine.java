@@ -25,15 +25,15 @@ public class RaceEngine {
     private final String gameDifficulty;
 
     private final List<Car> opponents;
-    private final Map<Car, Integer> carDistances;
+    private Map<Car, Integer> carDistances;
 
     private final List<Integer> fuelStops = new ArrayList<>();
     private final Map<Car, Set<Integer>> triggeredFuelStops = new HashMap<>();
-    private final Map<Car, Integer> racePenalties = new HashMap<>();
+    private Map<Car, Integer> racePenalties = new HashMap<>();
 
-    private final List<Car> finishPositions = new ArrayList<>();
+    private List<Car> finishPositions = new ArrayList<>();
 
-    private final Map<Car, Integer> carHours = new HashMap<>();
+    private Map<Car, Integer> carHours = new HashMap<>();
 
     private final RaceScreenController raceScreenController;
     private static final Logger logger = Logger.getLogger(RaceEngine.class.getName());
@@ -384,7 +384,7 @@ public class RaceEngine {
     /**
      * Updates finishing positions with penalties and sorts by race time and distance.
      */
-    private void updateFinishPositions() {
+    public void updateFinishPositions() {
         for (Car car : finishPositions) {
             int currentDistance = carDistances.getOrDefault(car, 0);
             int penalty = racePenalties.getOrDefault(car, 0);
@@ -497,7 +497,7 @@ public class RaceEngine {
      * @param position Player's final position.
      * @return Calculated prize money.
      */
-    private int calculatePrizeMoney(int position) {
+    public int calculatePrizeMoney(int position) {
         int prizeMoney = race.getRacePrizeMoney();
         switch (position) {
             case 1:
@@ -565,5 +565,44 @@ public class RaceEngine {
     public List<Car> getFinishPositions() {
         return finishPositions;
     }
+
+    /**
+     * Sets the list of cars in their initial finish positions.
+     * This list will be modified during race processing.
+     *
+     * @param finishPositions A mutable list of cars in finishing order.
+     */
+    public void setFinishPositions(List<Car> finishPositions) {
+        this.finishPositions = finishPositions;
+    }
+
+    /**
+     * Sets the distance each car has traveled.
+     * The values may be modified during penalty processing.
+     *
+     * @param carDistances A mutable map of cars to their distances.
+     */
+    public void setCarDistances(Map<Car, Integer> carDistances) {
+        this.carDistances = carDistances;
+    }
+
+    /**
+     * Sets the number of hours each car has taken to finish the race.
+     *
+     * @param carHours A mutable map of cars to their time taken in hours.
+     */
+    public void setCarHours(Map<Car, Integer> carHours) {
+        this.carHours = carHours;
+    }
+
+    /**
+     * Sets any race penalties to apply to each car's distance.
+     *
+     * @param racePenalties A mutable map of cars to their penalty distances.
+     */
+    public void setRacePenalties(Map<Car, Integer> racePenalties) {
+        this.racePenalties = racePenalties;
+    }
+
 
 }
