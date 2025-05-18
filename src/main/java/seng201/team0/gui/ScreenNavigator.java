@@ -35,7 +35,7 @@ public class ScreenNavigator {
 
     /**
      * Creates a ScreenNavigator with the given stage.
-     * @param stage The JavaFX stage (Stagr)
+     * @param stage The JavaFX stage (Stage)
      */
     public ScreenNavigator(Stage stage) {
         this.stage = stage;

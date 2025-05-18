@@ -27,7 +27,7 @@
       <RowConstraints maxHeight="325.0" minHeight="7.0" prefHeight="120.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label fx:id="moneyLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Money:" GridPane.valignment="TOP">
+      <Label fx:id="moneyLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Money:" GridPane.valignment="TOP">
          <font>
             <Font size="18.0" />
          </font>
@@ -35,7 +35,7 @@
             <Insets left="10.0" top="10.0" />
          </GridPane.margin>
       </Label>
-      <Label style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="My upgrades:" GridPane.valignment="TOP">
+      <Label style="-fx-background-color: rgba(255, 255, 255, 1);" text="My upgrades:" GridPane.valignment="TOP">
          <font>
             <Font size="16.0" />
          </font>
@@ -43,7 +43,7 @@
             <Insets left="10.0" top="40.0" />
          </GridPane.margin>
       </Label>
-      <Label style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Upgrade shop:" GridPane.rowIndex="2">
+      <Label style="-fx-background-color: rgba(255, 255, 255, 1);" text="Upgrade shop:" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
@@ -51,7 +51,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="My cars:" GridPane.columnIndex="1" GridPane.valignment="TOP">
+      <Label style="-fx-background-color: rgba(255, 255, 255, 1);" text="My cars:" GridPane.columnIndex="1" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="40.0" />
          </GridPane.margin>
@@ -59,7 +59,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Car shop:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Label style="-fx-background-color: rgba(255, 255, 255, 1);" text="Car shop:" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
             <Font size="16.0" />
          </font>
@@ -123,52 +123,52 @@
          <GridPane.margin>
             <Insets bottom="5.0" right="5.0" />
          </GridPane.margin></Button>
-      <Label fx:id="carSpeedLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Speed:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="carSpeedLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Speed:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="10.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="carHandlingLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Handling:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="carHandlingLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Handling:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="30.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="carReliabilityLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Reliability:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="carReliabilityLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Reliability:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="50.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="carFuelEconomyLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Fuel Economy:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="carFuelEconomyLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Fuel Economy:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="70.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="carCostLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Cost:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="carCostLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Cost:" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="90.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="upgradeSpeedLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Speed:" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="upgradeSpeedLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Speed:" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="10.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="upgradeHandlingLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Handling:" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="upgradeHandlingLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Handling:" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="30.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="upgradeReliabilityLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Reliability:" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="upgradeReliabilityLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Reliability:" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="50.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="upgradeFuelEconomyLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Fuel Economy:" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="upgradeFuelEconomyLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Fuel Economy:" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="70.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="upgradeCostLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Cost:" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label fx:id="upgradeCostLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Cost:" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" top="90.0" />
          </GridPane.margin>
@@ -213,7 +213,7 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="carUpgradesLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Upgrades: " GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Label fx:id="carUpgradesLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Upgrades: " GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="10.0" top="110.0" />
          </GridPane.margin>
