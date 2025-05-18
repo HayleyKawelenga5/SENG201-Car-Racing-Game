@@ -57,6 +57,7 @@ public class RaceEngine {
      * @param playerCar            The player's Car object.
      * @param difficulty           Game difficulty.
      * @param raceScreenController UI controller to update race progress.
+     * @param gameManager          The game manager for this race.
      */
     public RaceEngine(GameManager gameManager, Race race, Route selectedRoute, Car playerCar, String difficulty, RaceScreenController raceScreenController) {
         this.gameManager = gameManager;
@@ -431,12 +432,13 @@ public class RaceEngine {
         gameManager.addToTotalPrizeMoney(prizeMoney);
         Platform.runLater(() -> raceScreenController.onPlayerFinished(playerPosition, prizeMoney));
     }
+
     /**
      * Lowers the current car's stats by fixed amounts.
-     *
      * Reduces speed, handling, reliability, and fuel economy by 10 each,
      * and reduces the car's cost by 40. Values will not go below 0. This is to encourage the player to buy more cars
      * or purchase upgrades after a race.
+     * @param currentCar the car whose stats will be reduced.
      */
     public void reduceCurrentCarStats(Car currentCar) {
         currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));

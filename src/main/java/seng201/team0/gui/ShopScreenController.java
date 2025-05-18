@@ -16,7 +16,6 @@ import java.util.List;
 
 /**
  * Controller class for the Shop Screen GUI.
- *<p></p>
  * This controller handles user interactions for buying and selling cars and upgrades, viewing the amount of money the
  * user has and viewing cars and upgrades/tuning parts available for purchase. It updates the GUI components based on the
  * player's selections and game state, and communicated with the {@link ShopService} and {@link GameManager} to manage

@@ -16,11 +16,9 @@ import java.util.List;
 
 /**
  * Controller class for the Garage Screen GUI.
- *<p></p>
  * This screen allows the user to view the currently selected car, view up to 4 reserve cars owned by the player,
  * view any tuning parts (upgrades) owned by the player, swap the currently selected car and install a tuning part
  * (upgrade) on any car owned by the player.
- *<p></p>
  * The controller manages button clicks, updates the car and upgrade stats on the GUI and communicates with the
  * {@link GarageService} for installing upgrades.
  */

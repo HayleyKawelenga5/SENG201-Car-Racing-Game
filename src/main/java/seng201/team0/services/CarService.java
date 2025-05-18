@@ -19,6 +19,7 @@ public class CarService {
     /**
      * Generates a random car with random stats within the given range.
      * The cost is calculated based on the sum of the car's attributes.
+     * @param maxValue the number of cars to be generated
      *
      * @return A list of Car objects with randomly generated stats.
      */

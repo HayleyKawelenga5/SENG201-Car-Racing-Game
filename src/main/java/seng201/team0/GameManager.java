@@ -151,6 +151,7 @@ public class GameManager {
     }
 
     /**
+     * Gets the player's name
      * @return The player's name.
      */
     public String getPlayerName() {
@@ -158,6 +159,7 @@ public class GameManager {
     }
 
     /**
+     * Gets the season length of the race.
      * @return The season length.
      */
     public int getSeasonLength() {
@@ -165,6 +167,7 @@ public class GameManager {
     }
 
     /**
+     * Gets the number of races remaining.
      * @return The number of races remaining.
      */
     public int getRacesRemaining() {
@@ -180,6 +183,7 @@ public class GameManager {
 
 
     /**
+     * Gets the game difficulty.
      * @return The selected difficulty setting.
      */
     public String getDifficulty() {
@@ -187,11 +191,13 @@ public class GameManager {
     }
 
     /**
+     * Gets the player's current amount of money
      * @return The player's current money.
      */
     public int getMoney() { return money; }
 
     /**
+     * Gets the list of player finish positions
      * @return a list containing the player's finish positions throughout the race
      */
     public List<Integer> getPlayerFinishPositions() {
@@ -199,6 +205,7 @@ public class GameManager {
     }
 
     /**
+     * Gets the player's average finish position.
      * @return The player's average finish position.
      */
     public double getAveragePlayerFinishPositions(){
@@ -206,6 +213,7 @@ public class GameManager {
     }
 
     /**
+     * Gets the total prize money earned by the player.
      * @return The total prize money earned by the player.
      */
     public int getPlayerTotalPrizeMoney(){
@@ -226,7 +234,7 @@ public class GameManager {
      */
     public void setMoney(int money) { this.money = money; }
 
-    /**
+    /**Gets the list of cars owned by the player.
      * @return The list of cars owned by the player.
      */
     public List<Car> getPlayerCars() { return playerCars; }
@@ -239,6 +247,7 @@ public class GameManager {
     public void setPlayerCars(List<Car> playerCars) { this.playerCars = playerCars;}
 
     /**
+     * Gets the currently selected car
      * @return The player's currently selected car.
      */
     public Car getCurrentCar() { return currentCar; }
@@ -251,6 +260,7 @@ public class GameManager {
     public void setCurrentCar(Car currentCar) { this.currentCar = currentCar; }
 
     /**
+     * Gets the list of upgrades the player owns.
      * @return The list of upgrades the player owns.
      */
     public List<Upgrade> getPlayerUpgrades() { return playerUpgrades; }
@@ -263,6 +273,7 @@ public class GameManager {
     public void setPlayerUpgrades(List<Upgrade> playerUpgrades) { this.playerUpgrades = playerUpgrades; }
 
     /**
+     * Gets the currently selected race.
      * @return The currently selected race.
      */
     public Race getSelectedRace() { return selectedRace; }

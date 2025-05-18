@@ -19,7 +19,6 @@ import java.util.List;
  * This class manages the interaction between the GUI elements and the game logic on the main screen including
  * viewing player money, season length and number of remaining races, visiting the shop, going to the garage and selecting
  * and starting a race.
- * <p></p>
  * The controller uses {@link GameManager} to access game data and operations and {@link ScreenUpdater} utility methods
  * to update GUI labels efficiently
  */

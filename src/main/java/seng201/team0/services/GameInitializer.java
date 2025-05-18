@@ -128,6 +128,8 @@ public class GameInitializer {
      * If the car is not in the selected list, this method does nothing.
      *
      * @param car The Car to remove from the selection.
+     *
+     * @return true if the car was successfully deleted from the player's inventory and false otherwise
      */
     public boolean deleteCar(Car car) {
         if (playerCars.contains(car)) {
