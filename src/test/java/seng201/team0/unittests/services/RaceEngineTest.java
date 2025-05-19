@@ -144,17 +144,17 @@ public class RaceEngineTest {
 
     @Test
     public void testNoCarsFunctioningTrue() {
-        Car car1 = new Car(0, 50, 0, 50, 50, new ArrayList<>());
-        Car car2 = new Car(60, 60, 60, 0, 60, new ArrayList<>());
-        Car car3 = new Car(0, 70, 70, 0, 70, new ArrayList<>());
+        Car car1 = new Car(0, 50, 50, 50, 150, new ArrayList<>());
+        Car car2 = new Car(60, 60, 0, 60, 180, new ArrayList<>());
+        Car car3 = new Car(70, 70, 70, 0, 210, new ArrayList<>());
         assertTrue(raceEngine.noCarsFunctioning(List.of(car1, car2, car3)));
     }
 
     @Test
     public void testNoCarsFunctioningFalse() {
-        Car car1 = new Car(50, 50, 0, 0, 100, new ArrayList<>());
-        Car car2 = new Car(0, 60, 0, 0, 60, new ArrayList<>());
-        Car car3 = new Car(50, 50, 50, 50, 140, new ArrayList<>());
+        Car car1 = new Car(70, 70, 70, 70, 280, new ArrayList<>());
+        Car car2 = new Car(60, 60, 60, 60, 240, new ArrayList<>());
+        Car car3 = new Car(50, 50, 50, 50, 200, new ArrayList<>());
         assertFalse(raceEngine.noCarsFunctioning(List.of(car1, car2, car3)));
     }
 
