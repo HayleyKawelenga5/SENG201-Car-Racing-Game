@@ -112,7 +112,7 @@ public class GameInitializer {
 
     /**
      * Sets the player's cars to the given list.
-     * @param playerCars list of cars for the player's cars to be set to. (List<Car>)
+     * @param playerCars list of cars for the player's cars to be set to. (List containing objects of type Car)
      */
     public void setPlayerCars(List<Car> playerCars) { this.playerCars = playerCars; }
 

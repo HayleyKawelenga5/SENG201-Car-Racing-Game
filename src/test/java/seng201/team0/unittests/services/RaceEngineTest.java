@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RaceEngineTest {
 
     private Race race;
-    private Route route;
     private Car playerCar;
     private RaceEngine raceEngine;
     private RaceScreenController raceScreenController;
@@ -38,7 +37,7 @@ public class RaceEngineTest {
         );
         race = new Race(6, routes, 6, 480);
         playerCar = new Car(90, 80, 70, 60, 300, new ArrayList<>());
-        route = new Route(RouteType.FLAT, 100, 2, 1.2);
+        Route route = new Route(RouteType.FLAT, 100, 2, 1.2);
         raceEngine = new RaceEngine(gameManager, race, route, playerCar, "EASY", raceScreenController);
         raceScreenController = new RaceScreenController(gameManager);
     }
@@ -46,8 +45,6 @@ public class RaceEngineTest {
     @Test
     public void testApplyRouteMultipliersFlat() {
         Car car = new Car(90, 80, 70, 60, 300, new ArrayList<>());
-        Route route = new Route(RouteType.FLAT, 100, 2, 1.2);
-        RaceEngine engine = new RaceEngine(gameManager, race, route, car, "EASY", raceScreenController);
         raceEngine.applyRouteMultipliers();
         assertEquals(90, car.getCarSpeed());
         assertEquals(80, car.getCarHandling());
@@ -129,7 +126,6 @@ public class RaceEngineTest {
 
     @Test
     public void testGenerateFuelStops() {
-        Route route = new Route(RouteType.FLAT, 100, 2, 1.2);
         raceEngine.generateFuelStops();
         List<Integer> fuelStops = raceEngine.getFuelStops();
         assertEquals(2, fuelStops.size());

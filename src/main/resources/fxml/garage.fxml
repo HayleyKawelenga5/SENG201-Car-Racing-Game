@@ -146,7 +146,7 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="currentCarLabel" style="-fx-background-color: rgba(255, 255, 255, 0.7);" text="Current car:" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+      <Label fx:id="currentCarLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Current car:" GridPane.halignment="LEFT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="150.0" />
          </GridPane.margin>

@@ -135,8 +135,8 @@ public class ScreenUpdater {
      * Updates a list of route selection buttons with descriptions of the available {@link Route} objects.
      * If fewer routes are available than buttons, the extra buttons are cleared.
      *
-     * @param availableRouteButtons The list of buttons to update. (List<Button>)
-     * @param availableRoutes       The list of available routes. (List<Route>)
+     * @param availableRouteButtons The list of buttons to update. (List containing objects of type Button)
+     * @param availableRoutes       The list of available routes. (List containing objects of type Route)
      */
     public static void updateRouteButtons(List<Button> availableRouteButtons, List<Route> availableRoutes) {
         for (int i = 0; i < availableRouteButtons.size(); i++) {
@@ -152,8 +152,8 @@ public class ScreenUpdater {
      * Updates a list of upgrade selection buttons with the names of the available {@link Upgrade} objects.
      * If fewer upgrades are available than buttons, the extra buttons are cleared.
      *
-     * @param buttons  The list of buttons to update. (List<Button>)
-     * @param upgrades The list of available upgrades. (List<Upgrade>)
+     * @param buttons  The list of buttons to update. (List containing objects of type Button)
+     * @param upgrades The list of available upgrades. (List containing objects of type Upgrade)
      */
     public static void updateUpgradeButtons(List<Button> buttons, List<Upgrade> upgrades){
         for (int i = 0; i < buttons.size(); i++){

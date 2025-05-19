@@ -25,20 +25,20 @@ public class RaceServiceTest {
     public void testGenerateRandomRaceEasy() {
         Race race = raceService.generateRandomRace("EASY");
         assertNotNull(race);
-        assertTrue(race.getAvailableRoutes().size() >= 1 && race.getAvailableRoutes().size() <= 3);
+        assertTrue(!race.getAvailableRoutes().isEmpty() && race.getAvailableRoutes().size() <= 3);
         assertTrue(race.getRaceEntries() >= 3 && race.getRaceEntries() <= 8);
         assertTrue(race.getRaceHours() >= 3 && race.getRaceHours() <= 8);
-        assertTrue(race.getRacePrizeMoney() == (race.getRaceEntries() + race.getRaceHours()) * 40);
+        assertEquals(race.getRacePrizeMoney(), (race.getRaceEntries() + race.getRaceHours()) * 40);
     }
 
     @Test
     public void testGenerateRandomRaceHard() {
         Race race = raceService.generateRandomRace("HARD");
         assertNotNull(race);
-        assertTrue(race.getAvailableRoutes().size() >= 1 && race.getAvailableRoutes().size() <= 3);
+        assertTrue(!race.getAvailableRoutes().isEmpty() && race.getAvailableRoutes().size() <= 3);
         assertTrue(race.getRaceEntries() >= 3 && race.getRaceEntries() <= 8);
         assertTrue(race.getRaceHours() >= 3 && race.getRaceHours() <= 8);
-        assertTrue(race.getRacePrizeMoney() == (race.getRaceEntries() + race.getRaceHours()) * 20);
+        assertEquals(race.getRacePrizeMoney(), (race.getRaceEntries() + race.getRaceHours()) * 20);
     }
 
     @Test

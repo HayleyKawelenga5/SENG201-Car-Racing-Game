@@ -57,7 +57,7 @@ public class Car {
      * @param reliability The reliability measure of the car (20-100). (int)
      * @param fuelEconomy The fuel economy of the car (20-100). (int)
      * @param cost        The cost of the car. (int)
-     * @param upgrades    A list of the tuning parts installed on the car (if any) (List<Upgrade>)
+     * @param upgrades    A list of the tuning parts installed on the car (if any) (List containing objects of type Upgrade)
      */
     public Car(int speed, int handling, int reliability, int fuelEconomy, int cost, List<Upgrade> upgrades) {
         this.speed = speed;

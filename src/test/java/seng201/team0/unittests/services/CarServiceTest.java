@@ -40,7 +40,7 @@ public class CarServiceTest {
             assertTrue(car.getCarReliability() >= 20 && car.getCarReliability() <= 100);
             assertTrue(car.getCarFuelEconomy() >= 20 && car.getCarFuelEconomy() <= 100);
             assertTrue(car.getCarUpgrades().isEmpty());
-            assertTrue(car.getCarCost() == (car.getCarSpeed() + car.getCarHandling() + car.getCarReliability() + car.getCarFuelEconomy()));
+            assertEquals(car.getCarCost(), (car.getCarSpeed() + car.getCarHandling() + car.getCarReliability() + car.getCarFuelEconomy()));
         }
     }
 
@@ -60,7 +60,7 @@ public class CarServiceTest {
         Car car2 = new Car(60, 60, 60, 60, 240, upgrades);
 
         assertEquals(car1, car2);
-        assertNotEquals(car1, null);
+        assertNotEquals(null, car1);
     }
 
 }
