@@ -484,7 +484,7 @@ public class RaceEngine {
      */
     public boolean noCarsFunctioning(List<Car> cars) {
         for (Car car : cars) {
-            if (car.getCarSpeed() > 0 && car.getCarReliability() > 0 && car.getCarFuelEconomy() > 0) {
+            if (car.getCarSpeed() > 0 || car.getCarReliability() > 0 || car.getCarFuelEconomy() > 0) {
                 return false;
             }
         }

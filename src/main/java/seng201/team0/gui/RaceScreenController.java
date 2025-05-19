@@ -267,6 +267,7 @@ public class RaceScreenController extends ScreenController implements ScreenCont
             return;
         }
         if (raceEngine.noCarsFunctioning(playerCars) && getGameManager().getMoney() <= 0){
+            showAlert("No cars functioning", "You have no functioning cars.");
             getGameManager().toFinishScreen(raceEngine.getPlayerAveragePlacing(), raceEngine.getPlayerTotalPrizeMoney());
             return;
         }
