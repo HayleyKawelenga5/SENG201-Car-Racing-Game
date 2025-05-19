@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team0.gui.FinishScreenController">
+<StackPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team0.gui.FinishScreenController">
+
+   <!-- Background image -->
+   <ImageView fitHeight="400" fitWidth="600" preserveRatio="false">
+      <image>
+         <Image url="@/images/background_image.png" />
+      </image>
+   </ImageView>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane layoutX="6.0" layoutY="5.0" prefHeight="392.0" prefWidth="594.0">
         <columnConstraints>
@@ -19,14 +24,14 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="playerNameLabel" text="Player Name : " GridPane.halignment="CENTER">
+            <Label fx:id="playerNameLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Player Name : " GridPane.halignment="CENTER">
                <GridPane.margin>
                   <Insets bottom="400.0" right="100.0" top="100.0" />
                </GridPane.margin>
                <font>
                   <Font size="32.0" />
                </font></Label>
-            <Label fx:id="seasonLengthLabel" text="Season Length : " GridPane.halignment="CENTER">
+            <Label fx:id="seasonLengthLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Season Length : " GridPane.halignment="CENTER">
                <GridPane.margin>
                   <Insets bottom="200.0" right="100.0" />
                </GridPane.margin>
@@ -34,14 +39,14 @@
                   <Font size="32.0" />
                </font>
             </Label>
-            <Label fx:id="playerRacesCompetedLabel" text="Races Completed : " GridPane.halignment="CENTER">
+            <Label fx:id="playerRacesCompetedLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Races Completed : " GridPane.halignment="CENTER">
                <font>
                   <Font size="32.0" />
                </font>
                <GridPane.margin>
                   <Insets bottom="100.0" right="100.0" />
                </GridPane.margin></Label>
-            <Label fx:id="playerAveragePlacingLabel" text="Average Position: " GridPane.halignment="CENTER">
+            <Label fx:id="playerAveragePlacingLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Average Position: " GridPane.halignment="CENTER">
                <GridPane.margin>
                   <Insets right="100.0" />
                </GridPane.margin>
@@ -49,7 +54,7 @@
                   <Font size="32.0" />
                </font>
             </Label>
-            <Label fx:id="playerPrizeMoneyLabel" text="Total Prize Money : " GridPane.halignment="CENTER">
+            <Label fx:id="playerPrizeMoneyLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Total Prize Money : " GridPane.halignment="CENTER">
                <GridPane.margin>
                   <Insets right="100.0" top="100.0" />
                </GridPane.margin>
@@ -61,7 +66,16 @@
                   <Insets bottom="40.0" right="40.0" />
                </GridPane.margin>
             </Button>
+            <Label fx:id="playerTotalMoneyLabel" style="-fx-background-color: rgba(255, 255, 255, 1);" text="Total Player Money:">
+               <font>
+                  <Font size="32.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="100.0" top="200.0" />
+               </GridPane.margin>
+            </Label>
          </children>
       </GridPane>
    </children>
 </AnchorPane>
+</StackPane>

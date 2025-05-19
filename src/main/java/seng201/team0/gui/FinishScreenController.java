@@ -10,24 +10,19 @@ import seng201.team0.GameManager;
  * this screen is shown when the game ends and displays the final player statistics,
  * including name, season length, races completed, average placing, and total prize money.
  */
-public class FinishScreenController extends ScreenController {
+public class FinishScreenController extends ScreenController implements ScreenControllerInterface {
 
-    @FXML
-    private Label playerNameLabel;
-    @FXML
-    private Label seasonLengthLabel;
-    @FXML
-    private Label playerRacesCompetedLabel;
-    @FXML
-    private Label playerAveragePlacingLabel;
-    @FXML
-    private Label playerPrizeMoneyLabel;
-    @FXML
-    private Button quitButton;
+    @FXML private Label playerNameLabel;
+    @FXML private Label seasonLengthLabel;
+    @FXML private Label playerRacesCompetedLabel;
+    @FXML private Label playerAveragePlacingLabel;
+    @FXML private Label playerPrizeMoneyLabel;
+    @FXML private Label playerTotalMoneyLabel;
+    @FXML private Button quitButton;
 
     /**
      * Constructs a FinishScreenController with the given {@link GameManager}.
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public FinishScreenController(GameManager manager) {
         super(manager);
@@ -52,20 +47,22 @@ public class FinishScreenController extends ScreenController {
      *Populates all GUI labels with final player statistics.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         GameManager finishScreen = getGameManager();
 
         String playerName = finishScreen.getPlayerName();
         int seasonLength = finishScreen.getSeasonLength();
-        int playerRacesCompeted = finishScreen.getSeasonLength() - (finishScreen.getRacesRemaining()-1);
+        int playerRacesCompeted = finishScreen.getSeasonLength() - (getGameManager().getRacesRemaining()-1);
         double playerAveragePlacing = finishScreen.getAveragePlayerFinishPositions();
         int playerPrizeMoney = finishScreen.getPlayerTotalPrizeMoney();
+        int playerTotalMoney = finishScreen.getMoney() + playerPrizeMoney;
 
         playerNameLabel.setText("Player Name : " + playerName);
         seasonLengthLabel.setText("Season Length : " + seasonLength);
         playerRacesCompetedLabel.setText("Races Competed : " + playerRacesCompeted);
         playerAveragePlacingLabel.setText("Average Placing : " + playerAveragePlacing);
         playerPrizeMoneyLabel.setText("Total Prize Money : $" + playerPrizeMoney);
+        playerTotalMoneyLabel.setText("Total Money : $" + playerTotalMoney);
 
         quitButton.setOnAction(event -> onQuitButtonClicked());
     }

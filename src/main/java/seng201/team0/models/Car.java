@@ -9,24 +9,55 @@ import java.util.stream.Collectors;
  */
 public class Car {
 
+    /**
+     * The average velocity of a car in km/h achievable on a flat straight track
+     */
     private int speed;
+
+    /**
+     * Influences how well the car can navigate turns and maintain control. A higher value indicates better handling
+     */
     private int handling;
+
+    /**
+     * The reliability stat of the car, determining the likelihood of avoiding breakdowns.
+     */
     private int reliability;
+
+    /**
+     * The car's maximum distance in km achievable with a full tank of fuel on a flat straight track before needing to refuel
+     */
     private int fuelEconomy;
+
+    /**
+     * The cost of purchasing the car from the shop.
+     */
     private int cost;
+
+    /**
+     * A list of {@link Upgrade} objects currently installed on the car to improve its stats.
+     */
     List<Upgrade> upgrades;
+
+    /**
+     * The name of the car.
+     */
     private String name;
+
+    /**
+     * The current amount of fuel in the car.
+     */
     private int fuelAmount;
 
     /**
      * Constructor to create a Car object with the specified attributes.
      *
-     * @param speed       The average velocity of the car in km/h (20-100).
-     * @param handling    The handling ability of the car (20-100).
-     * @param reliability The reliability measure of the car (20-100).
-     * @param fuelEconomy The fuel economy of the car (20-100).
-     * @param cost        The cost of the car.
-     * @param upgrades    A list of the tuning parts installed on the car (if any)
+     * @param speed       The average velocity of the car in km/h (20-100). (int)
+     * @param handling    The handling ability of the car (20-100). (int)
+     * @param reliability The reliability measure of the car (20-100). (int)
+     * @param fuelEconomy The fuel economy of the car (20-100). (int)
+     * @param cost        The cost of the car. (int)
+     * @param upgrades    A list of the tuning parts installed on the car (if any) (List<Upgrade>)
      */
     public Car(int speed, int handling, int reliability, int fuelEconomy, int cost, List<Upgrade> upgrades) {
         this.speed = speed;
@@ -76,7 +107,7 @@ public class Car {
      * Gets the upgrades installed on the car.
      * @return the list of upgrades installed on the car
      */
-    public List<Upgrade> getUpgrades() { return upgrades; }
+    public List<Upgrade> getCarUpgrades() { return upgrades; }
 
     /**
      * Gets a comma-separated string describing the upgrades installed on the car.
@@ -106,43 +137,43 @@ public class Car {
 
     /**
      * Sets the speed of the car.
-     * @param speed speed of the car in km/h to be set
+     * @param speed speed of the car in km/h to be set (int)
      */
     public void setCarSpeed(int speed) { this.speed = speed; }
 
     /**
      * Sets the car's handling ability.
-     * @param handling handling ability of the car to be set
+     * @param handling handling ability of the car to be set (int)
      */
     public void setCarHandling(int handling) { this.handling = handling; }
 
     /**
      * Sets the car's reliability.
-     * @param reliability reliability percentage to be set
+     * @param reliability reliability percentage to be set (int)
      */
     public void setCarReliability(int reliability) { this.reliability = reliability; }
 
     /**
      * Sets the car's fuel economy.
-     * @param fuelEconomy fuel economy amount to be set
+     * @param fuelEconomy fuel economy amount to be set (int)
      */
     public void setCarFuelEconomy(int fuelEconomy) { this.fuelEconomy = fuelEconomy; }
 
     /**
      * Sets the car's cost value.
-     * @param cost cost value to be set
+     * @param cost cost value to be set (int)
      */
     public void setCarCost(int cost) { this.cost = cost; }
 
     /**
      * Sets the car's upgrades
-     * @param upgrade the list of upgrade installed on the car
+     * @param upgrade the list of upgrade installed on the car (Upgrade)
      */
     public void addToCarUpgrades(Upgrade upgrade) { this.upgrades.add(upgrade);}
 
     /**
      * Sets the name of the user's car.
-     * @param name name to be set
+     * @param name name to be set (String)
      */
     public void setCarName(String name){
         this.name = name;
@@ -150,7 +181,7 @@ public class Car {
 
     /**
      * Sets the fuel amount for the car.
-     * @param fuelAmount fuel amount to be set
+     * @param fuelAmount fuel amount to be set (int)
      */
     public void setCarFuelAmount(int fuelAmount){
         this.fuelAmount = fuelAmount;
@@ -160,7 +191,7 @@ public class Car {
      * Checks if this car is equal to another object.
      * Two cars are equal if they have the same attributes.
      *
-     * @param obj The object to compare with.
+     * @param obj The object to compare with. (Object)
      * @return true if the cars have the same attributes, false otherwise.
      */
     @Override

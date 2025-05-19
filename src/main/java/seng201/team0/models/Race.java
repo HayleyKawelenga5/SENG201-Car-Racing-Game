@@ -12,7 +12,7 @@ public class Race {
     private final int hours;
     private final List<Route> availableRoutes;
     private final int entries;
-    private final int prizeMoney;
+    private int prizeMoney;
 
     /**
      * Constructs a new {@link Race} with the specified duration, routes,
@@ -59,6 +59,15 @@ public class Race {
      */
     public int getRacePrizeMoney() {
         return prizeMoney;
+    }
+
+    /**
+     * Sets the prize money for the race.
+     *
+     * @param prizeMoney The amount of money to be awarded as the race prize.
+     */
+    public void setRacePrizeMoney(int prizeMoney) {
+        this.prizeMoney = prizeMoney;
     }
 
     /**

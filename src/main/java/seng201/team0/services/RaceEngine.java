@@ -1,6 +1,7 @@
 package seng201.team0.services;
 
 import javafx.application.Platform;
+import seng201.team0.GameManager;
 import seng201.team0.models.Car;
 import seng201.team0.models.Race;
 import seng201.team0.models.Route;
@@ -13,9 +14,8 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 /**
- * The RaceEngine class handles the simulation and logic of a car race event,
- * including tracking progress of player and opponent cars, fuel consumption,
- * random events, penalties, race status, and updating the GUI via the race screen controller.
+ * The RaceEngine class handles the simulation and logic of the car race event, including tracking progress of the
+ * player and opponent cars, fuel consumption, random events, penalties, race status and updating GUI via the controller
  */
 public class RaceEngine {
 
@@ -25,20 +25,19 @@ public class RaceEngine {
     private final String gameDifficulty;
 
     private final List<Car> opponents;
-    private final Map<Car, Integer> carDistances;
+    private Map<Car, Integer> carDistances;
 
     private final List<Integer> fuelStops = new ArrayList<>();
     private final Map<Car, Set<Integer>> triggeredFuelStops = new HashMap<>();
-    private final Map<Car, Integer> racePenalties = new HashMap<>();
+    private Map<Car, Integer> racePenalties = new HashMap<>();
 
-    private final List<Car> finishPositions = new ArrayList<>();
-    private final List<Integer> playerFinishPositions = new ArrayList<>();
-    private int playerTotalPrizeMoney;
+    private List<Car> finishPositions = new ArrayList<>();
 
-    private final Map<Car, Integer> carHours = new HashMap<>();
-
+    private Map<Car, Integer> carHours = new HashMap<>();
 
     private final RaceScreenController raceScreenController;
+    private static final Logger logger = Logger.getLogger(RaceEngine.class.getName());
+    private final GameManager gameManager;
 
     /**
      * Enum to represent the current status of a car in the race. Running if the player is still in the race, finished
@@ -50,22 +49,18 @@ public class RaceEngine {
 
     private final Map<Car, RaceStatus> carStatus = new HashMap<>();
 
-    private static final Logger logger = Logger.getLogger(RaceEngine.class.getName());
-
     /**
-     * Constructs a new RaceEngine instance with the specified race, route, player car, difficulty and GUI controller.
-     * <p></p>
-     * This method generates a list of opponent cars based on the number of race entries using the CarService, initializes
-     * tracking maps to keep track of each car's distance travelled, hours raced, race status, and fuel stops triggered
-     * and sets the initial values for all opponents and the player's car
-     * <p></p>
-     * @param race The Race object representing the race event with attributes including Hours, Routes, Entries and Prize money
-     * @param selectedRoute The Route object representing the route for the race with attributes including Description, Distance, Fuel Stops and Difficulty
-     * @param playerCar The player's Car object.
-     * @param difficulty The difficulty setting of the game (e.g., "EASY", "HARD").
-     * @param raceScreenController The GUI controller to update race screen events.
+     * Constructs a RaceEngine to handle the race logic and execution.
+     *
+     * @param race                 The Race object representing the race event.
+     * @param selectedRoute        The Route object representing the route for the race.
+     * @param playerCar            The player's Car object.
+     * @param difficulty           Game difficulty.
+     * @param raceScreenController UI controller to update race progress.
+     * @param gameManager          The game manager for this race.
      */
-    public RaceEngine(Race race, Route selectedRoute, Car playerCar, String difficulty, RaceScreenController raceScreenController) {
+    public RaceEngine(GameManager gameManager, Race race, Route selectedRoute, Car playerCar, String difficulty, RaceScreenController raceScreenController) {
+        this.gameManager = gameManager;
         this.race = race;
         this.selectedRoute = selectedRoute;
         this.playerCar = playerCar;
@@ -86,11 +81,12 @@ public class RaceEngine {
         carHours.put(playerCar, 0);
         carStatus.put(playerCar, RaceStatus.RUNNING);
         triggeredFuelStops.put(playerCar, new HashSet<>());
+
     }
 
     /**
-     * Applies route difficulty multipliers to each car's stats
-     * (speed, handling, reliability, fuel economy) based on route type.
+     * Applies route-specific multipliers to all participating cars. The route affects a car's stats based on its properties
+     * in the form of multipliers applied to the car's stats.
      */
     public void applyRouteMultipliers() {
         double difficultyMultiplier = selectedRoute.getRouteDifficultyMultiplier();
@@ -119,20 +115,36 @@ public class RaceEngine {
         }
     }
 
+    /**
+     * Reduces the fuel level of a given car based on its speed.
+     *
+     * @param car The car whose fuel is being consumed.
+     */
     public void consumeFuel(Car car) {
         car.setCarFuelAmount(car.getCarFuelAmount() - (car.getCarSpeed() / 2));
     }
 
+    /**
+     * Refuels the car and applies a time penalty for refueling.
+     *
+     * @param car The car being refueled.
+     */
     public void refuel(Car car) {
         car.setCarFuelAmount(car.getCarFuelEconomy());
         racePenalties.put(car, racePenalties.getOrDefault(car, 0) + 10);
     }
 
+    /**
+     * Applies a breakdown penalty if the player continues after a breakdown.
+     */
     public void breakdownContinue() {
         racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 20);
-        System.out.println("Breakdown continue penalty: " + 20);
     }
 
+    /**
+     * Calculates and sets fuel stop positions based on route distance and fuel stop count. These stops are spaced evenly
+     * along the route.
+     */
     public void generateFuelStops() {
         int routeFuelStops = selectedRoute.getRouteFuelStops();
         int routeDistance = selectedRoute.getRouteDistance();
@@ -142,6 +154,11 @@ public class RaceEngine {
         }
     }
 
+    /**
+     * Starts the race in a separate thread, updating cars each hour and running until all cars finish, the player runs
+     * out of time or the player is out of fuel.
+     * Updates the GUI via the raceScreenController during the race.
+     */
     public void startRace() {
         new Thread(() -> {
             applyRouteMultipliers();
@@ -172,8 +189,14 @@ public class RaceEngine {
     }
 
 
+    /**
+     * Updates the status of an opponent car for one hour of racing, including movement, fuel stops and finish or DNF
+     * conditions.
+     *
+     * @param car The opponent car to update.
+     * @return true if the car is at a fuel stop or finished/DNF this hour; false otherwise.
+     */
     private boolean updateOpponentCar(Car car) {
-
         int currentDistance = carDistances.get(car);
         int nextDistance = currentDistance + car.getCarSpeed();
 
@@ -195,7 +218,6 @@ public class RaceEngine {
 
         if (carDistances.get(car) >= selectedRoute.getRouteDistance()) {
             carStatus.put(car, RaceStatus.FINISHED);
-            System.out.println("Opponent finished. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
             finishPositions.add(car);
             carHours.put(car, carHours.get(car) + 1);
             return true;
@@ -203,13 +225,18 @@ public class RaceEngine {
 
         if (car.getCarFuelAmount() <= 0) {
             carStatus.put(car, RaceStatus.DNF);
-            System.out.println("Opponent DNF. Hours: " + carHours.get(car) + ". Status: " + carStatus.get(car) + ". Distance: " + carDistances.get(car));
             return true;
         }
 
         return false;
     }
 
+    /**
+     * Updates the player's car, handling fuel stops, events, and distance.
+     * Handles triggering of random events
+     *
+     * @return true if at a fuel stop or finished/DNF this hour; false otherwise.
+     */
     public boolean updatePlayerCar() {
 
         int currentDistance = carDistances.get(playerCar);
@@ -259,19 +286,30 @@ public class RaceEngine {
         return false;
     }
 
+    /**
+     * Blocks until the player clicks continue to proceed to the next race hour.
+     */
     private synchronized void waitForPlayerContinue() {
         try {
             wait();
-        } catch (InterruptedException e) {
+        }  catch (InterruptedException e) {
             logger.warning("Thread was interrupted while waiting: " + e.getMessage());
             Thread.currentThread().interrupt();
         }
+
     }
 
+    /**
+     * Called by UI when player clicks continue during a race to notify the race thread that the player has clicked continue,
+     * allowing the race simulation to proceed.
+     */
     public synchronized void playerClickedContinue() {
         notifyAll();
     }
 
+    /**
+     * Randomly triggers a car performance-related issue (breakdown or malfunction - both are random events)
+     */
     public void triggerCarPerformanceIssue() {
         int value = new Random().nextInt(1, 3);
         switch (value) {
@@ -284,6 +322,10 @@ public class RaceEngine {
         }
     }
 
+    /**
+     * Random chance of triggering a car breakdown based on the reliability of the player's car. The higher the reliability,
+     * the less likely the car will be to breakdown during the race.
+     */
     public void triggerCarBreakdown() {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarReliability() + 20)) {
@@ -291,15 +333,20 @@ public class RaceEngine {
         }
     }
 
+    /**
+     * Random chance of triggering a car malfunction based on handling.
+     */
     public void triggerCarMalfunction() {
         Random random = new Random();
         if (random.nextInt(1, 101) > (playerCar.getCarHandling() + 20)) {
-            System.out.println("Malfunction penalty: " + 10);
             racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 10);
             Platform.runLater(raceScreenController::onPlayerMalfunction);
         }
     }
 
+    /**
+     * Randomly triggers a random race event based on difficulty.
+     */
     public void triggerRandomEvent() {
         int chance = gameDifficulty.equals("HARD") ? 20 : 10;
         Random random = new Random();
@@ -316,20 +363,28 @@ public class RaceEngine {
         }
     }
 
+    /**
+     * Applies hitchhiker/stranded traveller event to player car. Applies a time penalty and rewards money
+     */
     public void handleHitchhiker() {
         String infoText = "Pick up a hitchhiker. This costs you time, but they pay you $50!";
         racePenalties.put(playerCar, racePenalties.getOrDefault(playerCar, 0) + 20);
-        System.out.println("Hitchhiker penalty: 20");
         Platform.runLater(() -> raceScreenController.onHitchhikerEvent(infoText));
     }
 
+    /**
+     * Applies severe weather event which forces all cars to retire from the race.
+     */
     public void handleSevereWeatherEvent() {
         String alertText = "Severe weather! All cars forced to retire from the race!";
         carStatus.replaceAll((c, v) -> RaceStatus.DNF);
         Platform.runLater(() -> raceScreenController.onSevereWeatherEvent(alertText));
     }
 
-    private void updateFinishPositions() {
+    /**
+     * Updates finishing positions with penalties and sorts by race time and distance.
+     */
+    public void updateFinishPositions() {
         for (Car car : finishPositions) {
             int currentDistance = carDistances.getOrDefault(car, 0);
             int penalty = racePenalties.getOrDefault(car, 0);
@@ -342,41 +397,66 @@ public class RaceEngine {
             }
             return Integer.compare(carDistances.get(car2), carDistances.get(car1));
         });
-        System.out.println("Finish Positions:");
-        for (int i = 0; i < finishPositions.size(); i++) {
-            Car car = finishPositions.get(i);
-            System.out.println((i + 1) + ". " + car.getCarName()
-                    + " | Hours: " + carHours.get(car)
-                    + " | Final Distance: " + carDistances.get(car)
-                    + " | Penalty: " + racePenalties.getOrDefault(car, 0));
-        }
     }
 
+    /**
+     * Handles the player car failing to finish the race (DNF) and updates GUI.
+     */
     public void playerDNF() {
         Platform.runLater(raceScreenController::onPlayerDNF);
     }
 
-    public void playerBreakdown(){
+    /**
+     *Handles scenario when a player retires from the race after a car breakdown random event.
+     */
+    public void playerRetired(){
         Platform.runLater(raceScreenController::onPlayerRetired);
     }
 
+    /**
+     * Handles scenario where player does not finish within race time.
+     */
     private void playerOutOfTime() {
         Platform.runLater(raceScreenController::onPlayerOutOfTime);
     }
 
-    private void playerFinished() {
+    /**
+     * Handles end-of-race logic when the player finishes.
+     */
+    public void playerFinished() {
         updateFinishPositions();
 
         int playerPosition = finishPositions.indexOf(playerCar) + 1;
-        playerFinishPositions.add(playerPosition); //list to keep track of player positions throughout race
+        gameManager.getPlayerFinishPositions().add(playerPosition);
         int prizeMoney = calculatePrizeMoney(playerPosition);
-        playerTotalPrizeMoney += prizeMoney;
+        gameManager.addToTotalPrizeMoney(prizeMoney);
         Platform.runLater(() -> raceScreenController.onPlayerFinished(playerPosition, prizeMoney));
     }
 
+    /**
+     * Lowers the current car's stats by fixed amounts.
+     * Reduces speed, handling, reliability, and fuel economy by 10 each,
+     * and reduces the car's cost by 40. Values will not go below 0. This is to encourage the player to buy more cars
+     * or purchase upgrades after a race.
+     * @param currentCar the car whose stats will be reduced.
+     */
+    public void reduceCurrentCarStats(Car currentCar) {
+        currentCar.setCarSpeed(Math.max(0, currentCar.getCarSpeed() - 10));
+        currentCar.setCarHandling(Math.max(0, currentCar.getCarHandling() - 10));
+        currentCar.setCarReliability(Math.max(0, currentCar.getCarReliability() - 10));
+        currentCar.setCarFuelEconomy(Math.max(0, currentCar.getCarFuelEconomy() - 10));
+        currentCar.setCarCost(Math.max(0, currentCar.getCarCost() - 40));
+    }
+
+    /**
+     * Calculates the average placing of the player over all races.
+     *
+     * @return Average placing value.
+     */
     public double getPlayerAveragePlacing() {
+        List<Integer> playerFinishPositions = gameManager.getPlayerFinishPositions();
         if (playerFinishPositions.isEmpty()) {
-            return 0; //player did not place in any races, could change this to display DNF
+            return 0;
         }
         int playerAveragePlacing = 0;
         for (Integer playerFinishPosition : playerFinishPositions) {
@@ -386,24 +466,42 @@ public class RaceEngine {
         return playerAveragePlacing;
     }
 
+    /**
+     * Returns total prize money earned by the player.
+     *
+     * @return Total prize money.
+     */
     public int getPlayerTotalPrizeMoney() {
-        return playerTotalPrizeMoney;
+        return gameManager.getPlayerTotalPrizeMoney();
     }
 
+    /**
+     * Checks if all cars are non-functional.
+     * A car is non-functional if any of speed, reliability, or fuel economy is 0.
+     *
+     * @param cars The list of cars to check.
+     * @return true if all cars are non-functional, false otherwise.
+     */
     public boolean noCarsFunctioning(List<Car> cars) {
-        for (Car car : cars){
-            if (car.getCarSpeed() == 0 || car.getCarReliability() == 0 || car.getCarFuelEconomy()==0){
-                return true;
+        for (Car car : cars) {
+            if (car.getCarSpeed() > 0 && car.getCarReliability() > 0 && car.getCarFuelEconomy() > 0) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    private int calculatePrizeMoney(int position) {
+    /**
+     * Calculates prize money based on final position in the race.
+     *
+     * @param position Player's final position.
+     * @return Calculated prize money.
+     */
+    public int calculatePrizeMoney(int position) {
         int prizeMoney = race.getRacePrizeMoney();
         switch (position) {
             case 1:
-                break; //full amount
+                break;
             case 2:
                 prizeMoney = (int) (prizeMoney * 0.8);
                 break;
@@ -422,11 +520,89 @@ public class RaceEngine {
         }
         return prizeMoney;
     }
+
+    /**
+     * Returns a map of race penalties assigned to each car.
+     *
+     * @return a map where the key is a {@link Car} and the value is the penalty in seconds.
+     */
+    public Map<Car, Integer> getRacePenalties() {
+        return racePenalties;
+    }
+
+    /**
+     * Returns the list of lap numbers where fuel stops occurred.
+     *
+     * @return a list of integers representing the fuel stop lap numbers.
+     */
+    public List<Integer> getFuelStops() {
+        return fuelStops;
+    }
+
+    /**
+     * Returns a map of total hours each car has been active.
+     *
+     * @return a map where the key is a {@link Car} and the value is the total hours raced.
+     */
+    public Map<Car, Integer> getCarHours() {
+        return carHours;
+    }
+
+    /**
+     * Returns a map of distances covered by each car.
+     *
+     * @return a map where the key is a {@link Car} and the value is the total distance covered.
+     */
+    public Map<Car, Integer> getCarDistances() {
+        return carDistances;
+    }
+
+    /**
+     * Returns the list of cars in their finish order.
+     *
+     * @return a list of {@link Car} objects ordered by their race finishing position.
+     */
+    public List<Car> getFinishPositions() {
+        return finishPositions;
+    }
+
+    /**
+     * Sets the list of cars in their initial finish positions.
+     * This list will be modified during race processing.
+     *
+     * @param finishPositions A mutable list of cars in finishing order.
+     */
+    public void setFinishPositions(List<Car> finishPositions) {
+        this.finishPositions = finishPositions;
+    }
+
+    /**
+     * Sets the distance each car has traveled.
+     * The values may be modified during penalty processing.
+     *
+     * @param carDistances A mutable map of cars to their distances.
+     */
+    public void setCarDistances(Map<Car, Integer> carDistances) {
+        this.carDistances = carDistances;
+    }
+
+    /**
+     * Sets the number of hours each car has taken to finish the race.
+     *
+     * @param carHours A mutable map of cars to their time taken in hours.
+     */
+    public void setCarHours(Map<Car, Integer> carHours) {
+        this.carHours = carHours;
+    }
+
+    /**
+     * Sets any race penalties to apply to each car's distance.
+     *
+     * @param racePenalties A mutable map of cars to their penalty distances.
+     */
+    public void setRacePenalties(Map<Car, Integer> racePenalties) {
+        this.racePenalties = racePenalties;
+    }
+
+
 }
-
-
-
-
-
-
-

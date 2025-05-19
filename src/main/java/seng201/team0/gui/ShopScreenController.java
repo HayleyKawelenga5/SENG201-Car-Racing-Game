@@ -16,13 +16,12 @@ import java.util.List;
 
 /**
  * Controller class for the Shop Screen GUI.
- *<p></p>
  * This controller handles user interactions for buying and selling cars and upgrades, viewing the amount of money the
  * user has and viewing cars and upgrades/tuning parts available for purchase. It updates the GUI components based on the
  * player's selections and game state, and communicated with the {@link ShopService} and {@link GameManager} to manage
  * the logic for transactions and display updates
  */
-public class ShopScreenController extends ScreenController {
+public class ShopScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private Label moneyLabel;
 
@@ -64,30 +63,85 @@ public class ShopScreenController extends ScreenController {
 
     @FXML private Button backButton;
 
+    /**
+     * Index of the currently selected car in the shop interface
+     */
     private int shopSelectedCarIndex = -1;
+
+    /**
+     * Index of the currently selected upgrade in the shop interface
+     */
     private int shopSelectedUpgradeIndex = -1;
 
+    /**
+     * List of cars available for purchase in the shop.
+     */
     private List<Car> availableCars;
+
+    /**
+     * List of upgrades available for purchase in the shop.
+     */
     private List<Upgrade> availableUpgrades;
 
+    /**
+     * Service class used for creating and managing car-related data and logic.
+     */
     private final CarService carService = new CarService();
+
+    /**
+     * Service class responsible for shop-related operations such as buying and selling.
+     */
     private final ShopService shopService = new ShopService();
+
+    /**
+     * Service class used for handling logic related to upgrades.
+     */
     private final UpgradeService upgradeService = new UpgradeService();
 
+    /**
+     * List of cars currently owned by the player.
+     */
     private List<Car> playerCars;
+
+    /**
+     * List of upgrades currently owned by the player.
+     */
     private List<Upgrade> playerUpgrades;
 
+    /**
+     * The car currently selected in the shop or garage interface.
+     */
     private Car selectedCar;
+
+    /**
+     * The upgrade currently selected in the shop or garage interface.
+     */
     private Upgrade selectedUpgrade;
 
+    /**
+     * Buttons in the UI that represent the player's cars.
+     */
     private List<Button> playerCarButtons;
+
+    /**
+     * Buttons in the UI that represent the player's upgrades.
+     */
     private List<Button> playerUpgradeButtons;
+
+    /**
+     * Buttons in the UI that represent cars available in the shop.
+     */
     private List<Button> shopCarButtons;
+
+    /**
+     * Buttons in the UI that represent upgrades available in the shop.
+     */
     private List<Button> shopUpgradeButtons;
+
 
     /**
      * Constructs a ShopScreenController with the given {@link GameManager}
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public ShopScreenController(GameManager manager) {
         super(manager);
@@ -113,7 +167,7 @@ public class ShopScreenController extends ScreenController {
      * This method is immediately called by the JavaFX framework after FXML loading.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         GameManager gameManager = getGameManager();
 
         playerCars = gameManager.getPlayerCars();
@@ -158,6 +212,7 @@ public class ShopScreenController extends ScreenController {
         for (int i = 0; i < availableUpgrades.size(); i++) {
             shopUpgradeButtons.get(i).setText(availableUpgrades.get(i).getUpgradeName());
         }
+
         updateMoneyLabel();
         updatePlayerCarButtons();
         updateShopCarButtons();
@@ -169,7 +224,7 @@ public class ShopScreenController extends ScreenController {
      * Called when a shop car button is clicked i.e a car available for purchase
      * Selects the car at the given index and updates the car stats display.
      *
-     * @param index the index of the selected shop car
+     * @param index the index of the selected shop car (int)
      */
     @FXML
     private void onShopCarButtonClicked(int index) {
@@ -182,7 +237,7 @@ public class ShopScreenController extends ScreenController {
      * Called when a player car button is clicked i.e a car owned by the player.
      * Selects the player's car at the given index and updates the car stats display.
      *
-     * @param index the index of the selected player car
+     * @param index the index of the selected player car (int)
      */
     @FXML
     private void onPlayerCarButtonClicked(int index) {
@@ -194,7 +249,7 @@ public class ShopScreenController extends ScreenController {
      * Called when a shop upgrade button is clicked i.e. an upgrade available for purchase
      * Selects the upgrade at the given index and updates the upgrade stats display.
      *
-     * @param index the index of the selected shop upgrade
+     * @param index the index of the selected shop upgrade (int)
      */
     @FXML
     private void onShopUpgradeButtonClicked(int index) {
@@ -207,7 +262,7 @@ public class ShopScreenController extends ScreenController {
      * Called when a player upgrade button is clicked i.e. an upgrade owned by the player.
      * Selects the player's upgrade at the given index and updates the upgrade stats display.
      *
-     * @param index the index of the selected player upgrade
+     * @param index the index of the selected player upgrade (int)
      */
     @FXML
     private void onPlayerUpgradeButtonClicked(int index) {
@@ -342,7 +397,7 @@ public class ShopScreenController extends ScreenController {
      * Updates the car stats labels with the stats of the selected car.
      * Also updates the cost label depending on whether the car is owned by the player or not.
      *
-     * @param car the car whose stats should be displayed, or null to clear the display
+     * @param car the car whose stats should be displayed, or null to clear the display (Car)
      */
     private void updateCarStats(Car car) {
         ScreenUpdater.updateCarStats(car, carSpeedLabel, carHandlingLabel, carReliabilityLabel, carFuelEconomyLabel, carUpgradesLabel);
@@ -359,7 +414,7 @@ public class ShopScreenController extends ScreenController {
      * Updates the upgrade stats panel with the stats of the selected upgrade.
      * Also updates the cost label depending on whether the upgrade is owned by the player or not.
      *
-     * @param upgrade the upgrade whose stats should be displayed, or null to clear the display
+     * @param upgrade the upgrade whose stats should be displayed, or null to clear the display (Upgrade)
      */
     private void updateUpgradeStats(Upgrade upgrade) {
         ScreenUpdater.updateUpgradeStats(upgrade, upgradeSpeedLabel, upgradeHandlingLabel, upgradeReliabilityLabel, upgradeFuelEconomyLabel);

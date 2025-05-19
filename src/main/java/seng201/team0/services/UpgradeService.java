@@ -6,9 +6,12 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class handles the generating of the different tuning parts/upgrades to be sold in the shop
+ */
 public class UpgradeService {
 
-    private List<Upgrade> availableUpgrades = new ArrayList<>();
+    private final List<Upgrade> availableUpgrades = new ArrayList<>();
 
     /**
      * Generates a random Upgrade from a predefined set.
@@ -16,6 +19,7 @@ public class UpgradeService {
      * @return A randomly generated Upgrade.
      */
     public List<Upgrade> generateRandomUpgrades() {
+        availableUpgrades.clear();
         Random random = new Random();
         for (int i = 0; i < 3; i++) {
             String[] upgradeNames = {

@@ -5,22 +5,45 @@ package seng201.team0.models;
  */
 public class Upgrade {
 
+    /**
+     * The name of the upgrade.
+     */
     private final String upgradeName;
+
+    /**
+     * The speed boost provided by this upgrade.
+     */
     private final int upgradeSpeed;
+
+    /**
+     * The handling improvement provided by this upgrade.
+     */
     private final int upgradeHandling;
+
+    /**
+     * The reliability increase provided by this upgrade.
+     */
     private final int upgradeReliability;
+
+    /**
+     * The fuel economy enhancement provided by this upgrade.
+     */
     private final int upgradeFuelEconomy;
+
+    /**
+     * The cost required to purchase this upgrade.
+     */
     private final int upgradeCost;
 
     /**
      * Constructs a new {@link Upgrade} instance
      *
-     * @param upgradeName the name of the upgrade
-     * @param upgradeSpeed the speed enhancement value
-     * @param upgradeHandling the handling enhancement value
-     * @param upgradeReliability the reliability enhancement value
-     * @param upgradeFuelEconomy the fuel economy enhancement value
-     * @param upgradeCost the cost of the upgrade
+     * @param upgradeName the name of the upgrade (String)
+     * @param upgradeSpeed the speed enhancement value (int)
+     * @param upgradeHandling the handling enhancement value (int)
+     * @param upgradeReliability the reliability enhancement value (int)
+     * @param upgradeFuelEconomy the fuel economy enhancement value (int)
+     * @param upgradeCost the cost of the upgrade (int)
      */
     public Upgrade(String upgradeName, int upgradeSpeed, int upgradeHandling, int upgradeReliability, int upgradeFuelEconomy, int upgradeCost) {
         this.upgradeName = upgradeName;

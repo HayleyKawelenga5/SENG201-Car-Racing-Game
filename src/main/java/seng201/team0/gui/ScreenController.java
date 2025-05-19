@@ -12,7 +12,7 @@ public abstract class ScreenController {
 
     /**
      * Creates an instant of ScreenController with the given {@link GameManager}
-     * @param gameManager The game manager used by this ScreenController
+     * @param gameManager The game manager used by this ScreenController (GameManager)
      */
     protected ScreenController(final GameManager gameManager) {
         this.gameManager = gameManager;

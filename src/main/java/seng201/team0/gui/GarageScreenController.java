@@ -16,15 +16,13 @@ import java.util.List;
 
 /**
  * Controller class for the Garage Screen GUI.
- *<p></p>
  * This screen allows the user to view the currently selected car, view up to 4 reserve cars owned by the player,
  * view any tuning parts (upgrades) owned by the player, swap the currently selected car and install a tuning part
  * (upgrade) on any car owned by the player.
- *<p></p>
  * The controller manages button clicks, updates the car and upgrade stats on the GUI and communicates with the
  * {@link GarageService} for installing upgrades.
  */
-public class GarageScreenController extends ScreenController {
+public class GarageScreenController extends ScreenController implements ScreenControllerInterface {
 
     @FXML private Button selectUpgradeButton;
     @FXML private Button selectCarButton;
@@ -57,7 +55,7 @@ public class GarageScreenController extends ScreenController {
 
     /**
      * Constructs a GarageScreenController with the given {@link GameManager}
-     * @param manager The GameManager managing game state.
+     * @param manager The GameManager managing game state. (GameManager)
      */
     public GarageScreenController(GameManager manager) {super(manager); }
 
@@ -94,7 +92,7 @@ public class GarageScreenController extends ScreenController {
      * This method is immediately called by the JavaFX framework after FXML loading.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
         GameManager gameManager = getGameManager();
         playerCars = gameManager.getPlayerCars();
         playerUpgrades = gameManager.getPlayerUpgrades();
@@ -115,7 +113,7 @@ public class GarageScreenController extends ScreenController {
             playerCarButtons.get(i).setOnAction(event -> onPlayerCarButtonClicked(index));
         }
 
-        // Setup buttons to select upgrades// Setup buttons to select upgrades
+        // Setup buttons to select upgrades
         for (int i = 0; i < playerUpgradeButtons.size(); i++) {
             int index = i;
             playerUpgradeButtons.get(i).setOnAction(event -> onPlayerUpgradeButtonClicked(index));
@@ -140,7 +138,7 @@ public class GarageScreenController extends ScreenController {
      * Handles the event when a player car button is clicked.
      * Updates the selected car and refreshes the displayed car stats.
      *
-     * @param index the index of the clicked car button in the player's car list
+     * @param index the index of the clicked car button in the player's car list (int)
      */
     @FXML
     private void onPlayerCarButtonClicked(int index) {
@@ -155,7 +153,7 @@ public class GarageScreenController extends ScreenController {
      * Handles the event when a player upgrade button is clicked.
      * Updates the selected upgrade and refreshes the displayed upgrade stats.
      *
-     * @param index the index of the clicked upgrade button in the player's upgrade list
+     * @param index the index of the clicked upgrade button in the player's upgrade list (int)
      */
     @FXML
     private void onPlayerUpgradeButtonClicked(int index) {
@@ -257,11 +255,11 @@ public class GarageScreenController extends ScreenController {
 
     /**
      * Shows an alert dialog with the specified title and message.
-     * @param title the title of the alert dialog
-     * @param message the content message of the alert dialog
+     * @param title the title of the alert dialog (String)
+     * @param message the content message of the alert dialog (String)
      */
     @FXML
-    private void showAlert(String title, String message){
+    private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
