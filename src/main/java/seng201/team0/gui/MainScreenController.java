@@ -185,6 +185,7 @@ public class MainScreenController extends ScreenController implements ScreenCont
     private void onToStartLineButtonClicked() {
         if (chosenRace == null) {
             showNoRacesSelectedAlert();
+            return;
         }
         getGameManager().setSelectedRace(chosenRace);
         getGameManager().startRace(chosenRace);

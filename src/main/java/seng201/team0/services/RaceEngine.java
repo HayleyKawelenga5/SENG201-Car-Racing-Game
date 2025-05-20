@@ -265,7 +265,6 @@ public class RaceEngine {
             carStatus.put(playerCar, RaceStatus.FINISHED);
             finishPositions.add(playerCar);
             carHours.put(playerCar, carHours.get(playerCar) + 1);
-            System.out.println("Player finished. Hours: " + carHours.get(playerCar) + ". Status: " + carStatus.get(playerCar) + ". Distance: " + carDistances.get(playerCar));
             playerFinished();
             return true;
         }
