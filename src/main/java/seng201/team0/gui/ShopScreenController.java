@@ -241,8 +241,10 @@ public class ShopScreenController extends ScreenController implements ScreenCont
      */
     @FXML
     private void onPlayerCarButtonClicked(int index) {
-        selectedCar = playerCars.get(index);
-        updateCarStats(selectedCar);
+        if (index < playerCars.size()) {
+            selectedCar = playerCars.get(index);
+            updateCarStats(selectedCar);
+        }
     }
 
     /**
@@ -266,8 +268,10 @@ public class ShopScreenController extends ScreenController implements ScreenCont
      */
     @FXML
     private void onPlayerUpgradeButtonClicked(int index) {
-        selectedUpgrade = playerUpgrades.get(index);
-        updateUpgradeStats(selectedUpgrade);
+        if (!playerUpgrades.isEmpty()){
+            selectedUpgrade = playerUpgrades.get(index);
+            updateUpgradeStats(selectedUpgrade);
+        }
     }
 
     /**
